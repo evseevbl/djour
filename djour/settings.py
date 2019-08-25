@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'djour.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
+        'NAME': 'journal',
+        'USER': 'boris',
+        'PASSWORD': 'boris',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
