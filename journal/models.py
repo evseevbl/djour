@@ -18,9 +18,9 @@ class Attendance(models.Model):
         db_table = 'attendance'
 
 
-class Duties(models.Model):
+class Duty(models.Model):
     student = models.ForeignKey('journal.models.Student', models.DO_NOTHING)
-    type = models.ForeignKey('DutyTypes', models.DO_NOTHING, db_column='type')
+    type = models.ForeignKey('journal.models.DutyType', models.DO_NOTHING, db_column='type')
     date = models.DateField()
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
@@ -30,7 +30,7 @@ class Duties(models.Model):
         db_table = 'duties'
 
 
-class DutyTypes(models.Model):
+class DutyType(models.Model):
     name = models.CharField(unique=True, max_length=100)
 
     class Meta:
@@ -38,16 +38,16 @@ class DutyTypes(models.Model):
         db_table = 'duty_types'
 
 
-class EventParticipants(models.Model):
+class EventParticipant(models.Model):
     student = models.ForeignKey('journal.models.Student', models.DO_NOTHING)
-    event = models.ForeignKey('Events', models.DO_NOTHING, blank=True, null=True)
+    event = models.ForeignKey('journal.models.Event', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'event_participants'
 
 
-class Events(models.Model):
+class Event(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateField()
 
