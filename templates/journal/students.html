@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Студенты</title>
-</head>
-<body>
-{% for student in students %}
-    <ul>
-        {{ student.last_name }} {{ student.first_name }}
-    </ul>
-{% endfor %}
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    {% for student in students %}
+        <li>
+            {{ student.last_name }} {{ student.first_name }} {{ student.id }}
+        </li>
+    {% endfor %}
+{% endblock %}

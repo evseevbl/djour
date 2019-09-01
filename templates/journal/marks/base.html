@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if marks and x_keys and y_keys %}
+        all keys present
+    {% else%}
+        some keys not present
+    {% endif %}
+
+    {% include 'journal/marks/table.html' %}
+
+    {% for mark in marks %}
+        <li> {{ mark.id }} {{ mark.student.last_name }} {{ mark.subject.short }} {{ mark.val }}</li>
+    {% endfor %}
+{% endblock %}

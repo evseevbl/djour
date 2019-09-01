@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Электронный журнал</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h2>
-    User: <{{ user }}>
-</h2>
+{% block content %}
 
-</body>
-</html>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="albums" class="table table-striped table-bordered" style="width:100%" data-server-side="true" data-ajax="/api/albums/?format=datatables">
+                <thead>
+                <tr>
+                    <th data-data="rank">Rank</th>
+                    <th data-data="name">Album name</th>
+                    <th data-data="year">Year</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
