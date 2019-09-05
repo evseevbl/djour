@@ -11,6 +11,7 @@
     {% include 'journal/marks/table.html' %}
 
     {% for mark in marks %}
-        <li> {{ mark.id }} {{ mark.student.last_name }} {{ mark.subject.short }} {{ mark.val }}</li>
+        <li> {{ mark.id }} {{ mark.date }} {{ mark.val }}
+            {{ mark.key.id }} {{ mark.key.display }} {{ mark.key.sort }}</li>
     {% endfor %}
 {% endblock %}

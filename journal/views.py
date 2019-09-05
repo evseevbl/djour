@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from journal.models import Student, Squad, Mark
-from journal.manager import StudentsManager
+from journal.manager import by_subject, students_to_keys, make_cells
 
 
 
@@ -38,6 +38,17 @@ def students(request):
         }
     )
 
+def student(request, student_id):
+    ls: [Student] = Student.objects.filter(id=student_id)
+    return render(
+        request,
+        "journal/marks/student.html",
+        {
+            # "user_id": user_id,
+            "student": ls[0],
+        }
+    )
+
 
 
 def test(request):
@@ -58,17 +69,17 @@ def marks_base(request):
 
 
 def marks_squad(request, squad_code="999"):
-    print(request, squad_code)
-
-    marks = Mark.objects.filter(student__squad__code=squad_code).prefetch_related(
+    keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
+    marks_list = Mark.objects.filter(student__squad__code=squad_code).prefetch_related(
         'student__mark_set',
         'student__squad__student_set',
     )
-
+    cells = make_cells()
     return render(
         request,
         "journal/marks/base.html",
         {
-            "marks": marks
+            "marks": by_subject(marks_list),
+            "keys": keys,
         }
     )

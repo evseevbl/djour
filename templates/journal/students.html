@@ -1,9 +1,30 @@
 {% extends 'base.html' %}
 
+{% include 'journal/sidebar.html' %}
 {% block content %}
-    {% for student in students %}
-        <li>
-            {{ student.last_name }} {{ student.first_name }} {{ student.id }}
-        </li>
-    {% endfor %}
+    <table cellpadding="10">
+        {% for student in students %}
+            <a href="{% url 'students' %}">
+
+                <tr>
+                    <th>
+                        {{ student.squad.code }} &nbsp;
+                    </th>
+                    <th>
+                        {{ student.last_name }} &nbsp;
+                    </th>
+                    <th>
+                        {{ student.first_name }} &nbsp;
+                    </th>
+                    <th>
+                        {{ student.middle_name }} &nbsp;
+                    </th>
+                    <th>
+                        <a href="/journal/students/{{ student.id }}"> профиль </a>
+                    </th>
+                </tr>
+            </a>
+            {#            {{ student.id }}#}
+        {% endfor %}
+    </table>
 {% endblock %}
