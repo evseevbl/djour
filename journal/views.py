@@ -24,11 +24,9 @@ def students(request):
     # manager = StudentsManager()
     # students = manager.get_students_by_squad('1702')
     # q = Student.objects.filter(squad=Squad(code='1702'))
-    ls: [Student] = Student.objects.filter(squad__code="1702")
+    ls: [Student] = Student.objects.all()
+    # squad__code="1702")
     # # filter(squad='1702')
-    for elem in ls:
-        print(elem)
-    # ls = []
     return render(
         request,
         "journal/students.html",
@@ -74,7 +72,7 @@ def marks_squad(request, squad_code="999"):
         'student__mark_set',
         'student__squad__student_set',
     )
-    cells = make_cells()
+    # cells = make_cells()
     return render(
         request,
         "journal/marks/base.html",
