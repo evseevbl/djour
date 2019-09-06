@@ -1,6 +1,6 @@
 from journal.models import Mark, Student
 from api.models import namedtuple_wrapper
-from datetime import datetime as dt
+from datetime import date, datetime as dt
 
 tMark = namedtuple_wrapper(
     "tMark",
@@ -47,11 +47,11 @@ def make_cells(x_keys: [tKey], y_keys: [tKey], marks: [tMark]):
 
 
 def date_to_key(d):
-    date = dt.date(d)
+    ff = dt.combine(d, dt.min.time())
     return tKey(
         id=123,
-        display=date.isoformat(),
-        sort=date,
+        display=ff,
+        sort=ff,
     )
 
 

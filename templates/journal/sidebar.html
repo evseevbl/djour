@@ -1,11 +1,14 @@
 {% extends 'adminlte/lib/_main_sidebar.html' %}
 
+{% load static %}
 {% load adminlte_helpers %}
 
 {% block user_panel %}
     <div class="user-panel">
         <div class="pull-left image">
-            <img src="{% avatar_url size=90 %}" class="img-circle" alt="User Image">
+            {#            <img src="{% avatar_url size=90 %}" class="img-circle" alt="User Image">#}
+            <img src="{% static 'vk.png' %}" class="img-circle" alt="User Image">
+
         </div>
         <div class="pull-left info" style="white-space: normal">
             <p>{% firstof request.user.get_full_name request.user.username %}</p>
@@ -34,5 +37,30 @@
                 Студенты
             </span>
         </a>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-group"></i> <span>Журнал взвода</span>
+            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'marks_squad' squad_code="1601" %}">
+                    <i class="fa fa-user"></i> 1601
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'marks_squad' squad_code="1701" %}">
+                    <i class="fa fa-user"></i> 1701
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'marks_squad' squad_code="1702" %}">
+                    <i class="fa fa-user"></i> 1702
+                </a>
+            </li>
+        </ul>
     </li>
 {% endblock nav_links_outer %}

@@ -66,7 +66,7 @@ def marks_base(request):
 
 
 
-def marks_squad(request, squad_code="999"):
+def marks_squad(request, squad_code="1702"):
     keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
     marks_list = Mark.objects.filter(student__squad__code=squad_code).prefetch_related(
         'student__mark_set',
