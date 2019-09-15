@@ -59,14 +59,14 @@
                             {% for subj in squad.subjects %}
                                 <li>
                                     <a href="{% url 'marks_squad' squad_code=squad.code %}">
-                                        <i class="fa fa-user"></i> {{ subj.short }}
+                                        <i class="fa fa-tablet"></i> {{ subj.short }}
                                     </a>
                                 </li>
                             {% endfor %}
                         {% else %}
                             <li>
-                                <a href="{% url 'marks_squad' squad_code=squad.code %}">
-                                    <i class="fa fa-question"></i> добавить предметы...
+                                <a href="#">
+                                    <i class="fa fa-plus"></i> добавить предметы...
                                 </a>
                             </li>
                         {% endif %}
