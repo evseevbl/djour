@@ -203,3 +203,15 @@ class Teacher(models.Model):
     class Meta:
         managed = False
         db_table = 'teachers'
+
+
+
+class Curriculum(models.Model):
+    squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
+    subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
+
+
+
+    class Meta:
+        managed = True
+        db_table = 'curriculum'

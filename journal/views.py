@@ -100,7 +100,8 @@ def marks_squad(request, squad_code="1702"):
         ),
     ]
     header, cells = make_cells(x_keys, y_keys, marks)
-
+    q = get_squads_with_subjects()
+    print(q)
     # cells = make_cells()
     return render(
         request,
@@ -109,6 +110,6 @@ def marks_squad(request, squad_code="1702"):
             "header": header,
             "cells": cells,
             "marks": marks,
-            "squad_list": get_squads_with_subjects(),
+            "squad_list": q,
         }
     )

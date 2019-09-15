@@ -1,4 +1,4 @@
-from journal.models import Mark, Student, Squad, Subject
+from journal.models import Mark, Student, Squad, Subject, Curriculum
 from api.models import namedtuple_wrapper
 from datetime import date, datetime as dt
 
@@ -21,6 +21,14 @@ tKey = namedtuple_wrapper(
     ]
 )
 
+tSquadSubject = namedtuple_wrapper(
+    "tSquadSubject",
+    [
+        "id",
+        "code",
+        "subjects",
+    ]
+)
 
 
 # date X student, fixed subject ID
@@ -102,10 +110,15 @@ def __get0(s: str) -> str:
     return ''
 
 def get_squads_with_subjects():
-    squads = Squad.objects.order_by('code').all()
-    # for s in squads:
-    #     subjs = Subject.objects.filter()
-    # TODO
-    return squads
-    pass
+    ans = []
+    for s in Squad.objects.order_by('code'):
+        q = Subject.objects.filter(curriculum__squad__code=s.code).prefetch_related(
+            'curriculum_set__squad'
+        )
+        ans.append(tSquadSubject(
+            code=s.code,
+            id=s.id,
+            subjects=q,
+        ))
+    return ans
 

@@ -42,17 +42,37 @@
         <a href="#">
             <i class="fa fa-group"></i> <span>Журнал взвода</span>
             <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
         <ul class="treeview-menu">
-            <li>
-                {% for squad in squad_list %}
-                    <a href="{% url 'marks_squad' squad_code=squad.code %}">
-                        <i class="fa fa-user"></i> {{ squad.code }}
+            {% for squad in squad_list %}
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-group"></i> <span>{{ squad.code }}</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
-                {% endfor %}
-            </li>
+                    <ul class="treeview-menu">
+                        {% if squad.subjects %}
+                            {% for subj in squad.subjects %}
+                                <li>
+                                    <a href="{% url 'marks_squad' squad_code=squad.code %}">
+                                        <i class="fa fa-user"></i> {{ subj.short }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>
+                                <a href="{% url 'marks_squad' squad_code=squad.code %}">
+                                    <i class="fa fa-question"></i> добавить предметы...
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
         </ul>
     </li>
 {% endblock nav_links_outer %}
