@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_adminlte_theme',
 
     'journal',
+    'maintenance',
 ]
 
 MIDDLEWARE = [

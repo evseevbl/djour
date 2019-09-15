@@ -38,9 +38,9 @@
             </span>
         </a>
     </li>
-    <li class="treeview">
+    <li class="treeview active">
         <a href="#">
-            <i class="fa fa-group"></i> <span>Журнал взвода</span>
+            <i class="fa fa-archive"></i> <span>Журнал взвода</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -58,7 +58,7 @@
                         {% if squad.subjects %}
                             {% for subj in squad.subjects %}
                                 <li>
-                                    <a href="{% url 'marks_squad' squad_code=squad.code %}">
+                                    <a href="{% url 'marks_squad' squad_code=squad.code subject_id=subj.id %}">
                                         <i class="fa fa-tablet"></i> {{ subj.short }}
                                     </a>
                                 </li>

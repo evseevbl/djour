@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from journal.models import Student, Squad, Mark
-from journal.manager import by_subject, students_to_keys, make_cells, tKey, tMark, get_squads_with_subjects
+from journal.managers.marks import tMark, tKey, by_subject, make_cells, students_to_keys
+from journal.managers.context import with_context
 
 
 
@@ -13,9 +14,9 @@ def index(request):
     return render(
         request,
         "journal/index.html",
-        {
+        with_context({
             "user": name
-        }
+        })
     )
 
 
@@ -30,10 +31,10 @@ def students(request):
     return render(
         request,
         "journal/students.html",
-        {
+        with_context({
             # "user_id": user_id,
             "students": ls,
-        }
+        })
     )
 
 
@@ -43,10 +44,10 @@ def student(request, student_id):
     return render(
         request,
         "journal/marks/student.html",
-        {
+        with_context({
             # "user_id": user_id,
             "student": ls[0],
-        }
+        })
     )
 
 
@@ -61,19 +62,19 @@ def marks_base(request):
     return render(
         request,
         "journal/marks/base.html",
-        {
+        with_context({
             "marks": marks
-        }
+        })
     )
 
 
 
-def marks_squad(request, squad_code="1702"):
+def marks_squad(request, squad_code="1702", subject_id=1):
     keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
     marks_list = Mark.objects.filter(student__squad__code=squad_code).prefetch_related(
         'student__mark_set',
         'student__squad__student_set',
-    )
+    ).filter(subject_id=subject_id)
     x_keys = [
         tKey(id=1, display="7.09", sort=1),
         tKey(id=2, display="14.09", sort=2),
@@ -100,16 +101,13 @@ def marks_squad(request, squad_code="1702"):
         ),
     ]
     header, cells = make_cells(x_keys, y_keys, marks)
-    q = get_squads_with_subjects()
-    print(q)
     # cells = make_cells()
     return render(
         request,
         "journal/marks/marks_squad.html",
-        {
+        with_context({
             "header": header,
             "cells": cells,
             "marks": marks,
-            "squad_list": q,
-        }
+        })
     )
