@@ -102,7 +102,7 @@ def __get0(s: str) -> str:
     return ''
 
 def get_squads_with_subjects():
-    squads = Squad.objects.all()
+    squads = Squad.objects.order_by('code').all()
     # for s in squads:
     #     subjs = Subject.objects.filter()
     # TODO

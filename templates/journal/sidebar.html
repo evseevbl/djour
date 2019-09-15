@@ -49,7 +49,7 @@
             <li>
                 {% for squad in squad_list %}
                     <a href="{% url 'marks_squad' squad_code=squad.code %}">
-                        <i class="fa fa-user"></i> 1702
+                        <i class="fa fa-user"></i> {{ squad.code }}
                     </a>
                 {% endfor %}
             </li>

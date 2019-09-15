@@ -109,6 +109,6 @@ def marks_squad(request, squad_code="1702"):
             "header": header,
             "cells": cells,
             "marks": marks,
-            "squads_list": get_squads_with_subjects(),
+            "squad_list": get_squads_with_subjects(),
         }
     )
