@@ -47,19 +47,11 @@
         </a>
         <ul class="treeview-menu">
             <li>
-                <a href="{% url 'marks_squad' squad_code="1601" %}">
-                    <i class="fa fa-user"></i> 1601
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'marks_squad' squad_code="1701" %}">
-                    <i class="fa fa-user"></i> 1701
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'marks_squad' squad_code="1702" %}">
-                    <i class="fa fa-user"></i> 1702
-                </a>
+                {% for squad in squad_list %}
+                    <a href="{% url 'marks_squad' squad_code=squad.code %}">
+                        <i class="fa fa-user"></i> 1702
+                    </a>
+                {% endfor %}
             </li>
         </ul>
     </li>

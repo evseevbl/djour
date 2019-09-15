@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% static 'journal/hover.css' %}
+
+{% block content %}
+
+    {% if cells and header and y_keys %}
+        all keys present
+    {% else %}
+        some keys not present
+    {% endif %}
+
+    {% include 'journal/marks/table.html' %}
+
+    {% for mark in marks %}
+        <li> {{ mark.id }} {{ mark.date }} {{ mark.val }}
+            {{ mark.key.id }} {{ mark.key.display }} {{ mark.key.sort }}</li>
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+
+    <script>
+        $(document).ready(function () {
+            let marksTable = $('#marks')
+                .DataTable({
+                    paging: false,
+                    lengthChange: false,
+                    searching: false,
+                    ordering: false,
+                    select: {
+                        style: 'os',
+                        items: 'cell',
+                    },
+                })
+            .on('click', 'tbody td', function () {
+
+              //get textContent of the TD
+              console.log('TD cell textContent : ', this.textContent);
+
+              //get the value of the TD using the API
+              console.log('value by API : ', this.parentNode.rowIndex, this.cellIndex);
+            })
+
+            .on( 'mouseenter', 'tbody td', function () {
+                {#var rowData = marksTable.row( this ).data();#}
+                console.log('value by API : ', this, this.parentNode.rowIndex, this.cellIndex);
+                $(this).toggleClass('bg');
+                marksTable.draw();
+                // ... show tool tip
+                {#console.log("ggg")#}
+            } );
+            $('table tbody tr td').on('hover', function () {
+                console.log("fff");
+                $(this).toggleClass('bg');
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from journal.models import Mark, Student
+from journal.models import Mark, Student, Squad, Subject
 from api.models import namedtuple_wrapper
 from datetime import date, datetime as dt
 
@@ -9,7 +9,6 @@ tMark = namedtuple_wrapper(
         "x_key",
         "y_key",
         "val",
-        "date",
     ]
 )
 
@@ -34,7 +33,6 @@ def by_subject(marks_list: [Mark]) -> [tMark]:
             x_key=student_to_key(m.student),
             y_key=date_to_key(m.date),
             val=m.val,
-            date=m.date,
         )
         ls.append(mr)
     return ls
@@ -42,7 +40,30 @@ def by_subject(marks_list: [Mark]) -> [tMark]:
 
 
 def make_cells(x_keys: [tKey], y_keys: [tKey], marks: [tMark]):
-    pass
+    # сортируем для отображения
+    x_keys.sort(key=lambda k: k.sort)
+    y_keys.sort(key=lambda k: k.sort)
+
+    # порядковый номер ключа после сортировки
+    xd = {}
+    for i in range(len(x_keys)):
+        xd[x_keys[i].id] = i
+    yd = {}
+    for i in range(len(y_keys)):
+        yd[y_keys[i].id] = i
+
+    # empty rows
+    cells = [['' + ''] * len(x_keys) for _ in range(len(y_keys))]
+    for m in marks:
+        x = xd[m.x_key]
+        y = yd[m.y_key]
+        cells[y][x] = m
+
+    # грязный хак: добавляем первый столбец
+    for i in range(len(cells)):
+        cells[i] = [y_keys[i]] + cells[i]
+
+    return x_keys, cells
 
 
 
@@ -79,3 +100,12 @@ def __get0(s: str) -> str:
     if len(s) > 0:
         return s[0]
     return ''
+
+def get_squads_with_subjects():
+    squads = Squad.objects.all()
+    # for s in squads:
+    #     subjs = Subject.objects.filter()
+    # TODO
+    return squads
+    pass
+
