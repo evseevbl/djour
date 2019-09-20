@@ -2,6 +2,7 @@ from django.shortcuts import render
 from journal.models import Student, Squad, Mark, Subject
 from journal.managers.marks import tMark, tKey, by_subject, make_cells, students_to_keys
 from journal.managers.context import with_context
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 
@@ -67,8 +68,7 @@ def marks_base(request):
         })
     )
 
-
-
+@ensure_csrf_cookie
 def marks_squad(request, squad_code="1702", subject_id=1):
     subj = Subject.objects.filter(id=subject_id)[0]
     y_keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
@@ -89,13 +89,13 @@ def marks_squad(request, squad_code="1702", subject_id=1):
 
     marks = [
         tMark(
-            id=123,
+            id=72,
             x_key=1,
             y_key=8,
             val=5
         ),
         tMark(
-            id=124,
+            id=73,
             x_key=2,
             y_key=13,
             val=3

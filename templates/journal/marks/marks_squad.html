@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% csrf_token %}
 {% load static %}
 
 {% static 'journal/hover.css' %}
@@ -34,17 +35,16 @@
         ];
 
         y_keys = [
-        {% for y in y_keys %}
-            {
-                val: {{ y.val }},
-                id: {{ y.id }},
-                display: "{{ y.display }}",
-            },
-        {% endfor %}
+            {% for y in y_keys %}
+                {
+                    val: {{ y.val }},
+                    id: {{ y.id }},
+                    display: "{{ y.display }}",
+                },
+            {% endfor %}
         ];
 
         subject_id = {{ subject_id }};
-
     </script>
     <script type="text/javascript" src="{% static 'common/js/input.js' %}"></script>
     <script type="text/javascript" src="{% static 'journal/marks/marks_squad.js' %}"></script>
