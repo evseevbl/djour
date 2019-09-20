@@ -19,6 +19,7 @@ rMark = namedtuple_wrapper(
 
 # Create your views here.
 def add_mark(request):
+    m = Mark()
     d = json.loads(request.body)
     req = rMark(
         value=d["value"],
