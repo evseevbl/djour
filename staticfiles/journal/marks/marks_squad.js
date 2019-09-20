@@ -23,9 +23,11 @@ $(document).ready(function () {
             };
             console.log('val: ', this.value, val.x_index, val.y_key_id);
             let x = get_x_key(val.x_index);
-            console.log('x=', x);
+            // console.log('x=', x);
             let y = get_y_key(val.y_key_id);
-            console.log('y=', y);
+            // console.log('y=', y);
+            let m = make_mark(x, y, val, subject_id);
+            console.log(m);
         });
 
     console.log(x_keys);
@@ -37,5 +39,14 @@ $(document).ready(function () {
 
     function get_y_key(y_key_id) {
         return y_keys.filter(y => (y.id === y_key_id))[0]
+    }
+
+    function make_mark(x, y, val, subject_id) {
+        return {
+            date: x.val,
+            student_id: y.val,
+            subject_id: subject_id,
+            value: val,
+        }
     }
 });

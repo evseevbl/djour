@@ -113,5 +113,6 @@ def marks_squad(request, squad_code="1702", subject_id=1):
             "subject": subj,
             "x_keys": x_keys,
             "y_keys": y_keys,
+            "subject_id": subject_id,
         })
     )
