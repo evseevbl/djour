@@ -23,11 +23,13 @@ $(document).ready(function () {
             };
             console.log('val: ', this.value, val.x_index, val.y_key_id);
             let x = get_x_key(val.x_index);
-            // console.log('x=', x);
             let y = get_y_key(val.y_key_id);
-            // console.log('y=', y);
             let m = make_mark(x, y, val, subject_id);
             console.log(m);
+
+            axios
+                .post('/api/marks/add', m)
+                .then((response) => console.log(response));
         });
 
     console.log(x_keys);

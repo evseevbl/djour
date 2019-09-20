@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("journal/", include("journal.urls")),
     path("", journal_index_redirect),
+    path('api/', include("api.urls")),
 ]
