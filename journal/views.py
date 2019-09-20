@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from journal.models import Student, Squad, Mark
+from journal.models import Student, Squad, Mark, Subject
 from journal.managers.marks import tMark, tKey, by_subject, make_cells, students_to_keys
 from journal.managers.context import with_context
 
@@ -61,7 +61,7 @@ def marks_base(request):
     marks = Mark.objects.all()
     return render(
         request,
-        "journal/marks/base.html",
+        # "journal/marks/marks_squad.html",
         with_context({
             "marks": marks
         })
@@ -70,33 +70,34 @@ def marks_base(request):
 
 
 def marks_squad(request, squad_code="1702", subject_id=1):
-    keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
+    subj = Subject.objects.filter(id=subject_id)[0]
+    y_keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
     marks_list = Mark.objects.filter(student__squad__code=squad_code).prefetch_related(
         'student__mark_set',
         'student__squad__student_set',
     ).filter(subject_id=subject_id)
     x_keys = [
-        tKey(id=1, display="7.09", sort=1),
-        tKey(id=2, display="14.09", sort=2),
-        tKey(id=3, display="21.09", sort=3),
+        tKey(id=1, display="7.09", sort=1, val=1),
+        tKey(id=2, display="14.09", sort=2, val=2),
+        tKey(id=3, display="21.09", sort=3, val=3),
     ]
 
-    y_keys = [
-        tKey(id=1, display="Пупкин В.В", sort=1),
-        tKey(id=2, display="Шлюпкин И.С", sort=2),
-    ]
+    # y_keys = [
+    #     tKey(id=1, display="Пупкин В.В", sort=1),
+    #     tKey(id=2, display="Шлюпкин И.С", sort=2),
+    # ]
 
     marks = [
         tMark(
             id=123,
             x_key=1,
-            y_key=1,
+            y_key=8,
             val=5
         ),
         tMark(
             id=124,
-            x_key=3,
-            y_key=2,
+            x_key=2,
+            y_key=13,
             val=3
         ),
     ]
@@ -109,5 +110,8 @@ def marks_squad(request, squad_code="1702", subject_id=1):
             "header": header,
             "cells": cells,
             "marks": marks,
+            "subject": subj,
+            "x_keys": x_keys,
+            "y_keys": y_keys,
         })
     )

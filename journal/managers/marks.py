@@ -18,6 +18,7 @@ tKey = namedtuple_wrapper(
         "id",
         "display",
         "sort",
+        "val",
     ]
 )
 
@@ -81,6 +82,7 @@ def student_to_key(s: Student) -> tKey:
         id=s.id,
         display=student_short_name(s),
         sort=student_short_name(s),
+        val=s.id,
     )
 
 
