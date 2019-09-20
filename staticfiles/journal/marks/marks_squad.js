@@ -23,7 +23,6 @@ $(document).ready(function () {
             axios.post('/api/marks/add', m).then((response) => {
                 let data = response.data;
 
-
                 if (val.mark_id === '') {
                     console.log("mark created, id=", data.id);
                     val.mark_id = '' + data.id;
@@ -32,9 +31,9 @@ $(document).ready(function () {
                     if (this.value === '') {
                         val.mark_id = '';
                         this.name = val_to_string(val);
-                        console.log("mark deleted")
+                        // console.log("mark deleted")
                     } else {
-                        console.log("mark exists");
+                        // console.log("mark exists");
                     }
                 }
                 console.log(data);
