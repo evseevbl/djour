@@ -101,6 +101,3 @@ def __get0(s: str) -> str:
     if len(s) > 0:
         return s[0]
     return ''
-
-
-

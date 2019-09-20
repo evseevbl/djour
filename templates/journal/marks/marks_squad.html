@@ -29,7 +29,7 @@
                 {
                     id: {{ x.id }},
                     display: {{ x.display }},
-                    val: {{ x.val }}
+                    val: "{{ x.val }}",
                 },
             {% endfor %}
         ];
@@ -37,9 +37,9 @@
         y_keys = [
             {% for y in y_keys %}
                 {
-                    val: {{ y.val }},
                     id: {{ y.id }},
                     display: "{{ y.display }}",
+                    val: "{{ y.val }}",
                 },
             {% endfor %}
         ];

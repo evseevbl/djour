@@ -15,22 +15,30 @@ $(document).ready(function () {
             return ["1", "2", "3", "4", "5", "Н", "н", "У", "у", ""].includes(value);
         })
         .change(function () {
-            let s = ('' + this.name).replace(/'/g, '"');
-            s = JSON.parse(s);
-            let val = {
-                x_index: s.x_index,
-                y_key_id: s.y_key_id,
-                mark_id: s.mark_id,
-            };
-            // console.log('val: ', this.value, val.x_index, val.y_key_id);
+            let val = val_from_cell_name(this.name);
             let x = get_x_key(val.x_index);
             let y = get_y_key(val.y_key_id);
             let m = make_mark(x, y, subject_id, val.mark_id, this.value);
-            // console.log(m);
 
-            axios
-                .post('/api/marks/add', m)
-                .then((response) => console.log(response));
+            axios.post('/api/marks/add', m).then((response) => {
+                let data = response.data;
+
+
+                if (val.mark_id === '') {
+                    console.log("mark created, id=", data.id);
+                    val.mark_id = '' + data.id;
+                    this.name = val_to_string(val);
+                } else {
+                    if (this.value === '') {
+                        val.mark_id = '';
+                        this.name = val_to_string(val);
+                        console.log("mark deleted")
+                    } else {
+                        console.log("mark exists");
+                    }
+                }
+                console.log(data);
+            });
         });
 
     function get_x_key(x_index) {
@@ -48,11 +56,27 @@ $(document).ready(function () {
             mark_id = parseInt(mark_id, 10);
         }
         return {
-            date: x.val,
+            date: '' + x.val,
             student_id: y.val,
             subject_id: subject_id,
             mark_id: mark_id,
             value: val,
         }
     }
-});
+
+    function val_from_cell_name(name) {
+        let s = ('' + name).replace(/'/g, '"');
+        s = JSON.parse(s);
+        let val = {
+            x_index: s.x_index,
+            y_key_id: s.y_key_id,
+            mark_id: s.mark_id,
+        };
+        return val
+    }
+
+    function val_to_string(val) {
+        return JSON.stringify(val).replace(/"/g, "'")
+    }
+})
+;

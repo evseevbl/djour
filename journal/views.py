@@ -3,6 +3,7 @@ from journal.models import Student, Squad, Mark, Subject
 from journal.managers.marks import tMark, tKey, by_subject, make_cells, students_to_keys
 from journal.managers.context import with_context
 from django.views.decorators.csrf import ensure_csrf_cookie
+import datetime as dt
 
 
 
@@ -77,7 +78,7 @@ def marks_squad(request, squad_code="1702", subject_id=1):
         'student__squad__student_set',
     ).filter(subject_id=subject_id)
     x_keys = [
-        tKey(id=1, display="7.09", sort=1, val=1),
+        tKey(id=1, display="7.09", sort=1, val=dt.date(2019, 9, 7).isoformat()),
         tKey(id=2, display="14.09", sort=2, val=2),
         tKey(id=3, display="21.09", sort=3, val=3),
     ]
