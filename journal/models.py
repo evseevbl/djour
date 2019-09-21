@@ -117,12 +117,13 @@ class Mark(models.Model):
     teacher = models.ForeignKey('journal.Teacher', models.DO_NOTHING, blank=True, null=True)
     subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
-    date = models.DateField()
+    # date = models.DateField()
+    lesson = models.ForeignKey('journal.Lesson', models.DO_NOTHING, blank=True, null=True)
 
 
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'marks'
 
 
@@ -205,7 +206,6 @@ class Teacher(models.Model):
         db_table = 'teachers'
 
 
-
 class Curriculum(models.Model):
     squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
@@ -215,3 +215,17 @@ class Curriculum(models.Model):
     class Meta:
         managed = True
         db_table = 'curriculum'
+
+
+
+class Lesson(models.Model):
+    squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
+    subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=False)
+
+
+
+    class Meta:
+        managed = True
+        db_table = 'lessons'
