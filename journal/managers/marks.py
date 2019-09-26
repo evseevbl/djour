@@ -19,6 +19,7 @@ tKey = namedtuple_wrapper(
         "display",
         "sort",
         "val",
+        "comment",
     ]
 )
 

@@ -28,7 +28,7 @@
             {% for x in x_keys %}
                 {
                     id: {{ x.id }},
-                    display: {{ x.display }},
+                    display: "{{ x.display }}",
                     val: "{{ x.val }}",
                 },
             {% endfor %}
@@ -43,7 +43,8 @@
                 },
             {% endfor %}
         ];
-
+        console.log("x:",x_keys);
+        console.log("y:",y_keys);
         subject_id = {{ subject_id }};
     </script>
     <script type="text/javascript" src="{% static 'common/js/input.js' %}"></script>

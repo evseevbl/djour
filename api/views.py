@@ -12,7 +12,7 @@ rMark = namedtuple_wrapper(
         "student_id",
         "subject_id",
         "teacher_id",
-        "date",
+        "lesson_id",
     ]
 )
 
@@ -28,8 +28,9 @@ def add_mark(request):
         student_id=d["student_id"],
         subject_id=d["subject_id"],
         teacher_id=1,  # ToDo
-        date=d["date"]
+        lesson_id=d["lesson_id"]
     )
+
     if req.id:
         print("mark exists")
         m: Mark = Mark.objects.filter(id=req.id)[0]
@@ -44,8 +45,8 @@ def add_mark(request):
             student_id=req.student_id,
             subject_id=req.subject_id,
             teacher_id=req.teacher_id,
-            date=req.date,
             val=req.value,
+            lesson_id=req.lesson_id
         )
         m.save()
 

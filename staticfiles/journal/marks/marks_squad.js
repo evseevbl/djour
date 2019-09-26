@@ -20,6 +20,7 @@ $(document).ready(function () {
             let y = get_y_key(val.y_key_id);
             let m = make_mark(x, y, subject_id, val.mark_id, this.value);
 
+            console.log("made mark", m);
             axios.post('/api/marks/add', m).then((response) => {
                 let data = response.data;
 
@@ -55,8 +56,8 @@ $(document).ready(function () {
             mark_id = parseInt(mark_id, 10);
         }
         return {
-            date: '' + x.val,
-            student_id: y.val,
+            lesson_id: '' + x.val,
+            student_id: '' + y.val,
             subject_id: subject_id,
             mark_id: mark_id,
             value: val,

@@ -12,7 +12,6 @@
         </tr>
         </thead>
         <tbody>
-        <form>
             {% for row in cells %}
                 <tr>
                     {% for elem in row %}
@@ -30,14 +29,20 @@
                     {% endfor %}
                 </tr>
             {% endfor %}
-        </form>
         </tbody>
         <tfoot>
         <tr>
             <th></th>
             {% for x in header %}
-                <th>{{ x.display }}
-                </th>
+                {% if x.comment %}
+                    {#                    <th style="transform: rotate(90deg); padding-right: -15px;"> #}
+                    <th>
+                        {{ x.comment }}
+                    </th>
+                {% else %}
+                    <th>{{ x.display }}
+                    </th>
+                {% endif %}
             {% endfor %}
         </tr>
 
