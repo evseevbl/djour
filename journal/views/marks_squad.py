@@ -25,6 +25,7 @@ def marks_squad(request, squad_code="1702", subject_id=1):
         request,
         "journal/marks/marks_squad.html",
         with_context({
+            "squad_code": squad_code,
             "header": header,
             "cells": cells,
             "marks": marks,

@@ -1,4 +1,7 @@
 {% block table %}
+    <button class="btn pull-right" data-toggle="modal" data-target="#modalLoginForm"><i class="fa fa-plus"></i> Добавить
+        столбец
+    </button>
     <table id="marks" class="table table-striped">
         <thead>
         <tr>
@@ -12,23 +15,23 @@
         </tr>
         </thead>
         <tbody>
-            {% for row in cells %}
-                <tr>
-                    {% for elem in row %}
-                        {% if forloop.counter == 1 %}
-                            <th class="col-xs-12">
-                                {{ elem.display }}
-                            </th>
-                        {% else %}
-                            <td class="col-xs-1">
-                                <label>
-                                    <input class="mycell" type="text" style="width:24px;height:24px;text-align: center;" name="{'x_index':{{ forloop.counter0 }}, 'y_key_id':{{ row.0.id }}, 'mark_id': '{{ elem.id }}' }" value="{{ elem.val }}"/>
-                                </label>
-                            </td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            {% endfor %}
+        {% for row in cells %}
+            <tr>
+                {% for elem in row %}
+                    {% if forloop.counter == 1 %}
+                        <th class="col-xs-12">
+                            {{ elem.display }}
+                        </th>
+                    {% else %}
+                        <td class="col-xs-1">
+                            <label>
+                                <input class="mycell" type="text" style="width:24px;height:24px;text-align: center;" name="{'x_index':{{ forloop.counter0 }}, 'y_key_id':{{ row.0.id }}, 'mark_id': '{{ elem.id }}' }" value="{{ elem.val }}"/>
+                            </label>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
         </tbody>
         <tfoot>
         <tr>
@@ -48,5 +51,53 @@
 
         </tfoot>
     </table>
+
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Добавить столбец</h4>
+                </div>
+                <form action="/api/lessons/add" method="post">
+                    <div class="modal-body mx-3">
+                        {% csrf_token %}
+                        {{ form }}
+                        <div class="md-form mb-5">
+                            <label data-error="wrong" data-success="right" for="id_date">Дата</label>
+                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
+                        </div>
+                        <div class="md-form mb-4">
+                            <label data-error="wrong" data-success="right" for="id_name">Название</label>
+                            <input type="text" id="id_name" name="name" class="form-control">
+
+                            <label for="id_squad_code"></label><input type="text" id="id_squad_code" name="squad_code" value="{{ squad_code }}" hidden>
+                            <label for="id_subject_id"></label><input type="number" id="id_subject_id" name="subject_id" value="{{ subject_id }}" hidden>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        {#                    TODO make proper form     #}
+                        <button class="btn btn-default" type="submit" id="lessonFormSubmit">ОК</button>
+                        <button class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $('.datepicker').datetimepicker(
+                {
+                    format: 'DD-MM-YYYY'
+                }
+            );
+        });
+    </script>
 {% endblock %}
 

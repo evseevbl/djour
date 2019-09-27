@@ -163,6 +163,8 @@ class Squad(models.Model):
         managed = True
         db_table = 'squads'
 
+    def __str__(self):
+        return f'{self.code}'
 
 
 class Student(models.Model):
@@ -181,6 +183,8 @@ class Student(models.Model):
         managed = True
         db_table = 'students'
 
+        verbose_name = 'Студент'
+        verbose_name_plural = 'Студенты'
 
 
 class Subject(models.Model):
@@ -192,8 +196,8 @@ class Subject(models.Model):
     class Meta:
         managed = True
         db_table = 'subjects'
-
-
+        verbose_name = 'Дисциплина'
+        verbose_name_plural = 'Дисциплины'
 
 class Teacher(models.Model):
     first_name = models.CharField(max_length=50, blank=True, null=True)

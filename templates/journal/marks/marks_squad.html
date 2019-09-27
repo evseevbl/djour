@@ -18,6 +18,9 @@
     {#    {% endfor %}#}
 {% endblock %}
 
+{% block modal %}
+{% endblock %}
+
 {% block javascript %}
     {{ block.super }}
     <script>
@@ -43,8 +46,8 @@
                 },
             {% endfor %}
         ];
-        console.log("x:",x_keys);
-        console.log("y:",y_keys);
+        {#console.log("x:", x_keys);#}
+        {#console.log("y:", y_keys);#}
         subject_id = {{ subject_id }};
     </script>
     <script type="text/javascript" src="{% static 'common/js/input.js' %}"></script>
