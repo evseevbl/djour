@@ -1,10 +1,10 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.views.decorators.csrf import ensure_csrf_cookie
-
 from journal.managers.context import with_context
 from journal.managers.marks import students_to_keys, tKey, tMark, make_cells
 from journal.models import Subject, Mark, Lesson, Student
+
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 

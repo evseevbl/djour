@@ -4,8 +4,11 @@ from django.shortcuts import render
 from journal.managers.context import with_context
 from journal.models import Student
 
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+
+@ensure_csrf_cookie
 @login_required
 def students(request):
     # manager = StudentsManager()

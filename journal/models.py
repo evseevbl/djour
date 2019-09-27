@@ -115,7 +115,7 @@ class Final(models.Model):
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.DO_NOTHING, blank=True, null=True)
     teacher = models.ForeignKey('journal.Teacher', models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, blank=True, null=True)
+    # subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
     lesson = models.ForeignKey('journal.Lesson', models.DO_NOTHING, blank=True, null=True)
 
@@ -163,8 +163,11 @@ class Squad(models.Model):
         managed = True
         db_table = 'squads'
 
+
+
     def __str__(self):
         return f'{self.code}'
+
 
 
 class Student(models.Model):
@@ -187,6 +190,7 @@ class Student(models.Model):
         verbose_name_plural = 'Студенты'
 
 
+
 class Subject(models.Model):
     short = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -198,6 +202,8 @@ class Subject(models.Model):
         db_table = 'subjects'
         verbose_name = 'Дисциплина'
         verbose_name_plural = 'Дисциплины'
+
+
 
 class Teacher(models.Model):
     first_name = models.CharField(max_length=50, blank=True, null=True)
@@ -236,3 +242,24 @@ class Lesson(models.Model):
     class Meta:
         managed = True
         db_table = 'lessons'
+
+
+
+class PersonalInfo(models.Model):
+    student = models.ForeignKey(Student, models.DO_NOTHING, blank=False, null=False)
+
+    passport_code = models.CharField(max_length=4, blank=True, null=False)
+    passport_number = models.CharField(max_length=6, blank=True, null=False)
+    passport_issued = models.CharField(max_length=6, blank=True, null=False)
+
+    address = models.CharField(max_length=512, blank=True, null=False)
+
+    birth_date = models.DateField(blank=True, null=True)
+
+    characteristic = models.TextField(blank=True, null=False)
+
+
+
+    class Meta:
+        managed = True
+        db_table = 'student_info'

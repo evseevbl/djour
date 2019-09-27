@@ -5,6 +5,13 @@ from journal.models import Student
 
 
 
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+
+
+@login_required
+@ensure_csrf_cookie
 def student(request, student_id):
     ls: [Student] = Student.objects.filter(id=student_id)
     return render(

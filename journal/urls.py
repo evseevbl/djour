@@ -5,7 +5,7 @@ import journal.views.marks_base
 import journal.views.marks_squad
 import journal.views.student
 import journal.views.students
-from journal import views
+import journal.views.attendance
 
 
 urlpatterns = [
@@ -14,5 +14,6 @@ urlpatterns = [
     path('students/<int:student_id>', journal.views.student.student, name='student'),
     path('marks/', journal.views.marks_base.marks_base, name='marks'),
     path('marks/<str:squad_code>/<int:subject_id>', journal.views.marks_squad.marks_squad, name='marks_squad'),
+    path('attendance/', journal.views.attendance.attendance, name='attendance')
     # path("<int:user_id>", views.borrower_page, name="borrower_page")
 ]
