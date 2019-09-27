@@ -94,11 +94,11 @@ def students_to_keys(ls: [Student]) -> [tKey]:
 
 
 def student_short_name(s: Student) -> str:
-    return f'{s.last_name} {__get0(s.first_name)}. {__get0(s.middle_name)}'
+    return f'{s.last_name} {__get0(s.first_name)}. {__get0(s.middle_name)}.'
 
 
 
 def __get0(s: str) -> str:
     if len(s) > 0:
         return s[0]
-    return ''
+    return '?'

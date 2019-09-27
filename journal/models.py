@@ -10,15 +10,22 @@ from django.db import models
 
 
 class Attendance(models.Model):
-    type = models.IntegerField()
     date = models.DateField(blank=True, null=True)
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING, blank=True, null=True)
+    squad = models.ForeignKey('journal.Squad', models.DO_NOTHING, blank=False, null=True)
+    students = models.ManyToManyField('journal.StudentAttendance')
 
 
 
     class Meta:
         managed = True
         db_table = 'attendance'
+
+
+
+class StudentAttendance(models.Model):
+    student = models.ForeignKey('journal.Student', models.DO_NOTHING)
+    value = models.IntegerField(null=True)
+    pass
 
 
 

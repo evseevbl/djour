@@ -25,7 +25,19 @@
                     {% else %}
                         <td class="col-xs-1">
                             <label>
-                                <input class="mycell" type="text" style="width:24px;height:24px;text-align: center;" name="{'x_index':{{ forloop.counter0 }}, 'y_key_id':{{ row.0.id }}, 'mark_id': '{{ elem.id }}' }" value="{{ elem.val }}"/>
+                                <input class="mycell"
+                                       type="text"
+
+                                        {% if elem.val == 0 %}
+                                       disabled
+                                       value="Н"
+                                        {% else %}
+                                       value="{{ elem.val }}"
+                                        {% endif %}
+
+                                       style="width:24px; height:24px;text-align: center;"
+                                       name="{'x_index':{{ forloop.counter0 }}, 'y_key_id':{{ row.0.id }}, 'mark_id': '{{ elem.id }}' }"
+                                />
                             </label>
                         </td>
                     {% endif %}
@@ -94,7 +106,7 @@
         $(function () {
             $('.datepicker').datetimepicker(
                 {
-                    format: 'DD-MM-YYYY'
+                    format: 'DD-MM-YYYY',
                 }
             );
         });
