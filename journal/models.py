@@ -9,6 +9,9 @@ from django.db import models
 
 
 
+# from journal.managers.marks import student_short_name
+
+
 class Attendance(models.Model):
     date = models.DateField(blank=True, null=True)
     squad = models.ForeignKey('journal.Squad', models.DO_NOTHING, blank=False, null=True)
@@ -186,6 +189,17 @@ class Student(models.Model):
 
     def __str__(self):
         return f'({self.squad.code}) {self.last_name} {self.first_name} {self.middle_name} [{self.id}]'
+
+
+    @property
+    def short(self) -> str:
+        def __get0(s: str) -> str:
+            if len(s) > 0:
+                return s[0]
+            return '?'
+
+
+        return f'{self.last_name} {__get0(self.first_name)}. {__get0(self.middle_name)}.'
 
 
 

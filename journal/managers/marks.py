@@ -81,8 +81,8 @@ def date_to_key(d):
 def student_to_key(s: Student) -> tKey:
     return tKey(
         id=s.id,
-        display=student_short_name(s),
-        sort=student_short_name(s),
+        display=s.short,
+        sort=s.short,
         val=s.id,
     )
 
@@ -93,12 +93,7 @@ def students_to_keys(ls: [Student]) -> [tKey]:
 
 
 
-def student_short_name(s: Student) -> str:
-    return f'{s.last_name} {__get0(s.first_name)}. {__get0(s.middle_name)}.'
+# def student_short_name(s: Student) -> str:
 
 
 
-def __get0(s: str) -> str:
-    if len(s) > 0:
-        return s[0]
-    return '?'

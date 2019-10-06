@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     $(".mycell")
         .inputFilter(function (value) {
-            return ["1", "2", "3", "4", "5", "Н", "н", "У", "у", ""].includes(value);
+            return ["0", "1", "2", "3", "4", "5", "Н", "н", "У", "у", ""].includes(value);
         })
         .change(function () {
             let val = val_from_cell_name(this.name);
@@ -67,16 +67,14 @@ $(document).ready(function () {
     function val_from_cell_name(name) {
         let s = ('' + name).replace(/'/g, '"');
         s = JSON.parse(s);
-        let val = {
+        return {
             x_index: s.x_index,
             y_key_id: s.y_key_id,
             mark_id: s.mark_id,
-        };
-        return val
+        }
     }
 
     function val_to_string(val) {
         return JSON.stringify(val).replace(/"/g, "'")
     }
-})
-;
+});
