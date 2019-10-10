@@ -27,8 +27,22 @@ class Attendance(models.Model):
 
 class StudentAttendance(models.Model):
     student = models.ForeignKey('journal.Student', models.DO_NOTHING)
-    value = models.IntegerField(null=True)
-    pass
+    type = models.ForeignKey('journal.StudentAttendanceType', models.DO_NOTHING, blank=False, null=True)
+
+
+
+    class Meta:
+        managed = True
+
+
+
+class StudentAttendanceType(models.Model):
+    value = models.CharField(max_length=100, blank=True, null=True)
+
+
+
+    class Meta:
+        managed = True
 
 
 
