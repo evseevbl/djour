@@ -79,8 +79,18 @@
                         {% csrf_token %}
                         {{ form }}
                         <div class="md-form mb-5">
-                            <label data-error="wrong" data-success="right" for="id_date">Дата</label>
-                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
+                            <label data-error="wrong" data-success="right" for="att_id">Дата</label>
+                            {#                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">#}
+
+                            <select id="attendance_id" name="attendance_id">
+                                {% for t in attendance_list %}
+                                    <option
+                                            value="{{ t.id }}"
+                                    >{{ t.date|date:"d-m-Y" }}</option>
+                                {% endfor %}
+                            </select>
+
+
                         </div>
                         <div class="md-form mb-4">
                             <label data-error="wrong" data-success="right" for="id_name">Название</label>

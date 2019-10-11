@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from journal.managers.context import with_context
 from journal.managers.marks import students_to_keys, tKey, tMark, make_cells
-from journal.models import Subject, Mark, Lesson, Student, StudentAttendance
+from journal.models import Subject, Mark, Lesson, Student, Attendance, Squad
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -16,8 +16,9 @@ def marks_squad(request, squad_code="1702", subject_id=1):
     x_keys = lessons_to_keys(Lesson.objects.filter(squad__code=squad_code))
     marks = marks_to_keys(Mark.objects.filter(student__squad__code=squad_code, lesson__subject_id=subject_id))
     header, cells = make_cells(x_keys, y_keys, marks)
+    squad = Squad.objects.filter(code=squad_code).first()
 
-    att = StudentAttendance.objects.order_by('attendance__date')
+    att = Attendance.objects.filter(squad=squad)
 
     return render(
         request,
@@ -53,8 +54,8 @@ def lessons_to_keys(lessons: [Lesson]) -> [tKey]:
     return [
         tKey(
             id=l.id,
-            display=l.date.strftime("%d.%m"),
-            sort=l.date,
+            display=l.attendance.date.strftime("%d.%m"),
+            sort=l.attendance.date,
             val=l.id,
             comment=l.name,
         ) for l in lessons

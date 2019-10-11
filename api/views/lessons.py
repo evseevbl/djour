@@ -20,7 +20,7 @@ def add_lesson(request):
             name=data["name"],
             subject_id=data["subject_id"],
             squad=squad,
-            date=dt.datetime.strptime(data["date"], '%d-%m-%Y')
+            attendance_id=data["attendance_id"]
         )
         lesson.save()
 
