@@ -42,12 +42,13 @@ def set_attendance(request):
         form = SetAttendanceStatusForm(request.POST)
         data = form.data
         student_id = data["student_id"]
-        attendance_id = data["attendance_id"]
-        attendance_type_id = data["attendance_type"]
-        attendance_type = StudentAttendanceType.objects.filter(id=attendance_type_id).first()
-        att = Attendance.objects.filter(id=attendance_id).first()
+        att_id = data["attendance_id"]
+        att_type_id = data["attendance_type"]
+
+        att_type = StudentAttendanceType.objects.filter(id=att_type_id).first()
+        att = Attendance.objects.filter(id=att_id).first()
+
         student_att: StudentAttendance = StudentAttendance.objects.filter(student_id=student_id, attendance=att).first()
-        print(student_att.type, student_att.student.short)
-        student_att.type = attendance_type
+        student_att.type = att_type
         student_att.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -6,26 +6,15 @@
     </h2>
 
 
-    <button class="btn pull-left" data-toggle="modal" data-target="#modalAddAttendance"><i class="fa fa-plus"></i>
-        Добавить записку
-    </button>
-    {#    </form>#}
-    <ul>
-        {% for f in forms %}
-            {{ f.id }}, {{ f.date }},
-            <ul>
-                {% with f.students.all as students %}
-                    {% for s in students %}
-                        {% with s.student as s %}
-                            s {{ s.short }} {{ s.id }} {{ s.last_name }}
-                        {% endwith %}
-                    {% endfor %}
-                {% endwith %}
-            </ul>
-        {% endfor %}
-    </ul>
 
     <div class="row">
+    <div class="col-xs-12">
+
+        <button class="btn pull-left" data-toggle="modal" data-target="#modalAddAttendance"><i class="fa fa-plus"></i>
+            Добавить записку
+        </button>
+    </div>
+
         <div class="col-md-6">
             <table id="forms" class="table table-striped">
                 <thead>
