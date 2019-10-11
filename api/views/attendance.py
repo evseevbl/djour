@@ -29,7 +29,7 @@ def add_attendance(request):
         for student in students:
             val = StudentAttendance(
                 student=student,
-                type=present.first(),
+                type=present,
 
             )
             val.save()
