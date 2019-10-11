@@ -13,7 +13,10 @@ def add_attendance(request):
         squad_code = form.data["squad_code"]
         date = form.data["date"]
         # todo constants
-        present = StudentAttendanceType.objects.filter(value="present")
+        present = StudentAttendanceType.objects.all()
+        print(present)
+        present = present.filter(value="present").first()
+
 
         squad = Squad.objects.filter(code=squad_code)[0]
         att = Attendance(

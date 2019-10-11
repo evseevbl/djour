@@ -24,6 +24,7 @@ def edit_attendance(request, attendance_id):
     types = StudentAttendanceType.objects.all()
     squad_students = att.students.all()
     print(squad_students[0].student)
+    print(types)
     return render(
         request,
         "journal/attendance_edit.html",
