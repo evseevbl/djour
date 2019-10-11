@@ -41,8 +41,10 @@ class StudentAttendanceType(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
 
 
+
     class Meta:
         managed = True
+        db_table = 'attendance_types'
 
 
 
@@ -269,6 +271,7 @@ class Curriculum(models.Model):
 
         verbose_name = 'Расписание'
         verbose_name_plural = 'Расписание'
+
 
 
 class Lesson(models.Model):
