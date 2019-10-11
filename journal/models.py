@@ -267,6 +267,8 @@ class Curriculum(models.Model):
         managed = True
         db_table = 'curriculum'
 
+        verbose_name = 'Расписание'
+        verbose_name_plural = 'Расписание'
 
 
 class Lesson(models.Model):
