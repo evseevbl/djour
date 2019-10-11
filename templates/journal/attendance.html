@@ -91,5 +91,21 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $(function () {
+            $('.datepicker').datetimepicker(
+                {
+                    format: 'DD-MM-YYYY',
+                }
+            );
+        });
+    </script>
+{% endblock %}
+
+
 

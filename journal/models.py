@@ -269,8 +269,9 @@ class Curriculum(models.Model):
 class Lesson(models.Model):
     squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
-    date = models.DateField(blank=True, null=True)
+    # date = models.DateField(blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=False)
+    attendance = models.ForeignKey(Attendance, models.DO_NOTHING, blank=True, null=True)
 
 
 
