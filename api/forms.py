@@ -13,3 +13,10 @@ class LessonForm(forms.Form):
 class NewAttendanceForm(forms.Form):
     squad_code = forms.CharField(label="Взвод", max_length=4)
     date = forms.DateField(label='Дата')
+
+
+
+class SetAttendanceStatusForm(forms.Form):
+    student_id = forms.IntegerField(label="Студент")
+    attendance_id = forms.IntegerField(label="Записка")
+    attendance_type = forms.IntegerField(label="Статус")

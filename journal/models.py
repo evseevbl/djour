@@ -38,7 +38,7 @@ class StudentAttendance(models.Model):
 
 class StudentAttendanceType(models.Model):
     value = models.CharField(max_length=100, blank=True, null=True)
-
+    name = models.CharField(max_length=100, blank=True, null=True)
 
 
     class Meta:

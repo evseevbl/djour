@@ -2,8 +2,8 @@ import datetime as dt
 
 from django.http import HttpResponseRedirect
 
-from api.forms import NewAttendanceForm
-from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance
+from api.forms import NewAttendanceForm, SetAttendanceStatusForm
+from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance, StudentAttendanceType
 
 
 
@@ -12,6 +12,8 @@ def add_attendance(request):
         form = NewAttendanceForm(request.POST)
         squad_code = form.data["squad_code"]
         date = form.data["date"]
+        # todo constants
+        present = StudentAttendanceType.objects.filter(value="present")[0]
 
         squad = Squad.objects.filter(code=squad_code)[0]
         att = Attendance(
@@ -23,11 +25,29 @@ def add_attendance(request):
         students = Student.objects.filter(squad_id=squad.id)
         for student in students:
             val = StudentAttendance(
-                value=-1,
-                student=student
+                student=student,
+                type=present,
+
             )
             val.save()
             att.students.add(val)
             pass
 
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+def set_attendance(request):
+    if request.method == 'POST':
+        form = SetAttendanceStatusForm(request.POST)
+        data = form.data
+        student_id = data["student_id"]
+        attendance_id = data["attendance_id"]
+        attendance_type_id = data["attendance_type"]
+        attendance_type = StudentAttendanceType.objects.filter(id=attendance_type_id).first()
+        att = Attendance.objects.filter(id=attendance_id).first()
+        student_att: StudentAttendance = StudentAttendance.objects.filter(student_id=student_id, attendance=att).first()
+        print(student_att.type, student_att.student.short)
+        student_att.type = attendance_type
+        student_att.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
