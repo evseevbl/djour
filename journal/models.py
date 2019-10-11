@@ -187,6 +187,9 @@ class Squad(models.Model):
         managed = True
         db_table = 'squads'
 
+        verbose_name = 'Взвод'
+        verbose_name_plural = 'Взвода'
+
 
 
     def __str__(self):
