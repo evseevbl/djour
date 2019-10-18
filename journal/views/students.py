@@ -40,12 +40,15 @@ def student(request, student_id):
     subjs = set()
     for l in lessons:
         l: Lesson = l
-        print(l.subject.short)
+        subjs.add(l.subject_id)
+        # print("s", l.subject.short)
+    print(subjs)
     avgs = []
     for s in subjs:
+        subj = Subject.objects.filter(id=s).first()
         avgs.append(tAvg(
-            short=s.short,
-            avg=get_avg_for_subject(s, student_id)
+            short=subj.short,
+            avg=get_avg_for_subject(subj, student_id)
         ))
 
     return render(
@@ -60,8 +63,8 @@ def student(request, student_id):
 
 
 def get_avg_for_subject(subject, student_id):
-    print(subject.short)
-    marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id)
+    print("avg for", subject.short)
+    marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id).filter(lesson__subject=subject)
 
     for m in marks:
         m: Mark = m
