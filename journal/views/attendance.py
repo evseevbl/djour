@@ -22,9 +22,7 @@ def edit_attendance(request, attendance_id):
     att: Attendance = Attendance.objects.filter(id=attendance_id)[0]
     # squad_students = Student.objects.filter(squad_id=att.squad_id)
     types = StudentAttendanceType.objects.all()
-    squad_students = att.students.all()
-    print(squad_students[0].student)
-    print(types)
+    # squad_students = att.students.all()
     return render(
         request,
         "journal/attendance_edit.html",
@@ -33,5 +31,7 @@ def edit_attendance(request, attendance_id):
             "statuses": att.students.all(),
             "attendance_types": types,
             "attendance_id": attendance_id,
+            "squad_code": att.squad.code,
+            "date": att.date,
         })
     )
