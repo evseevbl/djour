@@ -45,36 +45,22 @@
                 <div class="box-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
-                            <tr>
-                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <strong>
-                                        ВСП
-                                    </strong>
-                                </td>
-                                <td>
-                                    4.2
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <strong>
-                                        ТЧП
-                                    </strong>
-                                </td>
-                                <td>
-                                    4.7
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <strong>
-                                        ОГП
-                                    </strong>
-                                </td>
-                                <td>
-                                    3.2
-                                </td>
-                            </tr>
+                            {% if not avg_marks %}
+                                <strong> нет оценок</strong>
+                            {% else %}
+                                {% for st in avg_marks %}
+                                    <tr>
+                                        <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <strong>
+                                                {{ st.short }}
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            {{ st.avg|floatformat:2 }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                         </table>
                     </div>
                 </div>
