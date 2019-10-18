@@ -22,7 +22,13 @@ tKey = namedtuple_wrapper(
         "comment",
     ]
 )
-
+tAvg = namedtuple_wrapper(
+    'tAvg',
+    [
+        "short",
+        "avg",
+    ]
+)
 
 
 def by_subject(marks_list: [Mark]) -> [tMark]:

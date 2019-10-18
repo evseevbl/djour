@@ -45,18 +45,22 @@
                 <div class="box-body">
                     <div class="table-responsive">
                         <table class="table table-striped">
-{#                            {% for st in avg_marks}#}
-                                <tr>
-                                    <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <strong>
-                                            st.name
-                                        </strong>
-                                    </td>
-                                    <td>
-                                        st.avg
-                                    </td>
-                                </tr>
-{#                            {% endfor %}#}
+                            {% if not avg_marks %}
+                                <strong> нет оценок</strong>
+                            {% else %}
+                                {% for st in avg_marks %}
+                                    <tr>
+                                        <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <strong>
+                                                {{ st.short }}
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            {{ st.avg|floatformat:2 }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                         </table>
                     </div>
                 </div>

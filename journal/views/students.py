@@ -3,7 +3,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject
+from journal.models import Student, Mark, Subject, Lesson
+from journal.managers.marks import tAvg
+from django.db.models import Avg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -34,26 +36,35 @@ def students(request):
 def student(request, student_id):
     st: [Student] = Student.objects.filter(id=student_id).first()
 
-    subjs = Subject.objects.filter(lesson__mark__student_id=student_id).prefetch_related('lesson_set')
-    print(subjs)
+    lessons = (Lesson.objects.filter(mark__student=st))
+    subjs = set()
+    for l in lessons:
+        l: Lesson = l
+        print(l.subject.short)
+    avgs = []
     for s in subjs:
-        get_avg_for_subject(s, student_id)
-
+        avgs.append(tAvg(
+            short=s.short,
+            avg=get_avg_for_subject(s, student_id)
+        ))
 
     return render(
         request,
         "journal/marks/student.html",
         with_context({
-            # "user_id": user_id,
             "student": st,
+            "avg_marks": avgs,
         })
     )
 
 
 
 def get_avg_for_subject(subject, student_id):
-    marks = Mark.objects.filter(lesson__subject=subject, student_id=student_id).prefetch_related('student__mark_set__lesson', 'lesson__subject')
+    print(subject.short)
+    marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id)
+
     for m in marks:
         m: Mark = m
-        print(m.val, m.student_id)
-    pass
+        print(m.id, m.lesson.subject.short, m.val)
+    avg = marks.aggregate(Avg('val'))
+    return avg['val__avg']
