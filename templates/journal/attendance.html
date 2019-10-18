@@ -26,6 +26,9 @@
                         Дата
                     </th>
                     <th>
+                        По списку
+                    </th>
+                    <th>
                         Отсутствуют
                     </th>
                     <th>
@@ -39,6 +42,7 @@
                         <td>{{ f.squad }}</td>
                         <td>{{ f.date }}</td>
                         <td>{{ f.students.all | length }}</td>
+                        <td>{{ f.absent }}</td>
                         <td><a class="fa fa-edit" href="{% url 'attendance_edit' attendance_id=f.id %}"></a></td>
                     </tr>
                 {% endfor %}

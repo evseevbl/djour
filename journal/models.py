@@ -17,7 +17,9 @@ class Attendance(models.Model):
     squad = models.ForeignKey('journal.Squad', models.DO_NOTHING, blank=False, null=True)
     students = models.ManyToManyField('journal.StudentAttendance')
 
-
+    @property
+    def absent(self):
+        return len(self.students.filter(type__value__iregex="(absent|truant)"))
 
     class Meta:
         managed = True

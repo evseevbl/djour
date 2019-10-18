@@ -12,7 +12,7 @@ def attendance(request):
         request,
         "journal/attendance.html",
         with_context({
-            "forms": f
+            "forms": f,
         })
     )
 
