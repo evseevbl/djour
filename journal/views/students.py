@@ -2,10 +2,21 @@ from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
 
+from maintenance.helpers.named_tuple import namedtuple_wrapper
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, Lesson
+from journal.models import Student, Mark, Subject, Lesson, StudentAttendance
 from journal.managers.marks import tAvg
 from django.db.models import Avg
+
+studStat = namedtuple_wrapper(
+    "stAtt",
+    [
+        "absent",
+        "truant",
+        "present",
+        "duty",
+    ]
+)
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -50,6 +61,24 @@ def student(request, student_id):
             short=subj.short,
             avg=get_avg_for_subject(subj, student_id)
         ))
+    atts = StudentAttendance.objects.filter(student=st)
+    stats = studStat(
+        absent=0,
+        truant=0,
+        duty=0,
+        present=0,
+    )
+    stats = {
+        "absent": 0,
+        "truant": 0,
+        "duty": 0,
+        "present": 0,
+    }
+    for a in atts:
+        print("a=", a, a.type.value, a.student.last_name)
+        a: StudentAttendance = a
+        stats[a.type.value] += 1
+    print(stats)
 
     return render(
         request,
@@ -57,6 +86,7 @@ def student(request, student_id):
         with_context({
             "student": st,
             "avg_marks": avgs,
+            "attendance": stats,
         })
     )
 
