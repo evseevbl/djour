@@ -14,7 +14,7 @@ from django.db import models
 
 class Attendance(models.Model):
     date = models.DateField(blank=True, null=True)
-    squad = models.ForeignKey('journal.Squad', models.DO_NOTHING, blank=False, null=True)
+    squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=False, null=True)
     students = models.ManyToManyField('journal.StudentAttendance')
 
     @property
@@ -28,8 +28,8 @@ class Attendance(models.Model):
 
 
 class StudentAttendance(models.Model):
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING)
-    type = models.ForeignKey('journal.StudentAttendanceType', models.DO_NOTHING, blank=False, null=True)
+    student = models.ForeignKey('journal.Student', models.CASCADE)
+    type = models.ForeignKey('journal.StudentAttendanceType', models.CASCADE, blank=False, null=True)
 
 
 
@@ -51,8 +51,8 @@ class StudentAttendanceType(models.Model):
 
 
 class Duty(models.Model):
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING)
-    type = models.ForeignKey('journal.DutyType', models.DO_NOTHING, db_column='type')
+    student = models.ForeignKey('journal.Student', models.CASCADE)
+    type = models.ForeignKey('journal.DutyType', models.CASCADE, db_column='type')
     date = models.DateField()
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
@@ -77,8 +77,8 @@ class DutyType(models.Model):
 
 
 class EventParticipant(models.Model):
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING)
-    event = models.ForeignKey('journal.Event', models.DO_NOTHING, blank=True, null=True)
+    student = models.ForeignKey('journal.Student', models.CASCADE)
+    event = models.ForeignKey('journal.Event', models.CASCADE, blank=True, null=True)
 
 
 
@@ -101,7 +101,7 @@ class Event(models.Model):
 
 
 class Exam(models.Model):
-    subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, db_column='subject')
+    subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
     date = models.DateField()
     name = models.CharField(max_length=100, blank=True, null=True)
 
@@ -114,9 +114,9 @@ class Exam(models.Model):
 
 
 class FinalMark(models.Model):
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING, blank=True, null=True)
+    student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
-    final = models.ForeignKey('journal.Final', models.DO_NOTHING, blank=True, null=True)
+    final = models.ForeignKey('journal.Final', models.CASCADE, blank=True, null=True)
 
 
 
@@ -128,8 +128,8 @@ class FinalMark(models.Model):
 
 class Final(models.Model):
     name = models.CharField(max_length=256, blank=True, null=True)
-    subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, blank=True, null=True)
-    squad = models.ForeignKey('journal.Squad', models.DO_NOTHING, blank=True, null=True)
+    subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
+    squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=True, null=True)
     date = models.DateField(blank=True, null=True)
 
 
@@ -141,11 +141,11 @@ class Final(models.Model):
 
 
 class Mark(models.Model):
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING, blank=True, null=True)
-    teacher = models.ForeignKey('journal.Teacher', models.DO_NOTHING, blank=True, null=True)
-    # subject = models.ForeignKey('journal.Subject', models.DO_NOTHING, blank=True, null=True)
+    student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
+    teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
+    # subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
-    lesson = models.ForeignKey('journal.Lesson', models.DO_NOTHING, blank=True, null=True)
+    lesson = models.ForeignKey('journal.Lesson', models.CASCADE, blank=True, null=True)
 
 
 
@@ -156,10 +156,10 @@ class Mark(models.Model):
 
 
 class Penalty(models.Model):
-    type = models.ForeignKey('journal.PenaltyType', models.DO_NOTHING, db_column='type')
+    type = models.ForeignKey('journal.PenaltyType', models.CASCADE, db_column='type')
     comment = models.CharField(max_length=256, blank=True, null=True)
-    student = models.ForeignKey('journal.Student', models.DO_NOTHING)
-    teacher = models.ForeignKey('journal.Teacher', models.DO_NOTHING, blank=True, null=True)
+    student = models.ForeignKey('journal.Student', models.CASCADE)
+    teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
     date = models.DateField()
 
 
@@ -205,7 +205,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=50, blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
+    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
 
 
     def __str__(self):
@@ -263,8 +263,8 @@ class Teacher(models.Model):
 
 
 class Curriculum(models.Model):
-    squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
+    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
+    subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'({self.squad.code}) {self.subject.short} [{self.id}]'
@@ -279,11 +279,11 @@ class Curriculum(models.Model):
 
 
 class Lesson(models.Model):
-    squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
+    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
+    subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
     # date = models.DateField(blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=False)
-    attendance = models.ForeignKey(Attendance, models.DO_NOTHING, blank=True, null=True)
+    attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
 
 
@@ -294,7 +294,7 @@ class Lesson(models.Model):
 
 
 class PersonalInfo(models.Model):
-    student = models.ForeignKey(Student, models.DO_NOTHING, blank=False, null=False)
+    student = models.ForeignKey(Student, models.CASCADE, blank=False, null=False)
 
     passport_code = models.CharField(max_length=4, blank=True, null=False)
     passport_number = models.CharField(max_length=6, blank=True, null=False)
