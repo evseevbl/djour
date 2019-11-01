@@ -31,6 +31,8 @@ def add_lesson(request):
                 val = -1
             elif s.type.value == "truant":
                 val = -2
+            elif s.type.value == "duty":
+                val = -3
             else:
                 continue
             m = Mark(

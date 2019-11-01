@@ -29,9 +29,11 @@
                                        type="text"
 
                                         {% if elem.val == -1 %}
-                                        value="Н"
+                                        value="П"
                                         {% elif elem.val == -2 %}
                                         value="У"
+                                        {% elif elem.val == -3 %}
+                                        value="Н"
                                         {% else %}
                                         value="{{ elem.val }}"
                                         {% endif %}
