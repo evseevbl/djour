@@ -298,15 +298,31 @@ class PersonalInfo(models.Model):
 
     passport_code = models.CharField(max_length=4, blank=True, null=False)
     passport_number = models.CharField(max_length=6, blank=True, null=False)
-    passport_issued = models.CharField(max_length=6, blank=True, null=False)
+    passport_issued_date = models.DateField(blank=True, null=False)
+    passport_issued = models.CharField(max_length=512, blank=True, null=False)
 
-    address = models.CharField(max_length=512, blank=True, null=False)
+    reg_address = models.CharField(max_length=512, blank=True, null=False)
+    fact_address = models.CharField(max_length=512, blank=True, null=False)
 
-    birth_date = models.DateField(blank=True, null=True)
+    birth_place = models.TextField(blank=True, null=False)
+    birth_date = models.DateField(blank=True, null=False)
 
-    characteristic = models.TextField(blank=True, null=False)
+    family_status = models.CharField(max_length=512, blank=True, null=False)
+    family_members = models.CharField(max_length=512, blank=True, null=False)
 
+    start_date = models.DateField(blank=True, null=False)
+    end_date = models.DateField(blank=True, null=False)
 
+    commissariat = models.CharField(max_length=512, blank=True, null=False)
+    medical_report = models.TextField(blank=True, null=False)
+
+    characteristic_first_year = models.TextField(blank=True, null=True)
+    characteristic_second_year = models.TextField(blank=True, null=True)
+    characteristic_third_year = models.TextField(blank=True, null=True)
+
+    service_rank = models.CharField(blank=True, null=False)
+
+    conclusion = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
