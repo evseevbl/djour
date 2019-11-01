@@ -28,7 +28,7 @@ def edit_attendance(request, attendance_id):
         "journal/attendance_edit.html",
         with_context({
             "students": att.students.all().order_by('student__last_name').prefetch_related('student'),
-            "statuses": att.students.all(),
+            "statuses": att.students.all().order_by('student__last_name').prefetch_related('student'),
             "attendance_types": types,
             "attendance_id": attendance_id,
             "squad_code": att.squad.code,
