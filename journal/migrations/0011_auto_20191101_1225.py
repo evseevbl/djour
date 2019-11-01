@@ -3,8 +3,8 @@
 from django.db import migrations, models
 
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
         ('journal', '0010_auto_20191101_0804'),
     ]

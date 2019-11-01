@@ -207,7 +207,7 @@ class Student(models.Model):
     last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
     first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
-    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
+    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
 
 
     def __str__(self):
