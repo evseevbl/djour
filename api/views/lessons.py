@@ -27,9 +27,9 @@ def add_lesson(request):
         att = lesson.attendance
         for s in lesson.attendance.students.all():
             s: StudentAttendance = s
-            if s.type.value == "absent":
+            if s.type.value == "truant":
                 val = -1
-            elif s.type.value == "truant":
+            elif s.type.value == "absent":
                 val = -2
             elif s.type.value == "duty":
                 val = -3
