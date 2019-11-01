@@ -12,13 +12,19 @@ $(document).ready(function () {
 
     $(".mycell")
         .inputFilter(function (value) {
-            return ["0", "1", "2", "3", "4", "5", "Н", "н", "У", "у", ""].includes(value);
+            return ["1", "2", "3", "4", "5", "Н", "н", "у", "У", ""].includes(value);
         })
         .change(function () {
             let val = val_from_cell_name(this.name);
             let x = get_x_key(val.x_index);
             let y = get_y_key(val.y_key_id);
-            let m = make_mark(x, y, subject_id, val.mark_id, this.value);
+            let markVal = this.value;
+            if (markVal === 'н' || markVal === 'Н') {
+                markVal = -1
+            } else if (markVal === 'у' || markVal === 'У') {
+                markVal = -2
+            }
+            let m = make_mark(x, y, subject_id, val.mark_id, markVal);
 
             console.log("made mark", m);
             axios.post('/api/marks/add', m).then((response) => {

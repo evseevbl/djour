@@ -67,5 +67,38 @@
             </div>
         </div>
 
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Пропущенные занятия</h3>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <strong>
+                                        Уважительная причина
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ st.avg|floatformat:2 }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <strong>
+                                        Уважительная причина
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ st.avg|floatformat:2 }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

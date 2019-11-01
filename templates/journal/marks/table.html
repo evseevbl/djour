@@ -28,11 +28,12 @@
                                 <input class="mycell"
                                        type="text"
 
-                                        {% if elem.val == 0 %}
-                                       disabled
-                                       value="Н"
+                                        {% if elem.val == -1 %}
+                                        value="Н"
+                                        {% elif elem.val == -2 %}
+                                        value="У"
                                         {% else %}
-                                       value="{{ elem.val }}"
+                                        value="{{ elem.val }}"
                                         {% endif %}
 
                                        style="width:24px; height:24px;text-align: center;"

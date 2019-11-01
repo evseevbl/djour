@@ -3,7 +3,7 @@ import datetime as dt
 from django.http import HttpResponseRedirect
 
 from api.forms import LessonForm
-from journal.models import Squad, Lesson
+from journal.models import Squad, Lesson, StudentAttendance, Mark
 
 
 
@@ -23,6 +23,22 @@ def add_lesson(request):
             attendance_id=data["attendance_id"]
         )
         lesson.save()
+
+        att = lesson.attendance
+        for s in lesson.attendance.students.all():
+            s: StudentAttendance = s
+            if s.type.value == "absent":
+                val = -1
+            elif s.type == "truant":
+                val = -2
+            else:
+                continue
+            m = Mark(
+                student=s.student,
+                val=val,
+                lesson=lesson,
+            )
+            m.save()
 
         print(request.build_absolute_uri())  # Keeps query parameters
 

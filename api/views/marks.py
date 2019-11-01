@@ -44,3 +44,5 @@ def add_mark(request):
     }
     print(m)
     return HttpResponse(json.dumps(data))
+
+

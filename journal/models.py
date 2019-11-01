@@ -237,7 +237,8 @@ class Subject(models.Model):
     short = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
 
-
+    def __str__(self):
+        return f'({self.short}) [{self.id}]'
 
     class Meta:
         managed = True
@@ -265,7 +266,8 @@ class Curriculum(models.Model):
     squad = models.ForeignKey(Squad, models.DO_NOTHING, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.DO_NOTHING, blank=True, null=True)
 
-
+    def __str__(self):
+        return f'({self.squad.code}) {self.subject.short} [{self.id}]'
 
     class Meta:
         managed = True
