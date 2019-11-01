@@ -3,12 +3,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, Lesson, StudentAttendance
+from journal.models import Student, Mark, Subject, Lesson, StudentAttendance, PersonalInfo
 from journal.managers.marks import tAvg
 from django.db.models import Avg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
-
 
 
 @ensure_csrf_cookie
@@ -28,7 +27,6 @@ def students(request):
             "students": ls,
         })
     )
-
 
 
 @login_required
@@ -63,6 +61,8 @@ def student(request, student_id):
         stats[a.type.value] += 1
     print(stats)
 
+    pdata = PersonalInfo.objects.filter(student=st)
+
     return render(
         request,
         "journal/marks/student.html",
@@ -70,9 +70,9 @@ def student(request, student_id):
             "student": st,
             "avg_marks": avgs,
             "attendance": stats,
+            "persdata": pdata,
         })
     )
-
 
 
 def get_avg_for_subject(subject, student_id):
