@@ -13,13 +13,16 @@ from django.db import models
 
 
 class Attendance(models.Model):
-    date = models.DateField(blank=True, null=True)
+    date = models.DateField('Дата', blank=True, null=True)
     squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=False, null=True)
     students = models.ManyToManyField('journal.StudentAttendance')
 
+
     @property
     def absent(self):
-        return len(self.students.filter(type__value__iregex="(absent|truant)"))
+        return len(self.students.filter(type__value__iregex='(absent|truant)'))
+
+
 
     class Meta:
         managed = True
@@ -53,7 +56,7 @@ class StudentAttendanceType(models.Model):
 class Duty(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     type = models.ForeignKey('journal.DutyType', models.CASCADE, db_column='type')
-    date = models.DateField()
+    date = models.DateField('Дата')
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
 
@@ -102,8 +105,8 @@ class Event(models.Model):
 
 class Exam(models.Model):
     subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
-    date = models.DateField()
-    name = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateField('Дата')
+    name = models.CharField('Название', max_length=100, blank=True, null=True)
 
 
 
@@ -115,7 +118,7 @@ class Exam(models.Model):
 
 class FinalMark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
-    val = models.IntegerField(blank=True, null=True)
+    val = models.IntegerField('Оценка', blank=True, null=True)
     final = models.ForeignKey('journal.Final', models.CASCADE, blank=True, null=True)
 
 
@@ -130,7 +133,7 @@ class Final(models.Model):
     name = models.CharField(max_length=256, blank=True, null=True)
     subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
     squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=True, null=True)
-    date = models.DateField(blank=True, null=True)
+    date = models.DateField('Дата', blank=True, null=True)
 
 
 
@@ -157,10 +160,10 @@ class Mark(models.Model):
 
 class Penalty(models.Model):
     type = models.ForeignKey('journal.PenaltyType', models.CASCADE, db_column='type')
-    comment = models.CharField(max_length=256, blank=True, null=True)
+    comment = models.CharField('Комментарий', max_length=256, blank=True, null=True)
     student = models.ForeignKey('journal.Student', models.CASCADE)
     teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
-    date = models.DateField()
+    date = models.DateField('Дата')
 
 
 
@@ -190,7 +193,6 @@ class Squad(models.Model):
     class Meta:
         managed = True
         db_table = 'squads'
-
         verbose_name = 'Взвод'
         verbose_name_plural = 'Взвода'
 
@@ -202,9 +204,9 @@ class Squad(models.Model):
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    middle_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
+    first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
+    middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
 
 
@@ -227,18 +229,20 @@ class Student(models.Model):
     class Meta:
         managed = True
         db_table = 'students'
-
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
 
 
 
 class Subject(models.Model):
-    short = models.CharField(max_length=10, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
+    short = models.CharField('Сокращённое название', max_length=10, blank=True, null=True)
+    name = models.CharField('Полное название', max_length=255, blank=True, null=True)
+
 
     def __str__(self):
         return f'({self.short}) [{self.id}]'
+
+
 
     class Meta:
         managed = True
@@ -249,10 +253,10 @@ class Subject(models.Model):
 
 
 class Teacher(models.Model):
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    middle_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
-    rank = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
+    first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
+    middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
+    rank = models.CharField('звание', max_length=50, blank=True, null=True)
 
 
 
@@ -266,8 +270,11 @@ class Curriculum(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
 
+
     def __str__(self):
         return f'({self.squad.code}) {self.subject.short} [{self.id}]'
+
+
 
     class Meta:
         managed = True
@@ -282,7 +289,7 @@ class Lesson(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
     # date = models.DateField(blank=True, null=True)
-    name = models.CharField(max_length=100, blank=True, null=False)
+    name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
 
@@ -290,6 +297,8 @@ class Lesson(models.Model):
     class Meta:
         managed = True
         db_table = 'lessons'
+        verbose_name = 'Занятие'
+        verbose_name_plural = 'Занятия'
 
 
 
