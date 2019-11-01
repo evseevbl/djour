@@ -329,7 +329,7 @@ class PersonalInfo(models.Model):
     characteristic_second_year = models.TextField(blank=True, null=True)
     characteristic_third_year = models.TextField(blank=True, null=True)
 
-    service_rank = models.CharField(blank=True, null=False)
+    service_rank = models.CharField(max_length=100, blank=True, null=False)
 
     conclusion = models.TextField(blank=True, null=True)
 
