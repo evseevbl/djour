@@ -39,12 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_adminlte',
-    'django_adminlte_theme',
+    'dbbackup',  # django-dbbackup
 
     'journal',
     'maintenance',
     'api',
 ]
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': 'backups'}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
