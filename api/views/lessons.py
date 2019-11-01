@@ -29,7 +29,7 @@ def add_lesson(request):
             s: StudentAttendance = s
             if s.type.value == "absent":
                 val = -1
-            elif s.type == "truant":
+            elif s.type.value == "truant":
                 val = -2
             else:
                 continue
