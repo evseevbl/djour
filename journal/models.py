@@ -288,7 +288,6 @@ class Curriculum(models.Model):
 class Lesson(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
-    # date = models.DateField(blank=True, null=True)
     name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
@@ -332,6 +331,8 @@ class PersonalInfo(models.Model):
     service_rank = models.CharField(max_length=100, blank=True, null=False)
 
     conclusion = models.TextField(blank=True, null=True)
+
+
 
     class Meta:
         managed = True
