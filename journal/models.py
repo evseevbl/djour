@@ -306,20 +306,20 @@ class PersonalInfo(models.Model):
 
     passport_code = models.CharField(max_length=4, blank=True, null=False)
     passport_number = models.CharField(max_length=6, blank=True, null=False)
-    passport_issued_date = models.DateField(blank=True, null=False)
+    passport_issued_date = models.DateField(blank=True, null=True)
     passport_issued = models.CharField(max_length=512, blank=True, null=False)
 
     reg_address = models.CharField(max_length=512, blank=True, null=False)
     fact_address = models.CharField(max_length=512, blank=True, null=False)
 
     birth_place = models.TextField(blank=True, null=False)
-    birth_date = models.DateField(blank=True, null=False)
+    birth_date = models.DateField(blank=True, null=True)
 
     family_status = models.CharField(max_length=512, blank=True, null=False)
     family_members = models.CharField(max_length=512, blank=True, null=False)
 
-    start_date = models.DateField(blank=True, null=False)
-    end_date = models.DateField(blank=True, null=False)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
 
     commissariat = models.CharField(max_length=512, blank=True, null=False)
     medical_report = models.TextField(blank=True, null=False)
