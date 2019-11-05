@@ -5,6 +5,7 @@ $(document).ready(function () {
             lengthChange: false,
             searching: false,
             ordering: false,
+            scrollX: true,
         })
         .on('edit', 'tbody td', function () {
             console.log('value by API : ', this.parentNode.rowIndex, this.cellIndex, this.textContent);
@@ -26,7 +27,7 @@ $(document).ready(function () {
             } else if (markVal === 'н' || markVal === 'Н') {
                 markVal = -3; // duty
             }
-        let m = make_mark(x, y, subject_id, val.mark_id, markVal);
+            let m = make_mark(x, y, subject_id, val.mark_id, markVal);
 
             console.log("made mark", m);
             axios.post('/api/marks/add', m).then((response) => {
