@@ -37,10 +37,11 @@ def student(request, student_id):
             short=subj.short,
             avg=get_avg_for_subject(subj, student_id)
         ))
-        avgs.append(tAvg(
-            short=subj.short + ' (с пропусками)',
-            avg=get_avg_for_subject(subj, student_id, absent_zero=True)
-        ))
+        # todo оценки с учётом пропусков
+        # avgs.append(tAvg(
+        #     short=subj.short + ' (с пропусками)',
+        #     avg=get_avg_for_subject(subj, student_id, absent_zero=True)
+        # ))
     atts = StudentAttendance.objects.filter(student=st)
     stats = {
         "absent": 0,
