@@ -48,6 +48,10 @@ def student(request, student_id):
             short=subj.short,
             avg=get_avg_for_subject(subj, student_id)
         ))
+        avgs.append(tAvg(
+            short=subj.short+' (с пропусками)',
+            avg=get_avg_for_subject(subj, student_id, absent_zero=True)
+        ))
     atts = StudentAttendance.objects.filter(student=st)
     stats = {
         "absent": 0,
@@ -75,12 +79,18 @@ def student(request, student_id):
     )
 
 
-def get_avg_for_subject(subject, student_id):
+def get_avg_for_subject(subject, student_id, absent_zero=False):
     print("avg for", subject.short)
-    marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id).filter(lesson__subject=subject)
+    marks = []
+    if absent_zero:
+        marks = Mark.objects.filter(student_id=student_id).filter(lesson__subject=subject)
+    else:
+        marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id).filter(lesson__subject=subject)
 
     for m in marks:
         m: Mark = m
+        if m.val < 0:
+            m.val = 0
         print(m.id, m.lesson.subject.short, m.val)
     avg = marks.aggregate(Avg('val'))
     return avg['val__avg']
