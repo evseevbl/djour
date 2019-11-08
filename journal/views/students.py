@@ -3,10 +3,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, Lesson, StudentAttendance, PersonalInfo, Curriculum
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
+from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 
@@ -26,8 +27,8 @@ def students(request):
 
 
 
-@login_required
 @ensure_csrf_cookie
+@login_required
 def student(request, student_id):
     st: Student = Student.objects.filter(id=student_id).first()
     all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
@@ -50,21 +51,22 @@ def student(request, student_id):
         "present": 0,
     }
     for a in atts:
-        print("a=", a, a.value, a.student.last_name)
         a: StudentAttendance = a
         stats[a.value] += 1
-    print(stats)
 
     info = PersonalInfo.objects.filter(student=st).first()
 
+    penalties = Penalty.objects.filter(student=st)
+
     return render(
         request,
-        "journal/marks/student.html",
+        "journal/student.html",
         with_context({
             "student": st,
             "avg_marks": avgs,
             "attendance": stats,
             "info": info,
+            "penalties": penalties,
         })
     )
 

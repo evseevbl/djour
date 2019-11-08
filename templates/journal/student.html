@@ -186,5 +186,81 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Дисциплинарные практики</h3>
+                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        {% if not penalties %}
+                            отсутствуют
+                        {% else %}
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-xs-3 col-lg-2">тип</th>
+                                <th>за что</th>
+                                <th>дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for p in penalties %}
+                                <tr>
+                                    <td>
+                                        {{   p.russian_type}}
+                                    </td>
+                                    <td>
+                                        {{ p.comment }}
+                                    </td>
+                                    <td>
+                                        {{ p.date|date:"Y-m-d" }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="modalAddPenalty" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Дисциплинарная практика</h4>
+                </div>
+                <form action="{% url 'penalty_add' %}" method="post">
+                    <div class="modal-body mx-3">
+                        {% csrf_token %}
+                        {{ form }}
+                        <div class="md-form mb-5">
+                            <label for="id_date">Дата</label>
+                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
+                        </div>
+                        <div class="md-form mb-4">
+                            <label for="penalty_type">Взвод</label>
+                            <select id="penalty_type" name="squad_code">
+                                {% for opt in penalty_options %}
+                                    <option >{{ opt }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-default" type="submit" id="addPenaltySubmit">Сохранить</button>
+                        <button class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

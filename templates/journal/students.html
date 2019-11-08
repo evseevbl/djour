@@ -44,7 +44,7 @@
                                         {{ student.middle_name }} &nbsp;
                                     </td>
                                     <td>
-                                        <a href="/journal/students/{{ student.id }}"> профиль </a>
+                                        <a href="{% url 'student' student_id=student.id %}"> профиль </a>
                                     </td>
                                 </tr>
                                 {#            {{ student.id }}#}

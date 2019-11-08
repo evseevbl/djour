@@ -192,8 +192,8 @@ class Penalty(models.Model):
     class Meta:
         managed = True
         db_table = 'penalties'
-        verbose_name = 'Взыскание/поощрение'
-        verbose_name_plural = 'Взыскания и поощрения'
+        verbose_name = 'Дисциплинарная практика'
+        verbose_name_plural = 'Дисциплинарные практики'
 
 
 

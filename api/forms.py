@@ -9,6 +9,12 @@ class LessonForm(forms.Form):
     squad_code = forms.CharField(label='Взвод', max_length=100)
 
 
+class PenaltyForm(forms.Form):
+    comment = forms.CharField(label='Комментарий', max_length=100)
+    date = forms.CharField(label='Дата', max_length=100)
+    subject_id = forms.IntegerField(label='Дисциплина')
+    squad_code = forms.CharField(label='Взвод', max_length=100)
+
 
 class NewAttendanceForm(forms.Form):
     squad_code = forms.CharField(label="Взвод", max_length=4)
