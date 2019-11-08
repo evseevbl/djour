@@ -1,5 +1,6 @@
 from journal.models import StudentAttendanceType
 
+
 ATTENDANCE_TYPE_PRESENT = StudentAttendanceType(
     value="present",
     name="_Присутствует",
@@ -26,3 +27,10 @@ ATT_TYPES = [
     ATTENDANCE_TYPE_TRUANT,
     ATTENDANCE_TYPE_DUTY,
 ]
+
+
+def name_by_value(value):
+    for t in ATT_TYPES:
+        if t.value == value:
+            return t.name
+    return None

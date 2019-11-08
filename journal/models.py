@@ -32,8 +32,9 @@ class Attendance(models.Model):
 
 class StudentAttendance(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    type = models.ForeignKey('journal.StudentAttendanceType', models.CASCADE, blank=False, null=True)
-    new_type = models.CharField(max_length=20, blank=True, null=True)
+    # type = models.ForeignKey('journal.StudentAttendanceType', models.CASCADE, blank=False, null=True)
+    value = models.CharField(max_length=20, blank=True, null=True)
+
 
 
     class Meta:

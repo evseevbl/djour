@@ -49,9 +49,9 @@ def student(request, student_id):
         "present": 0,
     }
     for a in atts:
-        print("a=", a, a.type.value, a.student.last_name)
+        print("a=", a, a.value, a.student.last_name)
         a: StudentAttendance = a
-        stats[a.type.value] += 1
+        stats[a.value] += 1
     print(stats)
 
     info = PersonalInfo.objects.filter(student=st).first()
