@@ -67,7 +67,7 @@ def student(request, student_id):
         stats[a.type.value] += 1
     print(stats)
 
-    pdata = PersonalInfo.objects.filter(student=st)
+    info = PersonalInfo.objects.filter(student=st).first()
 
     return render(
         request,
@@ -76,7 +76,7 @@ def student(request, student_id):
             "student": st,
             "avg_marks": avgs,
             "attendance": stats,
-            "persdata": pdata,
+            "info": info,
         })
     )
 

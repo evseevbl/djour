@@ -333,7 +333,12 @@ class PersonalInfo(models.Model):
     conclusion = models.TextField(blank=True, null=True)
 
 
+    def __str__(self):
+        return f'{self.student.short} [{self.id}]'
 
     class Meta:
         managed = True
         db_table = 'student_info'
+        verbose_name = 'Персональные данные'
+        verbose_name_plural = 'Персональные данные'
+

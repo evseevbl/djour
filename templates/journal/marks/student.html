@@ -40,7 +40,7 @@
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Средний балл</h3>
+                    <h3 class="box-title">Средний балл по дисциплинам</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -106,6 +106,82 @@
                                 </td>
                             </tr>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Личные данные</h3>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        {% if info %}
+                            <table class="table table-striped">
+                                <tr>
+                                    <td class="col-xs-2 col-lg-2">
+                                        <strong>
+                                            Паспорт
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.passport_code }} {{ info.passport_number }},
+                                        выдан {{ info.passport_issued_date|date:"Y-m-d" }} {{ info.passport_issued }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Адрес регистрации</strong></td>
+                                    <td>{{ info.reg_address }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Адрес проживания</strong></td>
+                                    <td>{{ info.fact_address }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Начало обучения</strong></td>
+                                    <td>{{ info.start_date|date:"Y-m-d" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Окончание обучения</strong></td>
+                                    <td>{{ info.end_date|date:"Y-m-d" }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Характеристика</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>2 курс:</td>
+                                    <td>{{ info.characteristic_first_year }}</td>
+                                </tr>
+                                <tr>
+                                    <td>3 курс:</td>
+                                    <td>{{ info.characteristic_second_year }}</td>
+                                </tr>
+                                <tr>
+                                    <td>4 курс:</td>
+                                    <td>{{ info.characteristic_third_year }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Категория годности
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.conclusion }}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% else %}
+                            не заполнено
+                        {% endif %}
                     </div>
                 </div>
             </div>
