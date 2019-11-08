@@ -34,7 +34,7 @@ def students(request):
 def student(request, student_id):
     st: [Student] = Student.objects.filter(id=student_id).first()
 
-    lessons = (Lesson.objects.filter(mark__student=st))
+    lessons = (Lesson.objects.filter(mark__student=st, mark__val__gt=0))
     subjs = set()
     for l in lessons:
         l: Lesson = l
