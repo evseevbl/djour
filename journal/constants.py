@@ -2,23 +2,23 @@ from journal.models import StudentAttendanceType
 
 
 ATTENDANCE_TYPE_PRESENT = StudentAttendanceType(
-    value="present",
-    name="_Присутствует",
+    value='present',
+    name='_Присутствует',
 )
 
 ATTENDANCE_TYPE_TRUANT = StudentAttendanceType(
-    value="truant",
-    name="_Неув. причина",
+    value='truant',
+    name='_Неув. причина',
 )
 
 ATTENDANCE_TYPE_ABSENT = StudentAttendanceType(
-    value="absent",
-    name="_Ув. причина",
+    value='absent',
+    name='_Ув. причина',
 )
 
 ATTENDANCE_TYPE_DUTY = StudentAttendanceType(
-    value="duty",
-    name="_В наряде",
+    value='duty',
+    name='_В наряде',
 )
 
 ATT_TYPES = [
