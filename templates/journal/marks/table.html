@@ -20,7 +20,7 @@
                 {% for elem in row %}
                     {% if forloop.counter == 1 %}
                         <th class="col-xs-12">
-                            {{ elem.display }}
+                            <a href="{% url 'student' student_id=elem.id %}">{{ elem.display }}</a>
                         </th>
                     {% else %}
                         <td class="col-xs-1">
