@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from journal.models import Attendance, StudentAttendance, Student, StudentAttendanceType
-from journal.constants import *
+from journal.models import Attendance
+from journal import constants
 from journal.managers.context import with_context
 
 
@@ -20,10 +20,8 @@ def attendance(request):
 
 def edit_attendance(request, attendance_id):
     att: Attendance = Attendance.objects.filter(id=attendance_id)[0]
-    # squad_students = Student.objects.filter(squad_id=att.squad_id)
-    types = StudentAttendanceType.objects.all()
+    types = constants.ATT_TYPES
 
-    # squad_students = att.students.all()
     return render(
         request,
         "journal/attendance_edit.html",

@@ -3,8 +3,8 @@ import datetime as dt
 from django.http import HttpResponseRedirect
 
 from api.forms import NewAttendanceForm, SetAttendanceStatusForm
-from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance, StudentAttendanceType
-from journal.constants import *
+from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance
+from journal import constants
 
 
 
@@ -14,7 +14,7 @@ def add_attendance(request):
         squad_code = form.data["squad_code"]
         date = form.data["date"]
         # todo constants
-        present = StudentAttendanceType.objects.get(value="present")
+        present = constants.ATTENDANCE_TYPE_PRESENT
 
         squad = Squad.objects.filter(code=squad_code)[0]
         att = Attendance(
@@ -27,7 +27,7 @@ def add_attendance(request):
         for student in students:
             val = StudentAttendance(
                 student=student,
-                value=ATTENDANCE_TYPE_PRESENT.value
+                value=present.value
             )
             val.save()
             att.students.add(val)
