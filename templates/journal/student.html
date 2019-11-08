@@ -191,37 +191,37 @@
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Дисциплинарные практики</h3>
-                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>
+{#                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>#}
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
                         {% if not penalties %}
                             отсутствуют
                         {% else %}
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th class="col-xs-3 col-lg-2">тип</th>
-                                <th>за что</th>
-                                <th>дата</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for p in penalties %}
+                            <table class="table table-striped">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        {{   p.russian_type}}
-                                    </td>
-                                    <td>
-                                        {{ p.comment }}
-                                    </td>
-                                    <td>
-                                        {{ p.date|date:"Y-m-d" }}
-                                    </td>
+                                    <th class="col-xs-3 col-lg-2">тип</th>
+                                    <th>за что</th>
+                                    <th>дата</th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for p in penalties %}
+                                    <tr>
+                                        <td>
+                                            {{ p.russian_type }}
+                                        </td>
+                                        <td>
+                                            {{ p.comment }}
+                                        </td>
+                                        <td>
+                                            {{ p.date|date:"Y-m-d" }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         {% endif %}
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                             <label for="penalty_type">Взвод</label>
                             <select id="penalty_type" name="squad_code">
                                 {% for opt in penalty_options %}
-                                    <option >{{ opt }}</option>
+                                    <option>{{ opt }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -263,4 +263,16 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $(function () {
+            $('.datepicker').datepicker(
+                {
+                    format: 'DD-MM-YYYY',
+                }
+            )
+        });
+    </script>
 {% endblock %}
