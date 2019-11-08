@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, Lesson, StudentAttendance, PersonalInfo
+from journal.models import Student, Mark, Subject, Lesson, StudentAttendance, PersonalInfo, Curriculum
 from journal.managers.marks import tAvg
 from django.db.models import Avg
 
@@ -34,18 +34,10 @@ def students(request):
 @login_required
 @ensure_csrf_cookie
 def student(request, student_id):
-    st: [Student] = Student.objects.filter(id=student_id).first()
-
-    lessons = Lesson.objects.filter(mark__student=st, mark__val__gt=0)
-    subjs = set()
-    for l in lessons:
-        l: Lesson = l
-        subjs.add(l.subject_id)
-        # print("s", l.subject.short)
-    print(subjs)
+    st: Student = Student.objects.filter(id=student_id).first()
+    all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
     avgs = []
-    for s in subjs:
-        subj = Subject.objects.filter(id=s).first()
+    for subj in all_subjects:
         avgs.append(tAvg(
             short=subj.short,
             avg=get_avg_for_subject(subj, student_id)
