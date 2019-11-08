@@ -302,7 +302,7 @@ class Lesson(models.Model):
 
 
 class PersonalInfo(models.Model):
-    student = models.ForeignKey(Student, models.CASCADE, blank=False, null=False)
+    student = models.OneToOneField(Student, models.CASCADE, blank=False, null=False)
 
     passport_code = models.CharField(max_length=4, blank=True, null=False)
     passport_number = models.CharField(max_length=6, blank=True, null=False)
