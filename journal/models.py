@@ -13,6 +13,7 @@ from django.db import models
 
 
 class Attendance(models.Model):
+    """ строевая записка"""
     date = models.DateField('Дата', blank=True, null=True)
     squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=False, null=True)
     students = models.ManyToManyField('journal.StudentAttendance')
@@ -32,7 +33,6 @@ class Attendance(models.Model):
 
 class StudentAttendance(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    # type = models.ForeignKey('journal.StudentAttendanceType', models.CASCADE, blank=False, null=True)
     value = models.CharField(max_length=20, blank=True, null=True)
 
 
@@ -160,10 +160,20 @@ class Mark(models.Model):
 
 
 class Penalty(models.Model):
-    type = models.ForeignKey('journal.PenaltyType', models.CASCADE, db_column='type')
+    REPRIMAND = 'penalty'
+    PROMOTION = 'promotion'
+    CHOICES = (
+        (REPRIMAND, 'взыскание'),
+        (PROMOTION, 'поощрение'),
+    )
+    type = models.CharField(
+        'Вид',
+        max_length=20,
+        choices=CHOICES,
+        default=REPRIMAND,
+    )
     comment = models.CharField('Комментарий', max_length=256, blank=True, null=True)
-    student = models.ForeignKey('journal.Student', models.CASCADE)
-    teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
+    student = models.OneToOneField('journal.Student', models.CASCADE)
     date = models.DateField('Дата')
 
 
@@ -171,18 +181,6 @@ class Penalty(models.Model):
     class Meta:
         managed = True
         db_table = 'penalties'
-
-
-
-class PenaltyType(models.Model):
-    name = models.CharField(unique=True, max_length=256)
-    good = models.BooleanField()
-
-
-
-    class Meta:
-        managed = True
-        db_table = 'penalty_types'
 
 
 
