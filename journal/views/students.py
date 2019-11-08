@@ -10,6 +10,7 @@ from django.db.models import Avg
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+
 @ensure_csrf_cookie
 @login_required
 def students(request):
@@ -29,12 +30,13 @@ def students(request):
     )
 
 
+
 @login_required
 @ensure_csrf_cookie
 def student(request, student_id):
     st: [Student] = Student.objects.filter(id=student_id).first()
 
-    lessons = (Lesson.objects.filter(mark__student=st))
+    lessons = Lesson.objects.filter(mark__student=st, mark__val__gt=0)
     subjs = set()
     for l in lessons:
         l: Lesson = l
@@ -47,6 +49,10 @@ def student(request, student_id):
         avgs.append(tAvg(
             short=subj.short,
             avg=get_avg_for_subject(subj, student_id)
+        ))
+        avgs.append(tAvg(
+            short=subj.short + ' (с пропусками)',
+            avg=get_avg_for_subject(subj, student_id, absent_zero=True)
         ))
     atts = StudentAttendance.objects.filter(student=st)
     stats = {
@@ -75,12 +81,21 @@ def student(request, student_id):
     )
 
 
-def get_avg_for_subject(subject, student_id):
+
+def get_avg_for_subject(subject, student_id, absent_zero=False):
     print("avg for", subject.short)
-    marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id).filter(lesson__subject=subject)
+    marks = []
+    if absent_zero:
+        marks = Mark.objects.filter(student_id=student_id).filter(lesson__subject=subject)
+    else:
+        marks = Mark.objects.filter(val__gt=0).filter(student_id=student_id).filter(lesson__subject=subject)
 
     for m in marks:
         m: Mark = m
-        print(m.id, m.lesson.subject.short, m.val)
+        if m.val < 0:
+            m.val = 0
+        # print(m.id, m.lesson.subject.short, m.val)
     avg = marks.aggregate(Avg('val'))
-    return avg['val__avg']
+    ret = avg['val__avg']
+    print(f'avg student={student_id}, avg={ret}, subj={subject.short}, zeroed={absent_zero}')
+    return ret
