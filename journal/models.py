@@ -302,43 +302,44 @@ class Lesson(models.Model):
 
 
 class PersonalInfo(models.Model):
-    student = models.OneToOneField(Student, models.CASCADE, blank=False, null=False)
+    student = models.OneToOneField(Student, models.CASCADE, blank=False, null=False, verbose_name="Студент")
 
-    passport_code = models.CharField(max_length=4, blank=True, null=False)
-    passport_number = models.CharField(max_length=6, blank=True, null=False)
-    passport_issued_date = models.DateField(blank=True, null=True)
-    passport_issued = models.CharField(max_length=512, blank=True, null=False)
+    passport_code = models.CharField('Серия паспорта', max_length=4, blank=True, null=False)
+    passport_number = models.CharField('Номер паспорта', max_length=6, blank=True, null=False)
+    passport_issued_date = models.DateField('Дата выдачи паспорта', blank=True, null=True)
+    passport_issued = models.CharField('Кем выдан паспорт', max_length=512, blank=True, null=False)
 
-    reg_address = models.CharField(max_length=512, blank=True, null=False)
-    fact_address = models.CharField(max_length=512, blank=True, null=False)
+    reg_address = models.CharField('Адрес регистрации', max_length=512, blank=True, null=False)
+    fact_address = models.CharField('Адрес фактический', max_length=512, blank=True, null=False)
 
-    birth_place = models.TextField(blank=True, null=False)
-    birth_date = models.DateField(blank=True, null=True)
+    birth_place = models.TextField('Место рождения', blank=True, null=False)
+    birth_date = models.DateField('Дата рождения', blank=True, null=True)
 
-    family_status = models.CharField(max_length=512, blank=True, null=False)
-    family_members = models.CharField(max_length=512, blank=True, null=False)
+    family_status = models.CharField('Семейное положение', max_length=512, blank=True, null=False)
+    family_members = models.CharField('Члены семьи', max_length=512, blank=True, null=False)
 
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField('Начало обучения', blank=True, null=True)
+    end_date = models.DateField('Окончание обучения', blank=True, null=True)
 
-    commissariat = models.CharField(max_length=512, blank=True, null=False)
-    medical_report = models.TextField(blank=True, null=False)
+    commissariat = models.CharField('Военкомат', max_length=512, blank=True, null=False)
+    medical_report = models.TextField('Врачебное заключение', blank=True, null=False)
 
-    characteristic_first_year = models.TextField(blank=True, null=True)
-    characteristic_second_year = models.TextField(blank=True, null=True)
-    characteristic_third_year = models.TextField(blank=True, null=True)
+    characteristic_first_year = models.TextField('Характеристика за 2 курс', blank=True, null=True)
+    characteristic_second_year = models.TextField('Характеристика за 3 курс', blank=True, null=True)
+    characteristic_third_year = models.TextField('Характеристика за 4 курс', blank=True, null=True)
 
-    service_rank = models.CharField(max_length=100, blank=True, null=False)
+    service_rank = models.CharField('Служба в ВС, звание', max_length=100, blank=True, null=False)
 
-    conclusion = models.TextField(blank=True, null=True)
+    conclusion = models.TextField('Категория годности', blank=True, null=True)
 
 
     def __str__(self):
         return f'{self.student.short} [{self.id}]'
+
+
 
     class Meta:
         managed = True
         db_table = 'student_info'
         verbose_name = 'Персональные данные'
         verbose_name_plural = 'Персональные данные'
-
