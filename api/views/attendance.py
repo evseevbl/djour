@@ -43,12 +43,12 @@ def set_attendance(request):
         data = form.data
         student_id = data["student_id"]
         att_id = data["attendance_id"]
-        att_type_id = data["attendance_type"]
+        # todo validate
+        att_type_value = data["attendance_type"]
 
-        att_type = StudentAttendanceType.objects.filter(id=att_type_id).first()
         att = Attendance.objects.filter(id=att_id).first()
 
         student_att: StudentAttendance = StudentAttendance.objects.filter(student_id=student_id, attendance=att).first()
-        student_att.type = att_type
+        student_att.value = att_type_value
         student_att.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

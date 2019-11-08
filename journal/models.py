@@ -20,7 +20,7 @@ class Attendance(models.Model):
 
     @property
     def absent(self):
-        return len(self.students.filter(type__value__iregex='(absent|truant)'))
+        return len(self.students.filter(value__iregex='(absent|truant)'))
 
 
 
@@ -49,7 +49,7 @@ class StudentAttendanceType(models.Model):
 
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'attendance_types'
 
 

@@ -40,8 +40,8 @@
                                             <select id="attendance_type" name="attendance_type" onchange="this.form.submit()">
                                                 {% for t in attendance_types %}
                                                     <option
-                                                            value="{{ t.id }}"
-                                                            {% if t.id == s.type.id %}
+                                                            value="{{ t.value }}"
+                                                            {% if t.value == s.value %}
                                                             selected
                                                             {% endif %}
                                                     >{{ t.name }}</option>
