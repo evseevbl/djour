@@ -21,7 +21,7 @@ def attendance(request):
 def edit_attendance(request, attendance_id):
     att: Attendance = Attendance.objects.filter(id=attendance_id)[0]
     # squad_students = Student.objects.filter(squad_id=att.squad_id)
-    types = ATT_TYPES
+    types = StudentAttendanceType.objects.all()
 
     # squad_students = att.students.all()
     return render(

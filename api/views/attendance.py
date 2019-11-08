@@ -14,7 +14,7 @@ def add_attendance(request):
         squad_code = form.data["squad_code"]
         date = form.data["date"]
         # todo constants
-        present = ATTENDANCE_TYPE_PRESENT
+        present = StudentAttendanceType.objects.get(value="present")
 
         squad = Squad.objects.filter(code=squad_code)[0]
         att = Attendance(
@@ -28,7 +28,6 @@ def add_attendance(request):
             val = StudentAttendance(
                 student=student,
                 type=present,
-
             )
             val.save()
             att.students.add(val)
