@@ -160,7 +160,7 @@ class Mark(models.Model):
 
 
 class Penalty(models.Model):
-    REPRIMAND = 'penalty'
+    REPRIMAND = 'reprimand'
     PROMOTION = 'promotion'
     CHOICES = (
         (REPRIMAND, 'взыскание'),
@@ -173,14 +173,27 @@ class Penalty(models.Model):
         default=REPRIMAND,
     )
     comment = models.CharField('Комментарий', max_length=256, blank=True, null=True)
-    student = models.OneToOneField('journal.Student', models.CASCADE)
+    student = models.ForeignKey('journal.Student', models.CASCADE)
     date = models.DateField('Дата')
+
+
+    @property
+    def russian_type(self):
+        if self.type == self.PROMOTION:
+            return self.CHOICES[1][1]
+        return self.CHOICES[0][1]
+
+
+    def __str__(self):
+        return f'{self.student.short} {self.russian_type} от {self.date.strftime("%Y-%m-%d")}'
 
 
 
     class Meta:
         managed = True
         db_table = 'penalties'
+        verbose_name = 'Взыскание/поощрение'
+        verbose_name_plural = 'Взыскания и поощрения'
 
 
 
