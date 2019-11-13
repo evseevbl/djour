@@ -191,7 +191,7 @@
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Дисциплинарные практики</h3>
-{#                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>#}
+                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -246,11 +246,15 @@
                             <label for="id_date">Дата</label>
                             <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
                         </div>
+                        <div class="md-form mb-5">
+                            <label for="id_comment">Комментарий</label>
+                            <input placeholder="Комментарий" name="comment" type="text" id="id_comment" class="form-control">
+                        </div>
                         <div class="md-form mb-4">
-                            <label for="penalty_type">Взвод</label>
-                            <select id="penalty_type" name="squad_code">
+                            <label for="penalty_type">Тип взыскания</label>
+                            <select id="penalty_type" name="penalty_type">
                                 {% for opt in penalty_options %}
-                                    <option>{{ opt }}</option>
+                                    <option value="{{ opt.code }}">{{ opt.label }}</option>
                                 {% endfor %}
                             </select>
                         </div>

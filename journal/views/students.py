@@ -9,7 +9,16 @@ from django.db.models import Avg, Case, When
 
 from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
+from maintenance.helpers.named_tuple import namedtuple_wrapper
 
+
+tPenaltyOption = namedtuple_wrapper(
+    'tPenaltyOption',
+    (
+        'code',
+        'label'
+    )
+)
 
 
 @ensure_csrf_cookie
@@ -58,6 +67,10 @@ def student(request, student_id):
 
     penalties = Penalty.objects.filter(student=st)
 
+    penalty_options = []
+    for code, label in Penalty.CHOICES:
+        penalty_options.append(tPenaltyOption(code, label))
+
     return render(
         request,
         "journal/student.html",
@@ -67,6 +80,7 @@ def student(request, student_id):
             "attendance": stats,
             "info": info,
             "penalties": penalties,
+            "penalty_options": penalty_options
         })
     )
 
