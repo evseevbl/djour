@@ -13,7 +13,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 def marks_squad(request, squad_code="1702", subject_id=1):
     subj = Subject.objects.filter(id=subject_id).first()
     y_keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
-    x_keys = lessons_to_keys(Lesson.objects.filter(squad__code=squad_code, subject_id=subject_id))
+    x_keys = lessons_to_keys(Lesson.objects.filter(attendance__squad__code=squad_code, subject_id=subject_id))
     marks = marks_to_keys(Mark.objects.filter(student__squad__code=squad_code, lesson__subject_id=subject_id))
     header, cells = make_cells(x_keys, y_keys, marks)
     squad = Squad.objects.filter(code=squad_code).first()

@@ -94,15 +94,29 @@ class Event(models.Model):
 
 
 class Exam(models.Model):
+    SEMESTER_CHOICES = (
+        (3,3),
+        (4,4),
+        (5,5),
+        (6,6),
+        (7,7),
+        (8,8)
+    )
+    NAME_EXAM = 'exam'
+    NAME_TEST = 'test'
+    NAME_CHOICES = (
+        (NAME_EXAM, 'Экзамен') ,
+        (NAME_TEST, 'Зачёт'),
+    )
     """ Экзамен """
     subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
-    name = models.CharField('Название', max_length=100, blank=True, null=True)
+    semester = models.IntegerField('Семестр', choices=SEMESTER_CHOICES, default=0)
     squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
-    date = models.DateField('Дата')
+    name = models.CharField('Форма контроля', max_length=100, choices=NAME_CHOICES, default="")
 
 
     def __str__(self):
-        return f'({self.squad.code}) {self.name} по {self.subject.short} от {self.date}'
+        return f'{self.subject} в {self.semester} семестре'
 
 
     class Meta:
@@ -110,36 +124,6 @@ class Exam(models.Model):
         db_table = 'exams'
         verbose_name = 'Форма контроля'
         verbose_name_plural = 'Формы контроля'
-
-
-class ExamAttempt(models.Model):
-    """  Экзамен, пересдача или комиссия """
-    exam = models.ForeignKey('journal.Exam', models.CASCADE, verbose_name='Экзамен')
-    attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
-    name = models.CharField('Название', max_length=100, blank=True, null=True)
-
-    def __str__(self):
-        return f'({self.exam.squad.code}) {self.exam.name}:{self.name}, {self.attendance.date.strftime("%Y-%m-%d")} '
-
-    class Meta:
-        managed = True
-        verbose_name = 'Попытка сдачи экзамена'
-        verbose_name_plural = 'Попытки сдачи экзамена'
-
-
-class ExamMark(models.Model):
-    """ Оценка за экзамен или пересдачу """
-    student = models.ForeignKey('journal.Student', models.CASCADE, verbose_name='Студент')
-    val = models.IntegerField(verbose_name="Оценка")
-    attempt = models.ForeignKey('journal.ExamAttempt', models.CASCADE, verbose_name="Экзамен/пересдача")
-
-
-    class Meta:
-        managed = True
-        db_table = 'exam_marks'
-        verbose_name = 'Оценка за форму контроля'
-        verbose_name_plural = 'Оценки за форму контроля'
-
 
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
@@ -280,7 +264,7 @@ class Curriculum(models.Model):
 
 
 class Lesson(models.Model):
-    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
+    # squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
     name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
