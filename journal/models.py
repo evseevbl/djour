@@ -143,7 +143,7 @@ class ExamMark(models.Model):
 
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
-    teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
+    # teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
     # subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
     lesson = models.ForeignKey('journal.Lesson', models.CASCADE, blank=True, null=True)
