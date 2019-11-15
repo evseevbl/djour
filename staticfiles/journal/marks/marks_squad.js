@@ -6,6 +6,9 @@ $(document).ready(function () {
             searching: false,
             ordering: false,
             scrollX: true,
+            fixedColumns:   {
+                leftColumns: 1,
+            }
         })
         .on('edit', 'tbody td', function () {
             console.log('value by API : ', this.parentNode.rowIndex, this.cellIndex, this.textContent);
