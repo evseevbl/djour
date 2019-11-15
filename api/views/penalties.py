@@ -27,9 +27,3 @@ def add_penalty(request):
         )
         penalty.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-def get_student_penalties(request):
-    if request.method == 'GET':
-        pass
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -11,7 +11,6 @@ from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
-
 tPenaltyOption = namedtuple_wrapper(
     'tPenaltyOption',
     (
@@ -33,7 +32,6 @@ def students(request):
             "students": ls,
         })
     )
-
 
 
 @ensure_csrf_cookie
@@ -69,7 +67,7 @@ def student(request, student_id):
 
     penalty_options = []
     for code, label in Penalty.CHOICES:
-        penalty_options.append(tPenaltyOption(code, label))
+        penalty_options.append(tPenaltyOption(code=code, label=label))
 
     return render(
         request,
@@ -83,7 +81,6 @@ def student(request, student_id):
             "penalty_options": penalty_options
         })
     )
-
 
 
 def get_avg_for_subject(subject, student_id, absent_zero=False):
