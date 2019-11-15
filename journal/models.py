@@ -6,6 +6,7 @@
 #   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 # from journal.managers.marks import student_short_name
@@ -274,10 +275,12 @@ class Lesson(models.Model):
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
     exam = models.ForeignKey('journal.Exam', models.CASCADE, blank=True, null=True, verbose_name="Экзамен")
 
+
     def clean(self):
         if self.subject != self.exam.subject:
-            raise models.Val
+            raise ValidationError('Неверно указана дисциплина')
         pass
+
 
     def __str__(self):
         return f'({self.attendance.squad.code}) {self.subject.short} {self.attendance.date.strftime("%Y-%m-%d")} '
@@ -289,9 +292,6 @@ class Lesson(models.Model):
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
 
-        # constraints = [
-        #     models.CheckConstraint(check=models.Q(), name='max_one_per_semester')
-        # ]
 
 class PersonalInfo(models.Model):
     student = models.OneToOneField(Student, models.CASCADE, blank=False, null=False, verbose_name="Студент")
