@@ -95,17 +95,17 @@ class Event(models.Model):
 
 class Exam(models.Model):
     SEMESTER_CHOICES = (
-        (3,3),
-        (4,4),
-        (5,5),
-        (6,6),
-        (7,7),
-        (8,8)
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8)
     )
     NAME_EXAM = 'exam'
     NAME_TEST = 'test'
     NAME_CHOICES = (
-        (NAME_EXAM, 'Экзамен') ,
+        (NAME_EXAM, 'Экзамен'),
         (NAME_TEST, 'Зачёт'),
     )
     """ Экзамен """
@@ -116,7 +116,7 @@ class Exam(models.Model):
 
 
     def __str__(self):
-        return f'{self.subject} в {self.semester} семестре'
+        return f'({self.squad.code}) {self.subject.short} в {self.semester} семестре'
 
 
     class Meta:
@@ -124,6 +124,10 @@ class Exam(models.Model):
         db_table = 'exams'
         verbose_name = 'Форма контроля'
         verbose_name_plural = 'Формы контроля'
+        constraints = [
+            models.UniqueConstraint(fields=('semester', 'subject', 'squad'), name='max_one_per_semester')
+        ]
+
 
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
@@ -268,6 +272,15 @@ class Lesson(models.Model):
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
     name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
+    exam = models.ForeignKey('journal.Exam', models.CASCADE, blank=True, null=True, verbose_name="Экзамен")
+
+    def clean(self):
+        if self.subject != self.exam.subject:
+            raise models.Val
+        pass
+
+    def __str__(self):
+        return f'({self.attendance.squad.code}) {self.subject.short} {self.attendance.date.strftime("%Y-%m-%d")} '
 
 
     class Meta:
@@ -276,6 +289,9 @@ class Lesson(models.Model):
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
 
+        # constraints = [
+        #     models.CheckConstraint(check=models.Q(), name='max_one_per_semester')
+        # ]
 
 class PersonalInfo(models.Model):
     student = models.OneToOneField(Student, models.CASCADE, blank=False, null=False, verbose_name="Студент")
