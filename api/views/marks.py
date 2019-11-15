@@ -33,7 +33,7 @@ def add_mark(request):
         m = Mark(
             student_id=req.student_id,
             # subject_id=req.subject_id,
-            teacher_id=req.teacher_id,
+            # teacher_id=req.teacher_id,
             val=req.value,
             lesson_id=req.lesson_id
         )
