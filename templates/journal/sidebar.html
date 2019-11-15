@@ -18,12 +18,12 @@
 
 {% block nav_links_outer %}
     {#    <li>#}
-    {#        <a href={% url "marks" %}>#}
+    {#        <a href="{% url 'marks' %}">#}
     {#            <i class="fa fa-paper-plane-o"></i> <span>Журнал</span>#}
     {#        </a>#}
     {#    </li>#}
     {#    <li>#}
-    {#        <a href={% url "index" %}>#}
+    {#        <a href="{% url 'index' %}">#}
     {#            <i class="fa fa-line-chart"></i>&nbsp;#}
     {#            <span>#}
     {#                Главная#}
@@ -31,7 +31,7 @@
     {#        </a>#}
     {#    </li>#}
     <li>
-        <a href={% url "students" %}>
+        <a href="{% url 'students' %}">
             <i class="fa fa-cab"></i>&nbsp;
             <span>
                 Студенты
@@ -85,6 +85,14 @@
             <i class="fa fa-check"></i>&nbsp;
             <span>
                 Посещаемость
+            </span>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'events' %}">
+            <i class="fa fa-cab"></i>&nbsp;
+            <span>
+                Мепроприятия
             </span>
         </a>
     </li>

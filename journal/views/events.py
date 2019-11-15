@@ -6,7 +6,7 @@ from journal.managers.context import with_context
 from django.contrib.auth.decorators import login_required
 
 @login_required()
-def index(request):
+def event(request):
     return render(
         request,
         "journal/index.html",

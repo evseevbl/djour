@@ -14,3 +14,4 @@ start.sh
 pgprod
 pgtest
 /env/
+test.sh

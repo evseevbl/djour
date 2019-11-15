@@ -73,19 +73,11 @@ class DutyType(models.Model):
         db_table = 'duty_types'
 
 
-class EventParticipant(models.Model):
-    student = models.ForeignKey('journal.Student', models.CASCADE)
-    event = models.ForeignKey('journal.Event', models.CASCADE, blank=True, null=True)
-
-
-    class Meta:
-        managed = True
-        db_table = 'event_participants'
-
-
 class Event(models.Model):
+    """ Мероприятие """
     name = models.CharField(max_length=100)
     date = models.DateField('Дата')
+    students = models.ManyToManyField('journal.Student')
 
 
     class Meta:

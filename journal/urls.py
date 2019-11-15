@@ -8,5 +8,6 @@ urlpatterns = [
     path('marks/<str:squad_code>/<int:subject_id>', views.marks_squad, name='marks_squad'),
     path('attendance/', views.attendance, name='attendance'),
     path('attendance/<int:attendance_id>', views.edit_attendance, name='attendance_edit'),
+    path('events', views.event, name='events'),
     # path("<int:user_id>", views.borrower_page, name="borrower_page")
 ]
