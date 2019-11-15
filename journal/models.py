@@ -8,7 +8,6 @@
 from django.db import models
 
 
-
 # from journal.managers.marks import student_short_name
 
 
@@ -24,11 +23,9 @@ class Attendance(models.Model):
         return len(self.students.filter(value__iregex='(absent|truant)'))
 
 
-
     class Meta:
         managed = True
         db_table = 'attendance'
-
 
 
 class StudentAttendance(models.Model):
@@ -36,10 +33,8 @@ class StudentAttendance(models.Model):
     value = models.CharField(max_length=20, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
-
 
 
 class StudentAttendanceType(models.Model):
@@ -47,11 +42,9 @@ class StudentAttendanceType(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
         db_table = 'attendance_types'
-
 
 
 class Duty(models.Model):
@@ -62,16 +55,13 @@ class Duty(models.Model):
     comment = models.CharField(max_length=100, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
         db_table = 'duties'
 
 
-
 class DutyType(models.Model):
     name = models.CharField(unique=True, max_length=100)
-
 
 
     class Meta:
@@ -79,11 +69,9 @@ class DutyType(models.Model):
         db_table = 'duty_types'
 
 
-
 class EventParticipant(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     event = models.ForeignKey('journal.Event', models.CASCADE, blank=True, null=True)
-
 
 
     class Meta:
@@ -91,11 +79,9 @@ class EventParticipant(models.Model):
         db_table = 'event_participants'
 
 
-
 class Event(models.Model):
     name = models.CharField(max_length=100)
-    date = models.DateField()
-
+    date = models.DateField('Дата')
 
 
     class Meta:
@@ -103,12 +89,12 @@ class Event(models.Model):
         db_table = 'events'
 
 
-
 class Exam(models.Model):
+    """ Экзамен """
     subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
-    date = models.DateField('Дата')
     name = models.CharField('Название', max_length=100, blank=True, null=True)
-
+    squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
+    date = models.DateField('Дата')
 
 
     class Meta:
@@ -116,32 +102,26 @@ class Exam(models.Model):
         db_table = 'exams'
 
 
-
-class FinalMark(models.Model):
-    student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
-    val = models.IntegerField('Оценка', blank=True, null=True)
-    final = models.ForeignKey('journal.Final', models.CASCADE, blank=True, null=True)
-
+class ExamAttempt(models.Model):
+    """  Экзамен, пересдача или комиссия """
+    exam = models.ForeignKey('journal.Exam', models.CASCADE, verbose_name='Экзамен')
+    attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
 
 
     class Meta:
         managed = True
-        db_table = 'final_marks'
 
 
-
-class Final(models.Model):
-    name = models.CharField(max_length=256, blank=True, null=True)
-    subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
-    squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=True, null=True)
-    date = models.DateField('Дата', blank=True, null=True)
-
+class ExamMark(models.Model):
+    """ Оценка за экзамен или пересдачу """
+    student = models.ForeignKey('journal.Student', models.CASCADE, verbose_name='Студент')
+    val = models.IntegerField(verbose_name="Оценка")
+    attempt = models.ForeignKey('journal.ExamAttempt', models.CASCADE, verbose_name="Экзамен/пересдача")
 
 
     class Meta:
         managed = True
-        db_table = 'finals'
-
+        db_table = 'exam_marks'
 
 
 class Mark(models.Model):
@@ -152,11 +132,9 @@ class Mark(models.Model):
     lesson = models.ForeignKey('journal.Lesson', models.CASCADE, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
         db_table = 'marks'
-
 
 
 class Penalty(models.Model):
@@ -188,7 +166,6 @@ class Penalty(models.Model):
         return f'{self.student.short} {self.russian_type} от {self.date.strftime("%Y-%m-%d")}'
 
 
-
     class Meta:
         managed = True
         db_table = 'penalties'
@@ -196,10 +173,8 @@ class Penalty(models.Model):
         verbose_name_plural = 'Дисциплинарные практики'
 
 
-
 class Squad(models.Model):
     code = models.CharField(unique=True, max_length=4, blank=True, null=True)
-
 
 
     class Meta:
@@ -209,10 +184,8 @@ class Squad(models.Model):
         verbose_name_plural = 'Взвода'
 
 
-
     def __str__(self):
         return f'{self.code}'
-
 
 
 class Student(models.Model):
@@ -237,13 +210,11 @@ class Student(models.Model):
         return f'{self.last_name} {__get0(self.first_name)}. {__get0(self.middle_name)}.'
 
 
-
     class Meta:
         managed = True
         db_table = 'students'
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
-
 
 
 class Subject(models.Model):
@@ -255,13 +226,11 @@ class Subject(models.Model):
         return f'({self.short}) [{self.id}]'
 
 
-
     class Meta:
         managed = True
         db_table = 'subjects'
         verbose_name = 'Дисциплина'
         verbose_name_plural = 'Дисциплины'
-
 
 
 class Teacher(models.Model):
@@ -271,11 +240,9 @@ class Teacher(models.Model):
     rank = models.CharField('звание', max_length=50, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
         db_table = 'teachers'
-
 
 
 class Curriculum(models.Model):
@@ -287,14 +254,12 @@ class Curriculum(models.Model):
         return f'({self.squad.code}) {self.subject.short} [{self.id}]'
 
 
-
     class Meta:
         managed = True
         db_table = 'curriculum'
 
         verbose_name = 'Расписание'
         verbose_name_plural = 'Расписание'
-
 
 
 class Lesson(models.Model):
@@ -304,13 +269,11 @@ class Lesson(models.Model):
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
 
-
     class Meta:
         managed = True
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
-
 
 
 class PersonalInfo(models.Model):
@@ -347,7 +310,6 @@ class PersonalInfo(models.Model):
 
     def __str__(self):
         return f'{self.student.short} [{self.id}]'
-
 
 
     class Meta:
