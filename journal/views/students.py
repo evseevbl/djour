@@ -71,7 +71,7 @@ def student(request, student_id):
 
     info = PersonalInfo.objects.filter(student=st).first()
 
-    penalties = Penalty.objects.filter(student=st).order_by('-date')
+    penalties = Penalty.objects.filter(student=st)
 
     penalties_got_map = {'Кол-во взысканий': 0, 'Кол-во поощрений': 0}
     choices = {'reprimand': 'Кол-во взысканий', 'promotion': 'Кол-во поощрений'}
