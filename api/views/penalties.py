@@ -17,13 +17,14 @@ def add_penalty(request):
         data = form.data
         print("form=", data)
         student = Student.objects.filter(pk=data['student_id'])[0]
-        attendance = Attendance.objects.get(date=data['date'], squad=student.squad)
+        date = dt.datetime.strptime(data['date'], '%d-%m-%Y')
+        attendance = Attendance.objects.get(date=date, squad=student.squad)
         penalty = Penalty(
             type=data['penalty_type'],
             comment=data['comment'],
             student=student,
             attendance=attendance,
-            date=dt.datetime.strptime(data['date'], '%Y-%m-%d'),
+            date=date,
         )
         penalty.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

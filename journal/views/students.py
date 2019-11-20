@@ -78,7 +78,8 @@ def student(request, student_id):
             "attendance": stats,
             "info": info,
             "penalties": penalties,
-            "penalty_options": penalty_options
+            "penalty_options": penalty_options,
+            "student_id": st
         })
     )
 
