@@ -30,6 +30,9 @@ class Attendance(models.Model):
     class Meta:
         managed = True
         db_table = 'attendance'
+        constraints = [
+            models.UniqueConstraint(fields=('date', 'squad'), name='date/squad pair')
+        ]
 
 
 class StudentAttendance(models.Model):
@@ -52,11 +55,30 @@ class StudentAttendanceType(models.Model):
 
 
 class Duty(models.Model):
+    DUTY = 'duty'
+    DETENTION = 'detention'
+    CHOICES = (
+        (DUTY, 'дежурство'),
+        (DETENTION, 'наряд'),
+    )
+
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    type = models.ForeignKey('journal.DutyType', models.CASCADE, db_column='type')
+    type = models.CharField(
+        'Вид',
+        max_length=20,
+        choices=CHOICES,
+        default=DUTY,
+    )
     date = models.DateField('Дата')
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
+
+
+    @property
+    def russian_type(self):
+        if self.type == self.DETENTION:
+            return self.CHOICES[1][1]
+        return self.CHOICES[0][1]
 
 
     class Meta:
@@ -64,13 +86,13 @@ class Duty(models.Model):
         db_table = 'duties'
 
 
-class DutyType(models.Model):
-    name = models.CharField(unique=True, max_length=100)
-
-
-    class Meta:
-        managed = True
-        db_table = 'duty_types'
+#
+# class DutyType(models.Model):
+#     name = models.CharField(unique=True, max_length=100)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'duty_types'
 
 
 class EventParticipant(models.Model):
@@ -118,8 +140,10 @@ class ExamAttempt(models.Model):
     attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
     name = models.CharField('Название', max_length=100, blank=True, null=True)
 
+
     def __str__(self):
         return f'({self.exam.squad.code}) {self.exam.name}:{self.name}, {self.attendance.date.strftime("%Y-%m-%d")} '
+
 
     class Meta:
         managed = True
@@ -169,7 +193,7 @@ class Penalty(models.Model):
     )
     comment = models.CharField('Комментарий', max_length=256, blank=True, null=True)
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    date = models.DateField('Дата')
+    attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
 
     @property

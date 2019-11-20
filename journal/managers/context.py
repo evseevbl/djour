@@ -11,7 +11,6 @@ tSquadSubject = namedtuple_wrapper(
 )
 
 
-
 def get_squads_with_subjects():
     ans = []
     for s in Squad.objects.order_by('code'):
@@ -24,7 +23,6 @@ def get_squads_with_subjects():
             subjects=q,
         ))
     return ans
-
 
 
 def with_context(d: dict):
