@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from journal.managers.context import with_context
 from journal.managers.marks import students_to_keys, tKey, tMark, make_cells
-from journal.models import Subject, Mark, Lesson, Student, Attendance, Squad
+from journal.models import Subject, Mark, Lesson, Student, Attendance, Squad, Exam
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -20,6 +20,9 @@ def marks_squad(request, squad_code="1702", subject_id=1):
 
     att = Attendance.objects.filter(squad=squad)
 
+    exams = Exam.objects.filter(subject_id=subject_id, squad=squad)
+    print(exams)
+
     return render(
         request,
         "journal/marks/marks_squad.html",
@@ -33,6 +36,7 @@ def marks_squad(request, squad_code="1702", subject_id=1):
             "y_keys": y_keys,
             "subject_id": subject_id,
             "attendance_list": att,
+            "exam_list": exams,
         })
     )
 

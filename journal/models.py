@@ -278,8 +278,7 @@ class Lesson(models.Model):
 
     def clean(self):
         if self.subject != self.exam.subject:
-            raise ValidationError('Неверно указана дисциплина')
-        pass
+            raise ValidationError('Дисциплины экзамена и занятия должны совпадать')
 
 
     def __str__(self):

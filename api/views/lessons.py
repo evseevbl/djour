@@ -3,8 +3,7 @@ import datetime as dt
 from django.http import HttpResponseRedirect
 
 from api.forms import LessonForm
-from journal.models import Squad, Lesson, StudentAttendance, Mark
-
+from journal.models import Squad, Lesson, StudentAttendance, Mark, Exam
 
 
 def add_lesson(request):
@@ -22,6 +21,10 @@ def add_lesson(request):
             # squad=squad,
             attendance_id=data["attendance_id"]
         )
+        ex = data.get("exam_id")
+        print('exam=', ex)
+        # if ex:
+        #     lesson.exam = Exam.objects.get(id=ex)
         lesson.save()
 
         att = lesson.attendance
