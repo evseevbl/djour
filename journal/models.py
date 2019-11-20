@@ -160,7 +160,6 @@ class Penalty(models.Model):
     )
     comment = models.CharField('Комментарий', max_length=256, blank=True, null=True)
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    date = models.DateField('Дата')
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
     @property

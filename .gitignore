@@ -10,12 +10,4 @@ pgstop
 /backups/
 /docs/
 pgprod
-static/AdminLTE
-static/admin-lte
-static/admin
-static/bootstrap
-static/common
-static/external
-static/icheck
-static/font-awesome
-static/jquery
+/static/
