@@ -231,7 +231,7 @@
                                             {{ p.comment }}
                                         </td>
                                         <td>
-                                            {{ p.date|date:"Y-m-d" }}
+                                            {{ p.attendance.date|date:"Y-m-d" }}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -258,9 +258,12 @@
                         {% csrf_token %}
                         {{ form }}
                         <div class="md-form mb-5">
-                            <label for="id_date">Дата</label>
-                            <input placeholder="Выберите дату" name="date" type="text" id="id_date"
-                                   class="form-control datepicker">
+                            <label for="attendance_id">Дата</label>
+                            <select id="attendance_id" name="attendance_id">
+                                {% for att in all_attendances %}
+                                    <option value="{{ att.id }}">{{ att.date }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="md-form mb-5">
                             <label for="id_comment">Комментарий</label>

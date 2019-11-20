@@ -11,7 +11,7 @@ class LessonForm(forms.Form):
 class PenaltyForm(forms.Form):
     student_id = forms.IntegerField(label="Студент")
     comment = forms.CharField(label='Комментарий', max_length=100)
-    date = forms.DateField(label='Дата')
+    attendance_id = forms.IntegerField(label='День посещения')
     penalty_type = forms.CharField(label="Статус")
 
 

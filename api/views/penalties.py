@@ -13,12 +13,10 @@ def add_penalty(request):
         if len(request.POST) == 0:
             attrs = json.loads(request.body)
         form = PenaltyForm(attrs)
-        print(form.errors)
         data = form.data
         print("form=", data)
         student = Student.objects.filter(pk=data['student_id']).first()
-        date = dt.datetime.strptime(data['date'], '%d-%m-%Y')
-        attendance = Attendance.objects.get(date=date, squad=student.squad)
+        attendance = Attendance.objects.get(id=data['attendance_id'])
         penalty = Penalty(
             type=data['penalty_type'],
             comment=data['comment'],

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -71,6 +71,8 @@ def student(request, student_id):
 
     info = PersonalInfo.objects.filter(student=st).first()
 
+    all_attendances = Attendance.objects.filter(squad=st.squad)
+
     penalties = Penalty.objects.filter(student=st)
 
     penalties_got_map = {'Кол-во взысканий': 0, 'Кол-во поощрений': 0}
@@ -97,7 +99,8 @@ def student(request, student_id):
             "info": info,
             "penalties": penalties,
             "penalty_options": penalty_options,
-            "penalties_got": penalties_got
+            "penalties_got": penalties_got,
+            "all_attendances": all_attendances
         })
     )
 
