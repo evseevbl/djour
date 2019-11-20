@@ -6,7 +6,6 @@ import json
 from api.forms import PenaltyForm
 from journal.models import Penalty, Student, Attendance
 
-
 def add_penalty(request):
     if request.method == 'POST':
         attrs = request.POST

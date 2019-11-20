@@ -17,9 +17,15 @@ class Attendance(models.Model):
     squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=False, null=True)
     students = models.ManyToManyField('journal.StudentAttendance')
 
+
     @property
     def absent(self):
         return len(self.students.filter(value__iregex='(absent|truant)'))
+
+
+    def __str__(self):
+        return f'Строевая записка {self.squad.code} от {self.date.strftime("%Y-%m-%d")}'
+
 
     class Meta:
         managed = True
@@ -33,6 +39,7 @@ class StudentAttendance(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     value = models.CharField(max_length=20, blank=True, null=True)
 
+
     class Meta:
         managed = True
 
@@ -40,6 +47,7 @@ class StudentAttendance(models.Model):
 class StudentAttendanceType(models.Model):
     value = models.CharField(max_length=100, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
+
 
     class Meta:
         managed = True
@@ -65,15 +73,18 @@ class Duty(models.Model):
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
 
+
     @property
     def russian_type(self):
         if self.type == self.DETENTION:
             return self.CHOICES[1][1]
         return self.CHOICES[0][1]
 
+
     class Meta:
         managed = True
         db_table = 'duties'
+
 
 #
 # class DutyType(models.Model):
@@ -88,6 +99,7 @@ class EventParticipant(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     event = models.ForeignKey('journal.Event', models.CASCADE, blank=True, null=True)
 
+
     class Meta:
         managed = True
         db_table = 'event_participants'
@@ -95,7 +107,8 @@ class EventParticipant(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=100)
-    date = models.DateField()
+    date = models.DateField('Дата')
+
 
     class Meta:
         managed = True
@@ -103,42 +116,62 @@ class Event(models.Model):
 
 
 class Exam(models.Model):
+    """ Экзамен """
     subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
-    date = models.DateField('Дата')
     name = models.CharField('Название', max_length=100, blank=True, null=True)
+    squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
+    date = models.DateField('Дата')
+
+
+    def __str__(self):
+        return f'({self.squad.code}) {self.name} по {self.subject.short} от {self.date}'
+
 
     class Meta:
         managed = True
         db_table = 'exams'
+        verbose_name = 'Форма контроля'
+        verbose_name_plural = 'Формы контроля'
 
 
-class FinalMark(models.Model):
-    student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
-    val = models.IntegerField('Оценка', blank=True, null=True)
-    final = models.ForeignKey('journal.Final', models.CASCADE, blank=True, null=True)
+class ExamAttempt(models.Model):
+    """  Экзамен, пересдача или комиссия """
+    exam = models.ForeignKey('journal.Exam', models.CASCADE, verbose_name='Экзамен')
+    attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
+    name = models.CharField('Название', max_length=100, blank=True, null=True)
+
+
+    def __str__(self):
+        return f'({self.exam.squad.code}) {self.exam.name}:{self.name}, {self.attendance.date.strftime("%Y-%m-%d")} '
+
 
     class Meta:
         managed = True
-        db_table = 'final_marks'
+        verbose_name = 'Попытка сдачи экзамена'
+        verbose_name_plural = 'Попытки сдачи экзамена'
 
 
-class Final(models.Model):
-    name = models.CharField(max_length=256, blank=True, null=True)
-    subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
-    squad = models.ForeignKey('journal.Squad', models.CASCADE, blank=True, null=True)
-    date = models.DateField('Дата', blank=True, null=True)
+class ExamMark(models.Model):
+    """ Оценка за экзамен или пересдачу """
+    student = models.ForeignKey('journal.Student', models.CASCADE, verbose_name='Студент')
+    val = models.IntegerField(verbose_name="Оценка")
+    attempt = models.ForeignKey('journal.ExamAttempt', models.CASCADE, verbose_name="Экзамен/пересдача")
+
 
     class Meta:
         managed = True
-        db_table = 'finals'
+        db_table = 'exam_marks'
+        verbose_name = 'Оценка за форму контроля'
+        verbose_name_plural = 'Оценки за форму контроля'
 
 
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
-    teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
+    # teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
     # subject = models.ForeignKey('journal.Subject', models.CASCADE, blank=True, null=True)
     val = models.IntegerField(blank=True, null=True)
     lesson = models.ForeignKey('journal.Lesson', models.CASCADE, blank=True, null=True)
+
 
     class Meta:
         managed = True
@@ -162,14 +195,17 @@ class Penalty(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
+
     @property
     def russian_type(self):
         if self.type == self.PROMOTION:
             return self.CHOICES[1][1]
         return self.CHOICES[0][1]
 
+
     def __str__(self):
         return f'{self.student.short} {self.russian_type} от {self.date.strftime("%Y-%m-%d")}'
+
 
     class Meta:
         managed = True
@@ -181,11 +217,13 @@ class Penalty(models.Model):
 class Squad(models.Model):
     code = models.CharField(unique=True, max_length=4, blank=True, null=True)
 
+
     class Meta:
         managed = True
         db_table = 'squads'
         verbose_name = 'Взвод'
         verbose_name_plural = 'Взвода'
+
 
     def __str__(self):
         return f'{self.code}'
@@ -197,8 +235,10 @@ class Student(models.Model):
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
 
+
     def __str__(self):
         return f'({self.squad.code}) {self.last_name} {self.first_name} {self.middle_name} [{self.id}]'
+
 
     @property
     def short(self) -> str:
@@ -207,7 +247,9 @@ class Student(models.Model):
                 return s[0]
             return '?'
 
+
         return f'{self.last_name} {__get0(self.first_name)}. {__get0(self.middle_name)}.'
+
 
     class Meta:
         managed = True
@@ -220,8 +262,10 @@ class Subject(models.Model):
     short = models.CharField('Сокращённое название', max_length=10, blank=True, null=True)
     name = models.CharField('Полное название', max_length=255, blank=True, null=True)
 
+
     def __str__(self):
         return f'({self.short}) [{self.id}]'
+
 
     class Meta:
         managed = True
@@ -236,6 +280,7 @@ class Teacher(models.Model):
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
     rank = models.CharField('звание', max_length=50, blank=True, null=True)
 
+
     class Meta:
         managed = True
         db_table = 'teachers'
@@ -245,8 +290,10 @@ class Curriculum(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
 
+
     def __str__(self):
         return f'({self.squad.code}) {self.subject.short} [{self.id}]'
+
 
     class Meta:
         managed = True
@@ -262,15 +309,12 @@ class Lesson(models.Model):
     name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
 
+
     class Meta:
         managed = True
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
-
-
-def student_directory_path(instance, filename):
-    return 'photo_{0}_{1}/{2}'.format(instance.student.first_name, instance.student.last_name, filename)
 
 
 class PersonalInfo(models.Model):
@@ -304,8 +348,10 @@ class PersonalInfo(models.Model):
 
     conclusion = models.TextField('Категория годности', blank=True, null=True)
 
+
     def __str__(self):
         return f'{self.student.short} [{self.id}]'
+
 
     class Meta:
         managed = True

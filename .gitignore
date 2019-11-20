@@ -11,3 +11,7 @@ pgstop
 /docs/
 pgprod
 /static/
+start.sh
+pgtest
+/env/
+/venv/

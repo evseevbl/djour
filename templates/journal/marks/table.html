@@ -5,7 +5,7 @@
     <table id="marks" class="table table-striped">
         <thead>
         <tr>
-            <th>
+            <th class="col-xs-12 col-lg-12">
                 {{ subject.name }}
             </th>
             {% for x in header %}
@@ -19,11 +19,11 @@
             <tr>
                 {% for elem in row %}
                     {% if forloop.counter == 1 %}
-                        <th class="col-xs-12">
+                        <th class="col-xs-12 col-lg-12">
                             <a href="{% url 'student' student_id=elem.id %}">{{ elem.display }}</a>
                         </th>
                     {% else %}
-                        <td class="col-xs-1">
+                        <td class="col-xs-1 col-lg-1">
                             <label>
                                 <input class="mycell"
                                        type="text"
