@@ -191,9 +191,24 @@
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Дисциплинарные практики</h3>
-                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>
+                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i
+                            class="fa fa-plus"></i></button>
                 </div>
                 <div class="box-body">
+                    <table class="table table-striped">
+                        {% for p in penalties_got %}
+                            <tr>
+                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <strong>
+                                        {{ p.label }}
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ p.got }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                     <div class="table-responsive">
                         {% if not penalties %}
                             отсутствуют
@@ -244,11 +259,13 @@
                         {{ form }}
                         <div class="md-form mb-5">
                             <label for="id_date">Дата</label>
-                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
+                            <input placeholder="Выберите дату" name="date" type="text" id="id_date"
+                                   class="form-control datepicker">
                         </div>
                         <div class="md-form mb-5">
                             <label for="id_comment">Комментарий</label>
-                            <input placeholder="Комментарий" name="comment" type="text" id="id_comment" class="form-control">
+                            <input placeholder="Комментарий" name="comment" type="text" id="id_comment"
+                                   class="form-control">
                         </div>
                         <div class="md-form mb-4">
                             <label for="penalty_type">Тип взыскания</label>
@@ -259,8 +276,7 @@
                             </select>
                         </div>
                         <div class="md-form mb-5" style="visibility: hidden">
-{#                            <label for="id_comment">Комментарий</label>#}
-                            <input value="1" name="student_id" type="text">
+                            <input value={{ student.id }} name="student_id" type="text">
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
@@ -279,7 +295,6 @@
             $('.datepicker').datetimepicker(
                 {
                     format: 'DD-MM-YYYY',
-                    {#format: 'YYYY-MM-DD',#}
                 }
             )
         });

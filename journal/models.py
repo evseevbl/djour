@@ -47,23 +47,41 @@ class StudentAttendanceType(models.Model):
 
 
 class Duty(models.Model):
+    DUTY = 'duty'
+    DETENTION = 'detention'
+    CHOICES = (
+        (DUTY, 'дежурство'),
+        (DETENTION, 'наряд'),
+    )
+
     student = models.ForeignKey('journal.Student', models.CASCADE)
-    type = models.ForeignKey('journal.DutyType', models.CASCADE, db_column='type')
+    type = models.CharField(
+        'Вид',
+        max_length=20,
+        choices=CHOICES,
+        default=DUTY,
+    )
     date = models.DateField('Дата')
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
+
+    @property
+    def russian_type(self):
+        if self.type == self.DETENTION:
+            return self.CHOICES[1][1]
+        return self.CHOICES[0][1]
 
     class Meta:
         managed = True
         db_table = 'duties'
 
-
-class DutyType(models.Model):
-    name = models.CharField(unique=True, max_length=100)
-
-    class Meta:
-        managed = True
-        db_table = 'duty_types'
+#
+# class DutyType(models.Model):
+#     name = models.CharField(unique=True, max_length=100)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'duty_types'
 
 
 class EventParticipant(models.Model):
@@ -250,6 +268,10 @@ class Lesson(models.Model):
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
+
+
+def student_directory_path(instance, filename):
+    return 'photo_{0}_{1}/{2}'.format(instance.student.first_name, instance.student.last_name, filename)
 
 
 class PersonalInfo(models.Model):

@@ -19,6 +19,14 @@ tPenaltyOption = namedtuple_wrapper(
     )
 )
 
+tPenaltiesGot = namedtuple_wrapper(
+    'tPenaltiesGot',
+    (
+        'label',
+        'got'
+    )
+)
+
 
 @ensure_csrf_cookie
 @login_required
@@ -63,11 +71,21 @@ def student(request, student_id):
 
     info = PersonalInfo.objects.filter(student=st).first()
 
-    penalties = Penalty.objects.filter(student=st)
+    penalties = Penalty.objects.filter(student=st).order_by('-date')
+
+    penalties_got_map = {'Кол-во взысканий': 0, 'Кол-во поощрений': 0}
+    choices = {'reprimand': 'Кол-во взысканий', 'promotion': 'Кол-во поощрений'}
 
     penalty_options = []
     for code, label in Penalty.CHOICES:
         penalty_options.append(tPenaltyOption(code=code, label=label))
+
+    for penalty in penalties:
+        penalties_got_map[choices[penalty.type]] += 1
+
+    penalties_got = []
+    for key, value in penalties_got_map.items():
+        penalties_got.append(tPenaltiesGot(label=key, got=value))
 
     return render(
         request,
@@ -79,7 +97,7 @@ def student(request, student_id):
             "info": info,
             "penalties": penalties,
             "penalty_options": penalty_options,
-            "student_id": st
+            "penalties_got": penalties_got
         })
     )
 
