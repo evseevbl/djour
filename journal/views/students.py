@@ -59,6 +59,7 @@ def student(request, student_id):
         #     avg=get_avg_for_subject(subj, student_id, absent_zero=True)
         # ))
     atts = StudentAttendance.objects.filter(student=st)
+
     stats = {
         "absent": 0,
         "truant": 0,

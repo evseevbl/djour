@@ -70,7 +70,7 @@ class Duty(models.Model):
         choices=CHOICES,
         default=DUTY,
     )
-    date = models.DateField('Дата')
+    attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True, verbose_name="Дата")
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
 
