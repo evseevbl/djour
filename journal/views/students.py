@@ -3,13 +3,29 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
 from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
+from maintenance.helpers.named_tuple import namedtuple_wrapper
 
+tPenaltyOption = namedtuple_wrapper(
+    'tPenaltyOption',
+    (
+        'code',
+        'label'
+    )
+)
+
+tPenaltiesGot = namedtuple_wrapper(
+    'tPenaltiesGot',
+    (
+        'label',
+        'got'
+    )
+)
 
 
 @ensure_csrf_cookie
@@ -24,7 +40,6 @@ def students(request):
             "students": ls,
         })
     )
-
 
 
 @ensure_csrf_cookie
@@ -56,7 +71,23 @@ def student(request, student_id):
 
     info = PersonalInfo.objects.filter(student=st).first()
 
+    all_attendances = Attendance.objects.filter(squad=st.squad)
+
     penalties = Penalty.objects.filter(student=st)
+
+    penalties_got_map = {'Кол-во взысканий': 0, 'Кол-во поощрений': 0}
+    choices = {'reprimand': 'Кол-во взысканий', 'promotion': 'Кол-во поощрений'}
+
+    penalty_options = []
+    for code, label in Penalty.CHOICES:
+        penalty_options.append(tPenaltyOption(code=code, label=label))
+
+    for penalty in penalties:
+        penalties_got_map[choices[penalty.type]] += 1
+
+    penalties_got = []
+    for key, value in penalties_got_map.items():
+        penalties_got.append(tPenaltiesGot(label=key, got=value))
 
     return render(
         request,
@@ -67,9 +98,11 @@ def student(request, student_id):
             "attendance": stats,
             "info": info,
             "penalties": penalties,
+            "penalty_options": penalty_options,
+            "penalties_got": penalties_got,
+            "all_attendances": all_attendances
         })
     )
-
 
 
 def get_avg_for_subject(subject, student_id, absent_zero=False):

@@ -191,9 +191,24 @@
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Дисциплинарные практики</h3>
-{#                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i class="fa fa-plus"></i></button>#}
+                    <button class="pull-right" data-toggle="modal" data-target="#modalAddPenalty"><i
+                            class="fa fa-plus"></i></button>
                 </div>
                 <div class="box-body">
+                    <table class="table table-striped">
+                        {% for p in penalties_got %}
+                            <tr>
+                                <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <strong>
+                                        {{ p.label }}
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ p.got }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                     <div class="table-responsive">
                         {% if not penalties %}
                             отсутствуют
@@ -201,9 +216,9 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th class="col-xs-3 col-lg-2">тип</th>
-                                    <th>за что</th>
-                                    <th>дата</th>
+                                    <th class="col-xs-3 col-lg-2">Тип</th>
+                                    <th>Комментарий</th>
+                                    <th>Дата</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -216,7 +231,7 @@
                                             {{ p.comment }}
                                         </td>
                                         <td>
-                                            {{ p.date|date:"Y-m-d" }}
+                                            {{ p.attendance.date|date:"Y-m-d" }}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -243,16 +258,28 @@
                         {% csrf_token %}
                         {{ form }}
                         <div class="md-form mb-5">
-                            <label for="id_date">Дата</label>
-                            <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
-                        </div>
-                        <div class="md-form mb-4">
-                            <label for="penalty_type">Взвод</label>
-                            <select id="penalty_type" name="squad_code">
-                                {% for opt in penalty_options %}
-                                    <option>{{ opt }}</option>
+                            <label for="attendance_id">Дата</label>
+                            <select id="attendance_id" name="attendance_id">
+                                {% for att in all_attendances %}
+                                    <option value="{{ att.id }}">{{ att.date }}</option>
                                 {% endfor %}
                             </select>
+                        </div>
+                        <div class="md-form mb-5">
+                            <label for="id_comment">Комментарий</label>
+                            <input placeholder="Комментарий" name="comment" type="text" id="id_comment"
+                                   class="form-control">
+                        </div>
+                        <div class="md-form mb-4">
+                            <label for="penalty_type">Тип взыскания</label>
+                            <select id="penalty_type" name="penalty_type">
+                                {% for opt in penalty_options %}
+                                    <option value="{{ opt.code }}">{{ opt.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="md-form mb-5" style="visibility: hidden">
+                            <input value={{ student.id }} name="student_id" type="text">
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
@@ -268,7 +295,7 @@
     {{ block.super }}
     <script>
         $(function () {
-            $('.datepicker').datepicker(
+            $('.datepicker').datetimepicker(
                 {
                     format: 'DD-MM-YYYY',
                 }

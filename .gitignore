@@ -9,3 +9,9 @@ pgstop
 .idea/
 /backups/
 /docs/
+pgprod
+/static/
+start.sh
+pgtest
+/env/
+/venv/

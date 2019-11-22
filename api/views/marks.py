@@ -16,7 +16,7 @@ def add_mark(request):
         id=d["mark_id"],
         student_id=d["student_id"],
         # subject_id=d["subject_id"],
-        teacher_id=1,  # ToDo
+        # teacher_id=1,  # ToDo
         lesson_id=d["lesson_id"]
     )
 
