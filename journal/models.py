@@ -151,6 +151,10 @@ class Exam(models.Model):
         return f'({self.squad.code}) {self.russian_name} по {self.subject.short} в {self.semester} семестре'
 
 
+    def display(self):
+        return f'{self.russian_name} по {self.subject.short}, {self.semester} семестр'
+
+
     class Meta:
         managed = True
         db_table = 'exams'
@@ -159,8 +163,6 @@ class Exam(models.Model):
         constraints = [
             models.UniqueConstraint(fields=('semester', 'subject', 'squad'), name='max_one_per_semester')
         ]
-
-
 
 
 class Mark(models.Model):
