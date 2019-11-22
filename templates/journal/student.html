@@ -86,7 +86,7 @@
                                     </strong>
                                 </td>
                                 <td>
-                                    {{ attendance.truant }}
+                                    {{ attendance_stats.truant }}
                                 </td>
                             </tr>
                             <tr>
@@ -96,7 +96,7 @@
                                     </strong>
                                 </td>
                                 <td>
-                                    {{ attendance.absent }}
+                                    {{ attendance_stats.absent }}
                                 </td>
                             </tr>
                             <tr>
@@ -106,7 +106,7 @@
                                     </strong>
                                 </td>
                                 <td>
-                                    {{ attendance.duty }}
+                                    {{ attendance_stats.duty }}
                                 </td>
                             </tr>
                         </table>
@@ -196,18 +196,18 @@
                 </div>
                 <div class="box-body">
                     <table class="table table-striped">
-                        {% for p in penalties_got %}
                             <tr>
+                                {% for p in penalty_stats %}
                                 <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     <strong>
                                         {{ p.label }}
                                     </strong>
                                 </td>
                                 <td>
-                                    {{ p.got }}
+                                    {{ p.count }}
                                 </td>
+                                {% endfor %}
                             </tr>
-                        {% endfor %}
                     </table>
                     <div class="table-responsive">
                         {% if not penalties %}

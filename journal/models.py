@@ -6,6 +6,7 @@
 #   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 # from journal.managers.marks import student_short_name
@@ -69,7 +70,7 @@ class Duty(models.Model):
         choices=CHOICES,
         default=DUTY,
     )
-    date = models.DateField('Дата')
+    attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True, verbose_name="Дата")
     mark = models.IntegerField(blank=True, null=True)
     comment = models.CharField(max_length=100, blank=True, null=True)
 
@@ -116,15 +117,41 @@ class Event(models.Model):
 
 
 class Exam(models.Model):
+    SEMESTER_CHOICES = (
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8)
+    )
+    NAME_EXAM = 'exam'
+    NAME_TEST = 'test'
+    NAME_CHOICES = (
+        (NAME_EXAM, 'Экзамен'),
+        (NAME_TEST, 'Зачёт'),
+    )
     """ Экзамен """
     subject = models.ForeignKey('journal.Subject', models.CASCADE, db_column='subject')
-    name = models.CharField('Название', max_length=100, blank=True, null=True)
+    semester = models.IntegerField('Семестр', choices=SEMESTER_CHOICES, default=0)
     squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
-    date = models.DateField('Дата')
+    name = models.CharField('Форма контроля', max_length=100, choices=NAME_CHOICES, default="")
+
+    @property
+    def russian_name(self):
+        if self.name == self.NAME_EXAM:
+            return self.NAME_CHOICES[0][1]
+        elif self.name == self.NAME_TEST:
+            return self.NAME_CHOICES[1][1]
+        return f'<{self.name}>'
 
 
     def __str__(self):
-        return f'({self.squad.code}) {self.name} по {self.subject.short} от {self.date}'
+        return f'({self.squad.code}) {self.russian_name} по {self.subject.short} в {self.semester} семестре'
+
+
+    def display(self):
+        return f'{self.russian_name} по {self.subject.short}, {self.semester} семестр'
 
 
     class Meta:
@@ -132,37 +159,9 @@ class Exam(models.Model):
         db_table = 'exams'
         verbose_name = 'Форма контроля'
         verbose_name_plural = 'Формы контроля'
-
-
-class ExamAttempt(models.Model):
-    """  Экзамен, пересдача или комиссия """
-    exam = models.ForeignKey('journal.Exam', models.CASCADE, verbose_name='Экзамен')
-    attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
-    name = models.CharField('Название', max_length=100, blank=True, null=True)
-
-
-    def __str__(self):
-        return f'({self.exam.squad.code}) {self.exam.name}:{self.name}, {self.attendance.date.strftime("%Y-%m-%d")} '
-
-
-    class Meta:
-        managed = True
-        verbose_name = 'Попытка сдачи экзамена'
-        verbose_name_plural = 'Попытки сдачи экзамена'
-
-
-class ExamMark(models.Model):
-    """ Оценка за экзамен или пересдачу """
-    student = models.ForeignKey('journal.Student', models.CASCADE, verbose_name='Студент')
-    val = models.IntegerField(verbose_name="Оценка")
-    attempt = models.ForeignKey('journal.ExamAttempt', models.CASCADE, verbose_name="Экзамен/пересдача")
-
-
-    class Meta:
-        managed = True
-        db_table = 'exam_marks'
-        verbose_name = 'Оценка за форму контроля'
-        verbose_name_plural = 'Оценки за форму контроля'
+        constraints = [
+            models.UniqueConstraint(fields=('semester', 'subject', 'squad'), name='max_one_per_semester')
+        ]
 
 
 class Mark(models.Model):
@@ -307,10 +306,20 @@ class Curriculum(models.Model):
 
 
 class Lesson(models.Model):
-    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
+    # squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True)
     name = models.CharField('Название', max_length=100, blank=True, null=False)
     attendance = models.ForeignKey(Attendance, models.CASCADE, blank=True, null=True)
+    exam = models.ForeignKey('journal.Exam', models.CASCADE, blank=True, null=True, verbose_name="Экзамен")
+
+
+    def clean(self):
+        if self.subject != self.exam.subject:
+            raise ValidationError('Дисциплины экзамена и занятия должны совпадать')
+
+
+    def __str__(self):
+        return f'({self.attendance.squad.code}) {self.subject.short} {self.attendance.date.strftime("%Y-%m-%d")} '
 
 
     class Meta:
