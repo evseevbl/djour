@@ -177,6 +177,9 @@ class Mark(models.Model):
         managed = True
         db_table = 'marks'
 
+    def __str__(self):
+        return f'{self.val} по {self.lesson.subject.short} ({self.student.short})'
+
 
 class Penalty(models.Model):
     REPRIMAND = 'reprimand'
@@ -315,6 +318,9 @@ class Lesson(models.Model):
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
+
+    def __str__(self):
+        return f'{self.name} по {self.subject.short} от {self.attendance.date}'
 
 
 class PersonalInfo(models.Model):
