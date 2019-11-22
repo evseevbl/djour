@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -28,6 +28,8 @@ tPenaltyCount = namedtuple_wrapper(
 )
 
 
+
+
 @ensure_csrf_cookie
 @login_required
 def students(request):
@@ -49,15 +51,18 @@ def student(request, student_id):
     all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
     avgs = []
     for subj in all_subjects:
+
         avgs.append(tAvg(
             short=subj.short,
-            avg=_get_avg_for_subject(subj, student_id)
+            avg=_get_avg_for_subject(subj, student_id),
+            # exams=
         ))
         # todo оценки с учётом пропусков
         # avgs.append(tAvg(
         #     short=subj.short + ' (с пропусками)',
         #     avg=get_avg_for_subject(subj, student_id, absent_zero=True)
         # ))
+
     atts = StudentAttendance.objects.filter(student=st)
 
     info = PersonalInfo.objects.filter(student=st).first()
@@ -90,7 +95,8 @@ def student(request, student_id):
             "penalties": penalties,
             "penalty_options": _get_penalty_options(),
             "penalty_stats": penalty_stats,
-            "all_attendances": all_attendances
+            "all_attendances": all_attendances,
+            "all_exams": _get_exam_marks(student),
         })
     )
 
@@ -104,6 +110,11 @@ def _get_penalty_options():
     for code, label in Penalty.CHOICES:
         opts.append(tPenaltyOption(code=code, label=label))
     return opts
+
+
+def _get_exam_marks(st: Student) -> [Exam]:
+    exams = Exam.objects.filter(squad=st.squad)
+    return exams
 
 
 def _get_attendance_stats(atts: [StudentAttendance]) -> dict:

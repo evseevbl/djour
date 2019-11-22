@@ -27,6 +27,7 @@ tAvg = namedtuple_wrapper(
     [
         "short",
         "avg",
+        "exams"
     ]
 )
 

@@ -137,7 +137,6 @@ class Exam(models.Model):
     squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
     name = models.CharField('Форма контроля', max_length=100, choices=NAME_CHOICES, default="")
 
-
     @property
     def russian_name(self):
         if self.name == self.NAME_EXAM:
