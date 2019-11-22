@@ -111,11 +111,19 @@
                                     <label for="exam">Экзамен</label>
                                     <select id="exam" name="squad_code">
                                         {% for exam in exam_list %}
-                                            <option value="{{ exam.id }}">{{ exam.subject.short }}, {{ exam.semester }} семестр </option>
+                                            <option value="{{ exam.id }}">{{ exam.subject.short }}, {{ exam.semester }}
+                                                семестр
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
+
+                        {% else %}
+
+                            <button class="btn btn-primary disabled" type="button" data-toggle="tooltip" title="Для этого предмета не создано ни одного экзамена" data-target="#collapseExample" aria-expanded="false">
+                                Добавить связь с экзаменом
+                            </button>
                         {% endif %}
                     </div>
                     <div class="modal-footer d-flex justify-content-center">

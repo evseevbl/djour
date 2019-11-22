@@ -116,8 +116,17 @@ class Exam(models.Model):
     name = models.CharField('Форма контроля', max_length=100, choices=NAME_CHOICES, default="")
 
 
+    @property
+    def russian_name(self):
+        if self.name == self.NAME_EXAM:
+            return self.NAME_CHOICES[0][1]
+        elif self.name == self.NAME_TEST:
+            return self.NAME_CHOICES[1][1]
+        return f'<{self.name}>'
+
+
     def __str__(self):
-        return f'({self.squad.code}) {self.subject.short} в {self.semester} семестре'
+        return f'({self.squad.code}) {self.russian_name} по {self.subject.short} в {self.semester} семестре'
 
 
     class Meta:
