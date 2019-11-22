@@ -156,40 +156,11 @@ class Exam(models.Model):
         db_table = 'exams'
         verbose_name = 'Форма контроля'
         verbose_name_plural = 'Формы контроля'
-
-
-class ExamAttempt(models.Model):
-    """  Экзамен, пересдача или комиссия """
-    exam = models.ForeignKey('journal.Exam', models.CASCADE, verbose_name='Экзамен')
-    attendance = models.ForeignKey('journal.Attendance', models.CASCADE, )
-    name = models.CharField('Название', max_length=100, blank=True, null=True)
-
-
-    def __str__(self):
-        return f'({self.exam.squad.code}) {self.exam.name}:{self.name}, {self.attendance.date.strftime("%Y-%m-%d")} '
-
-
-    class Meta:
-        managed = True
-        verbose_name = 'Попытка сдачи экзамена'
-        verbose_name_plural = 'Попытки сдачи экзамена'
-
-
-class ExamMark(models.Model):
-    """ Оценка за экзамен или пересдачу """
-    student = models.ForeignKey('journal.Student', models.CASCADE, verbose_name='Студент')
-    val = models.IntegerField(verbose_name="Оценка")
-    attempt = models.ForeignKey('journal.ExamAttempt', models.CASCADE, verbose_name="Экзамен/пересдача")
-
-
-    class Meta:
-        managed = True
-        db_table = 'exam_marks'
-        verbose_name = 'Оценка за форму контроля'
-        verbose_name_plural = 'Оценки за форму контроля'
         constraints = [
             models.UniqueConstraint(fields=('semester', 'subject', 'squad'), name='max_one_per_semester')
         ]
+
+
 
 
 class Mark(models.Model):
