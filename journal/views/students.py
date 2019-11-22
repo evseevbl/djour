@@ -19,11 +19,11 @@ tPenaltyOption = namedtuple_wrapper(
     )
 )
 
-tPenaltiesGot = namedtuple_wrapper(
-    'tPenaltiesGot',
+tPenaltyCount = namedtuple_wrapper(
+    'tPenaltiesCount',
     (
         'label',
-        'got'
+        'count'
     )
 )
 
@@ -51,7 +51,7 @@ def student(request, student_id):
     for subj in all_subjects:
         avgs.append(tAvg(
             short=subj.short,
-            avg=get_avg_for_subject(subj, student_id)
+            avg=_get_avg_for_subject(subj, student_id)
         ))
         # todo оценки с учётом пропусков
         # avgs.append(tAvg(
@@ -60,6 +60,53 @@ def student(request, student_id):
         # ))
     atts = StudentAttendance.objects.filter(student=st)
 
+    info = PersonalInfo.objects.filter(student=st).first()
+
+    all_attendances = Attendance.objects.filter(squad=st.squad)
+
+    penalties = Penalty.objects.filter(student=st)
+
+    penalties_got_map = {'Взысканий': 0, 'Поощрений': 0}
+    choices = {
+        Penalty.REPRIMAND: 'Взысканий',
+        Penalty.PROMOTION: 'Поощрений',
+    }
+
+    for penalty in penalties:
+        penalties_got_map[choices[penalty.type]] += 1
+
+    penalty_stats = []
+    for key, value in penalties_got_map.items():
+        penalty_stats.append(tPenaltyCount(label=key, count=value))
+
+    return render(
+        request,
+        "journal/student.html",
+        with_context({
+            "student": st,
+            "avg_marks": avgs,
+            "attendance_stats": _get_attendance_stats(atts),
+            "info": info,
+            "penalties": penalties,
+            "penalty_options": _get_penalty_options(),
+            "penalty_stats": penalty_stats,
+            "all_attendances": all_attendances
+        })
+    )
+
+
+def _get_penalties():
+    pass
+
+
+def _get_penalty_options():
+    opts = []
+    for code, label in Penalty.CHOICES:
+        opts.append(tPenaltyOption(code=code, label=label))
+    return opts
+
+
+def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
     stats = {
         "absent": 0,
         "truant": 0,
@@ -69,44 +116,10 @@ def student(request, student_id):
     for a in atts:
         a: StudentAttendance = a
         stats[a.value] += 1
-
-    info = PersonalInfo.objects.filter(student=st).first()
-
-    all_attendances = Attendance.objects.filter(squad=st.squad)
-
-    penalties = Penalty.objects.filter(student=st)
-
-    penalties_got_map = {'Кол-во взысканий': 0, 'Кол-во поощрений': 0}
-    choices = {'reprimand': 'Кол-во взысканий', 'promotion': 'Кол-во поощрений'}
-
-    penalty_options = []
-    for code, label in Penalty.CHOICES:
-        penalty_options.append(tPenaltyOption(code=code, label=label))
-
-    for penalty in penalties:
-        penalties_got_map[choices[penalty.type]] += 1
-
-    penalties_got = []
-    for key, value in penalties_got_map.items():
-        penalties_got.append(tPenaltiesGot(label=key, got=value))
-
-    return render(
-        request,
-        "journal/student.html",
-        with_context({
-            "student": st,
-            "avg_marks": avgs,
-            "attendance": stats,
-            "info": info,
-            "penalties": penalties,
-            "penalty_options": penalty_options,
-            "penalties_got": penalties_got,
-            "all_attendances": all_attendances
-        })
-    )
+    return stats
 
 
-def get_avg_for_subject(subject, student_id, absent_zero=False):
+def _get_avg_for_subject(subject, student_id, absent_zero=False):
     print("avg for", subject.short)
     if absent_zero:
         marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject)
