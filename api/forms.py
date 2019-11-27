@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 
 class LessonForm(forms.Form):
@@ -24,3 +25,17 @@ class SetAttendanceStatusForm(forms.Form):
     student_id = forms.IntegerField(label="Студент")
     attendance_id = forms.IntegerField(label="Записка")
     attendance_type = forms.IntegerField(label="Статус")
+
+
+class DutyForm(forms.Form):
+    student_id = forms.IntegerField(label="Студент")
+    comment = forms.CharField(label='Комментарий', max_length=100)
+    attendance_id = forms.IntegerField(label='День посещения')
+    duty_type = forms.CharField(label="Статус")
+    mark = forms.IntegerField(label="Оценка")
+
+    def clean_mark(self):
+        mark = self.cleaned_data['mark']
+        if mark < 1 or mark > 5:
+            raise ValidationError('Invalid mark value', code='invalid')
+        return mark

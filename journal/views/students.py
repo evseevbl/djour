@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -11,8 +11,8 @@ from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
-tPenaltyOption = namedtuple_wrapper(
-    'tPenaltyOption',
+tOption = namedtuple_wrapper(
+    'tOption',
     (
         'code',
         'label'
@@ -26,8 +26,6 @@ tPenaltyCount = namedtuple_wrapper(
         'count'
     )
 )
-
-
 
 
 @ensure_csrf_cookie
@@ -93,10 +91,11 @@ def student(request, student_id):
             "attendance_stats": _get_attendance_stats(atts),
             "info": info,
             "penalties": penalties,
-            "penalty_options": _get_penalty_options(),
+            "penalty_options": _get_options(Penalty.CHOICES),
             "penalty_stats": penalty_stats,
             "all_attendances": all_attendances,
-            "all_exams": _get_exam_marks(student),
+            # "all_exams": _get_exam_marks(student),
+            "duty_options": _get_options(Duty.CHOICES)
         })
     )
 
@@ -105,10 +104,10 @@ def _get_penalties():
     pass
 
 
-def _get_penalty_options():
+def _get_options(model_choices):
     opts = []
-    for code, label in Penalty.CHOICES:
-        opts.append(tPenaltyOption(code=code, label=label))
+    for code, label in model_choices:
+        opts.append(tOption(code=code, label=label))
     return opts
 
 
