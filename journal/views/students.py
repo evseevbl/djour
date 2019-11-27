@@ -154,10 +154,11 @@ def _get_avg_for_subject(subject, student_id, absent_zero=False):
     print(f'avg student={student_id}, avg={avg}, subj={subject.short}, zeroed={absent_zero}')
     return avg
 
+
 def _get_avg_duty_marks(st_obj):
     duties_choices = {
-        Duty.DETENTION: 'Выходы в наряд',
-        Duty.DUTY: 'Дежурства',
+        Duty.DETENTION: 'Наряд по кафедре',
+        Duty.DUTY: 'Дежурство по взводу',
     }
     avgs = {duties_choices[Duty.DETENTION]: 0, duties_choices[Duty.DUTY]: 0}
 

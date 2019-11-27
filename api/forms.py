@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from journal.models import Duty
 
 
 class LessonForm(forms.Form):
@@ -31,7 +32,7 @@ class DutyForm(forms.Form):
     student_id = forms.IntegerField(label="Студент")
     comment = forms.CharField(label='Комментарий', max_length=100)
     attendance_id = forms.IntegerField(label='День посещения')
-    duty_type = forms.CharField(label="Статус")
+    duty_type = forms.CharField(label="Вид", choices=Duty.CHOICES)
     mark = forms.IntegerField(label="Оценка")
 
     def clean_mark(self):
