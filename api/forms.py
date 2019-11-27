@@ -32,7 +32,7 @@ class DutyForm(forms.Form):
     student_id = forms.IntegerField(label="Студент")
     comment = forms.CharField(label='Комментарий', max_length=100)
     attendance_id = forms.IntegerField(label='День посещения')
-    duty_type = forms.CharField(label="Вид", choices=Duty.CHOICES)
+    duty_type = forms.CharField(label="Вид")
     mark = forms.IntegerField(label="Оценка")
 
     def clean_mark(self):
