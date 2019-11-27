@@ -25,6 +25,17 @@ def get_squads_with_subjects():
     return ans
 
 
+tMarkValues = namedtuple_wrapper(
+    "tMarkValues",
+    [
+        "id",
+        "code",
+        "subjects",
+    ]
+)
+
+
+
 def with_context(d: dict):
     squads = get_squads_with_subjects()
     d["squad_list"] = squads

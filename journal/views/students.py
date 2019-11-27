@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Lesson
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, Lesson
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -11,16 +11,16 @@ from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
-tPenaltyOption = namedtuple_wrapper(
-    'tPenaltyOption',
+tOption = namedtuple_wrapper(
+    'tOption',
     (
         'code',
         'label'
     )
 )
 
-tPenaltyCount = namedtuple_wrapper(
-    'tPenaltiesCount',
+tCount = namedtuple_wrapper(
+    'tCount',
     (
         'label',
         'count'
@@ -34,7 +34,6 @@ tExamMark = namedtuple_wrapper(
         'marks'
     )
 )
-
 
 @ensure_csrf_cookie
 @login_required
@@ -77,18 +76,20 @@ def student(request, student_id):
 
     penalties = Penalty.objects.filter(student=st)
 
-    penalties_got_map = {'Взысканий': 0, 'Поощрений': 0}
-    choices = {
+    penalty_choices = {
         Penalty.REPRIMAND: 'Взысканий',
         Penalty.PROMOTION: 'Поощрений',
     }
+    penalties_got_map = {penalty_choices[Penalty.PROMOTION]: 0, penalty_choices[Penalty.REPRIMAND]: 0}
 
     for penalty in penalties:
-        penalties_got_map[choices[penalty.type]] += 1
+        penalties_got_map[penalty_choices[penalty.type]] += 1
 
     penalty_stats = []
     for key, value in penalties_got_map.items():
-        penalty_stats.append(tPenaltyCount(label=key, count=value))
+        penalty_stats.append(tCount(label=key, count=value))
+
+    duties = Duty.objects.filter(student=st)
 
     return render(
         request,
@@ -99,9 +100,12 @@ def student(request, student_id):
             "attendance_stats": _get_attendance_stats(atts),
             "info": info,
             "penalties": penalties,
-            "penalty_options": _get_penalty_options(),
+            "penalty_options": _get_options(Penalty.CHOICES),
             "penalty_stats": penalty_stats,
             "all_attendances": all_attendances,
+            "duty_options": _get_options(Duty.CHOICES),
+            "duty_stats": _get_avg_duty_marks(st),
+            "duties": duties,
             "all_exams": _get_exam_marks(st),
         })
     )
@@ -111,10 +115,10 @@ def _get_penalties():
     pass
 
 
-def _get_penalty_options():
+def _get_options(model_choices):
     opts = []
-    for code, label in Penalty.CHOICES:
-        opts.append(tPenaltyOption(code=code, label=label))
+    for code, label in model_choices:
+        opts.append(tOption(code=code, label=label))
     return opts
 
 
@@ -170,3 +174,27 @@ def _get_avg_for_subject(subject, student_id, absent_zero=False):
         avg = None
     print(f'avg student={student_id}, avg={avg}, subj={subject.short}, zeroed={absent_zero}')
     return avg
+
+def _get_avg_duty_marks(st_obj):
+    duties_choices = {
+        Duty.DETENTION: 'Выходы в наряд',
+        Duty.DUTY: 'Дежурства',
+    }
+    avgs = {duties_choices[Duty.DETENTION]: 0, duties_choices[Duty.DUTY]: 0}
+
+    duties = Duty.objects.filter(student=st_obj)
+
+    for type, label in duties_choices.items():
+        duties_by_type = duties.filter(type=type)
+        if not duties_by_type:
+            avgs[label] = '-'
+        else:
+            for duty in duties_by_type:
+                avgs[label] += duty.mark
+            avgs[label] /= duties_by_type.count()
+
+    output = []
+    for duty, mark in avgs.items():
+        output.append(tCount(label=duty, count=mark))
+
+    return output
