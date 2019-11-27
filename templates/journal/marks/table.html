@@ -109,7 +109,8 @@
                             <div class="collapse" id="collapseExample">
                                 <div class="card card-body">
                                     <label for="exam">Экзамен</label>
-                                    <select id="exam" name="squad_code">
+                                    <select id="exam_id" name="exam_id">
+                                        <option value="" selected>Выберите экзамен</option>
                                         {% for exam in exam_list %}
                                             <option value="{{ exam.id }}">{{ exam.display }}</option>
                                         {% endfor %}

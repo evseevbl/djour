@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% include 'journal/sidebar.html' %}
+
+{% load dict_filters %}
+
 {% block content %}
     <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -40,7 +43,7 @@
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Средний балл по дисциплинам</h3>
+                    <h3 class="box-title">Оценки по дисциплинам</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -48,6 +51,16 @@
                             {% if not avg_marks %}
                                 <strong> нет оценок</strong>
                             {% else %}
+                                <tr>
+                                    <td></td>
+                                    <td>Средняя</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                </tr>
                                 {% for st in avg_marks %}
                                     <tr>
                                         <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -55,13 +68,26 @@
                                                 {{ st.short }}
                                             </strong>
                                         </td>
-                                        <td>
+                                        <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                             {% if st.avg %}
                                                 {{ st.avg|floatformat:2 }}
                                             {% else %}
                                                 нет оценок
                                             {% endif %}
                                         </td>
+                                    {% with name=st.short %}
+                                    {% for i in '345678'|make_list %}
+                                        {% with sem=all_exams|get_dict_value:name|get_exact_sem:i %}
+                                        <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                            {% if sem %}
+                                                {{ sem.marks }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        {%  endwith %}
+                                    {% endfor %}
+                                    {% endwith %}
                                     </tr>
                                 {% endfor %}
                             {% endif %}

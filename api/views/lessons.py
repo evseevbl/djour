@@ -23,8 +23,8 @@ def add_lesson(request):
         )
         ex = data.get("exam_id")
         print('exam=', ex)
-        # if ex:
-        #     lesson.exam = Exam.objects.get(id=ex)
+        if ex:
+            lesson.exam = Exam.objects.get(id=ex)
         lesson.save()
 
         att = lesson.attendance
