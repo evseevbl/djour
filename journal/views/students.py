@@ -167,9 +167,13 @@ def _get_avg_duty_marks(st_obj):
         duties_by_type = duties.filter(type=type)
         if not duties_by_type:
             avgs[label] = '-'
-            pass
-        for duty in duties_by_type:
-            avgs[label] += duty.mark
-        avgs[label] /= duties_by_type.count()
+        else:
+            for duty in duties_by_type:
+                avgs[label] += duty.mark
+            avgs[label] /= duties_by_type.count()
 
-    return avgs
+    output = []
+    for duty, mark in avgs.items():
+        output.append(tCount(label=duty, count=mark))
+
+    return output
