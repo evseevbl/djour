@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, Lesson
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -27,6 +27,13 @@ tCount = namedtuple_wrapper(
     )
 )
 
+tExamMark = namedtuple_wrapper(
+    'tExamMark',
+    (
+        'semester',
+        'marks'
+    )
+)
 
 @ensure_csrf_cookie
 @login_required
@@ -96,10 +103,10 @@ def student(request, student_id):
             "penalty_options": _get_options(Penalty.CHOICES),
             "penalty_stats": penalty_stats,
             "all_attendances": all_attendances,
-            # "all_exams": _get_exam_marks(student),
             "duty_options": _get_options(Duty.CHOICES),
             "duty_stats": _get_avg_duty_marks(st),
-            "duties": duties
+            "duties": duties,
+            "all_exams": _get_exam_marks(st),
         })
     )
 
@@ -115,9 +122,23 @@ def _get_options(model_choices):
     return opts
 
 
-def _get_exam_marks(st: Student) -> [Exam]:
+def _get_exam_marks(st: Student) -> dict:
     exams = Exam.objects.filter(squad=st.squad)
-    return exams
+    all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
+    result = {}
+    for s in all_subjects:
+        result[s.short] = []
+        needed_exams = exams.filter(subject=s)
+        for e in needed_exams:
+            ls = Lesson.objects.filter(exam=e)
+            marks = []
+            for l in ls:
+                mark = Mark.objects.get(lesson=l, student=st)
+                marks.append(str(mark.val))
+            marks = '/'.join(marks)
+            exam_mark = tExamMark(semester=e.semester, marks=marks)
+            result[s.short].append(exam_mark)
+    return result
 
 
 def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
