@@ -19,8 +19,8 @@ tOption = namedtuple_wrapper(
     )
 )
 
-tPenaltyCount = namedtuple_wrapper(
-    'tPenaltiesCount',
+tCount = namedtuple_wrapper(
+    'tCount',
     (
         'label',
         'count'
@@ -69,18 +69,20 @@ def student(request, student_id):
 
     penalties = Penalty.objects.filter(student=st)
 
-    penalties_got_map = {'Взысканий': 0, 'Поощрений': 0}
-    choices = {
+    penalty_choices = {
         Penalty.REPRIMAND: 'Взысканий',
         Penalty.PROMOTION: 'Поощрений',
     }
+    penalties_got_map = {penalty_choices[Penalty.PROMOTION]: 0, penalty_choices[Penalty.REPRIMAND]: 0}
 
     for penalty in penalties:
-        penalties_got_map[choices[penalty.type]] += 1
+        penalties_got_map[penalty_choices[penalty.type]] += 1
 
     penalty_stats = []
     for key, value in penalties_got_map.items():
-        penalty_stats.append(tPenaltyCount(label=key, count=value))
+        penalty_stats.append(tCount(label=key, count=value))
+
+    duties = Duty.objects.filter(student=st)
 
     return render(
         request,
@@ -95,7 +97,9 @@ def student(request, student_id):
             "penalty_stats": penalty_stats,
             "all_attendances": all_attendances,
             # "all_exams": _get_exam_marks(student),
-            "duty_options": _get_options(Duty.CHOICES)
+            "duty_options": _get_options(Duty.CHOICES),
+            "duty_stats": _get_avg_duty_marks(st),
+            "duties": duties
         })
     )
 
@@ -149,3 +153,23 @@ def _get_avg_for_subject(subject, student_id, absent_zero=False):
         avg = None
     print(f'avg student={student_id}, avg={avg}, subj={subject.short}, zeroed={absent_zero}')
     return avg
+
+def _get_avg_duty_marks(st_obj):
+    duties_choices = {
+        Duty.DETENTION: 'Выходы в наряд',
+        Duty.DUTY: 'Дежурства',
+    }
+    avgs = {duties_choices[Duty.DETENTION]: 0, duties_choices[Duty.DUTY]: 0}
+
+    duties = Duty.objects.filter(student=st_obj)
+
+    for type, label in duties_choices.items():
+        duties_by_type = duties.filter(type=type)
+        if not duties_by_type:
+            avgs[label] = '-'
+            pass
+        for duty in duties_by_type:
+            avgs[label] += duty.mark
+        avgs[label] /= duties_by_type.count()
+
+    return avgs
