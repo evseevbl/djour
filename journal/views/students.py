@@ -133,8 +133,9 @@ def _get_exam_marks(st: Student) -> dict:
             ls = Lesson.objects.filter(exam=e)
             marks = []
             for l in ls:
-                mark = Mark.objects.get(lesson=l, student=st)
-                marks.append(str(mark.val))
+                mark = Mark.objects.filter(lesson=l, student=st).first()
+                if mark:
+                    marks.append(str(mark.val))
             marks = '/'.join(marks)
             exam_mark = tExamMark(semester=e.semester, marks=marks)
             result[s.short].append(exam_mark)
