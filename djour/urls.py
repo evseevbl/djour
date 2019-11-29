@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from djour.views import journal_index_redirect
+from django.conf import settings
+from django.conf.urls.static import static
 from journal import urls
 
 
@@ -24,4 +26,4 @@ urlpatterns = [
     path("journal/", include("journal.urls")),
     path("", journal_index_redirect),
     path('api/', include("api.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

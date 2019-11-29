@@ -1,5 +1,3 @@
-import datetime as dt
-
 from django.http import HttpResponseRedirect
 import json
 
