@@ -137,6 +137,7 @@ class Exam(models.Model):
     squad = models.ForeignKey('journal.Squad', models.CASCADE, verbose_name='Взвод', null=True)
     name = models.CharField('Форма контроля', max_length=100, choices=NAME_CHOICES, default="")
 
+
     @property
     def russian_name(self):
         if self.name == self.NAME_EXAM:
@@ -175,6 +176,7 @@ class Mark(models.Model):
     class Meta:
         managed = True
         db_table = 'marks'
+
 
     def __str__(self):
         return f'{self.val} по {self.lesson.subject.short} ({self.student.short})'
@@ -232,10 +234,13 @@ class Squad(models.Model):
 
 
 class Student(models.Model):
+    UNIT_CHOICES = ((1, 1), (2, 2), (3, 3))
     last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
     first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
     middle_name = models.CharField('Отчество', max_length=50, blank=True, null=True)
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
+    unit = models.IntegerField('Отделение', choices=UNIT_CHOICES, blank=True, null=True)
+    journal_id = models.IntegerField('Номер в журнале', blank=True, null=True)
 
 
     def __str__(self):
@@ -327,6 +332,7 @@ class Lesson(models.Model):
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
+
 
     def __str__(self):
         return f'{self.name} по {self.subject.short} от {self.attendance.date}'
