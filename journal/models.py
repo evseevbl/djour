@@ -7,7 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from image_cropping import ImageRatioField
 
 # from journal.managers.marks import student_short_name
 
@@ -241,6 +241,9 @@ class Student(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
     unit = models.IntegerField('Отделение', choices=UNIT_CHOICES, blank=True, null=True)
     journal_id = models.IntegerField('Номер в журнале', blank=True, null=True)
+    pic = models.ImageField(upload_to='students_pic/', null=True)
+
+    cropping = ImageRatioField('pic', '300x400')
 
 
     def __str__(self):
