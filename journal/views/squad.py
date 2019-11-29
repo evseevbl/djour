@@ -25,6 +25,7 @@ def squad_stats(request, squad_code='1701'):
         request,
         "journal/squad_stats.html",
         with_context({
+            'subjects': subjects,
             'rows': _make_rows(students, subjects),
         })
     )
@@ -37,5 +38,5 @@ def _make_rows(students, subjects):
 def _make_row(student: Student, subjects: [Subject]) -> tStudentRow:
     return tStudentRow(
         student=student,
-        avg_marks=[get_average_mark(student, subj) for subj in subjects]
+        avg_marks=[get_average_mark(subj, student.id) for subj in subjects]
     )

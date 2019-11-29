@@ -2,7 +2,46 @@
 {% load i18n %}
 {% block content %}
 
-    <a href="/admin">Статистика взвода</a>
-    {% get_current_language as LANGUAGE_CODE %}
-    <!-- Current language: {{ LANGUAGE_CODE }} -->
+{#    <a href="/admin">Статистика взвода</a>#}
+{#    {% get_current_language as LANGUAGE_CODE %}#}
+{#    <!-- Current language: {{ LANGUAGE_CODE }} -->#}
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th> номер</th>
+                    <th> ФИО</th>
+                    {% for subj in subjects %}
+                        <th>{{ subj.short }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+
+                        <td class="col-lg-1">
+                            {{ row.student.id }}
+                        </td>
+                        <td class="col-lg-1">
+                            {{ row.student.short }}
+                        </td>
+                        {% for mark in row.avg_marks %}
+                            <td class="col-lg-1">
+                                {% if mark %}
+                                    {{ mark|floatformat:2}}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
