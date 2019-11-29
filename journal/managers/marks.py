@@ -88,7 +88,7 @@ def date_to_key(d):
 def student_to_key(s: Student) -> tKey:
     return tKey(
         id=s.id,
-        display=s.short,
+        display=f'{s.journal_id or "?"}. {s.short}',
         sort=s.short,
         val=s.id,
     )
