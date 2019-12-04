@@ -8,11 +8,22 @@ from journal.models import Mark
 
 
 def add_mark(request):
+    value2marks = {
+        '1':1, 
+        '2':2, 
+        '3':3, 
+        '4':4, 
+        '5':5, 
+        'п':-1, 
+        'у':-2, 
+        'н':-3, 
+        '':None
+    }
     m = Mark()
     d = json.loads(request.body)
     print(d)
     req = rMark(
-        value=d["value"],
+        value=value2marks[d["value"].lower()],
         id=d["mark_id"],
         student_id=d["student_id"],
         # subject_id=d["subject_id"],
