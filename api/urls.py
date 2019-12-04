@@ -10,6 +10,7 @@ urlpatterns = [
     path('attendance/set', views.set_attendance, name='attendance_set'),
     path('penalty/add', views.add_penalty, name='penalty_add'),
     path('duty/add', views.add_duty, name='duty_add'),
-
+    path('event/add', views.add_event, name='event_add'),
+    path('event/set', views.set_event, name='event_set'),
     # path("<int:user_id>", views.borrower_page, name="borrower_page")
 ]
