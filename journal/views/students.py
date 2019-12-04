@@ -92,7 +92,7 @@ def student(request, student_id):
 
     duties = Duty.objects.filter(student=st)
 
-    events = Event.objects.filter(eventparticipant__student=st)
+    events = Event.objects.filter(eventparticipant__student=st).order_by('-date')
 
     return render(
         request,
@@ -110,7 +110,9 @@ def student(request, student_id):
             "duty_stats": _get_avg_duty_marks(st),
             "duties": duties,
             "all_exams": _get_exam_marks(st),
-            "all_events": events
+            "stud_events":  events,
+            "available_events": Event.objects.exclude(id__in=events).order_by('-date'),
+            "all_events": Event.objects.all().order_by('-date')
         })
     )
 

@@ -26,8 +26,8 @@ def set_event(request):
         event_id = form.data['event_id']
 
         event_connections = EventParticipant(
-            student=student_id,
-            event=event_id
+            student_id=student_id,
+            event_id=event_id
         )
         event_connections.save()
 
