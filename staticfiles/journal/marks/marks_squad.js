@@ -23,13 +23,6 @@ $(document).ready(function () {
             let x = get_x_key(val.x_index);
             let y = get_y_key(val.y_key_id);
             let markVal = this.value;
-            if (markVal === 'п' || markVal === 'П') {
-                markVal = -1; // truant
-            } else if (markVal === 'у' || markVal === 'У') {
-                markVal = -2; // absent
-            } else if (markVal === 'н' || markVal === 'Н') {
-                markVal = -3; // duty
-            }
             let m = make_mark(x, y, subject_id, val.mark_id, markVal);
 
             console.log("made mark", m);
