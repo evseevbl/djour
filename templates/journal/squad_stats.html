@@ -36,7 +36,7 @@
                                 {{ row.student.short }}
                             </td>
                             {% for mark in row.avg_marks %}
-                                <td class="col-md-1 text-center" >
+                                <td class="col-md-1 text-center">
                                     {% if mark %}
                                         {{ mark|floatformat:2 }}
                                     {% else %}

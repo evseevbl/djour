@@ -9,7 +9,7 @@ from journal.managers.marks import tAvg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from journal.views.common import avg_mark_student
+from journal.views.common import avg_mark_student, students_to_ids
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
 tOption = namedtuple_wrapper(
@@ -36,6 +36,7 @@ tExamMark = namedtuple_wrapper(
     )
 )
 
+
 @ensure_csrf_cookie
 @login_required
 def students(request):
@@ -57,7 +58,6 @@ def student(request, student_id):
     all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
     avgs = []
     for subj in all_subjects:
-
         avgs.append(tAvg(
             short=subj.short,
             avg=avg_mark_student(subj, student_id),
@@ -110,7 +110,7 @@ def student(request, student_id):
             "duty_stats": _get_avg_duty_marks(st),
             "duties": duties,
             "all_exams": _get_exam_marks(st),
-            "stud_events":  events,
+            "stud_events": events,
             "available_events": Event.objects.exclude(id__in=events).order_by('-date'),
             "all_events": Event.objects.all().order_by('-date')
         })

@@ -11,11 +11,11 @@ def avg_mark_student(subject, student_id, absent_zero=False):
 
 def avg_marks_group(students, subj):
     return _avg_mark(
-        Mark.objects.filter(lesson__subject=subj, student_id__in=_to_ids(students), val__gt=0)
+        Mark.objects.filter(lesson__subject=subj, student_id__in=students_to_ids(students), val__gt=0)
     )
 
 
-def _to_ids(students):
+def students_to_ids(students):
     return [s.id for s in students]
 
 
