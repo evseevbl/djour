@@ -9,6 +9,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from image_cropping import ImageRatioField
 
+
 # from journal.managers.marks import student_short_name
 
 
@@ -22,6 +23,11 @@ class Attendance(models.Model):
     @property
     def absent(self):
         return len(self.students.filter(value__iregex='(absent|truant)'))
+
+
+    @property
+    def datestr(self):
+        return self.date.strftime("%Y%m%d%H%M%s")
 
 
     def __str__(self):

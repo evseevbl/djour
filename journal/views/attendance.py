@@ -4,7 +4,6 @@ from journal import constants
 from journal.managers.context import with_context
 
 
-
 def attendance(request):
     f = Attendance.objects.all()
 
@@ -15,7 +14,6 @@ def attendance(request):
             "forms": f,
         })
     )
-
 
 
 def edit_attendance(request, attendance_id):
