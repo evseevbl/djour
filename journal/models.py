@@ -110,6 +110,8 @@ class EventParticipant(models.Model):
     class Meta:
         managed = True
         db_table = 'event_participants'
+        verbose_name = 'Участник мероприятия'
+        verbose_name_plural = 'Участники мероприятия'
 
 
 class Event(models.Model):
@@ -120,6 +122,8 @@ class Event(models.Model):
     class Meta:
         managed = True
         db_table = 'events'
+        verbose_name = 'Мероприятие'
+        verbose_name_plural = 'Мероприятия'
 
 
 class Exam(models.Model):

@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, Lesson
+from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, \
+    Lesson, Event
 from journal.managers.marks import tAvg
 from django.db.models import Avg, Case, When
 
@@ -91,6 +92,8 @@ def student(request, student_id):
 
     duties = Duty.objects.filter(student=st)
 
+    events = Event.objects.filter(eventparticipant__student=st).order_by('-date')
+
     return render(
         request,
         "journal/student.html",
@@ -107,6 +110,9 @@ def student(request, student_id):
             "duty_stats": _get_avg_duty_marks(st),
             "duties": duties,
             "all_exams": _get_exam_marks(st),
+            "stud_events":  events,
+            "available_events": Event.objects.exclude(id__in=events).order_by('-date'),
+            "all_events": Event.objects.all().order_by('-date')
         })
     )
 
