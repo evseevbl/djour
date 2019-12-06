@@ -3,8 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, \
-    Lesson, Event
+from journal.models import *
 from journal.managers.marks import tAvg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -136,16 +135,45 @@ def _get_exam_marks(st: Student) -> dict:
         result[s.short] = []
         needed_exams = exams.filter(subject=s)
         for e in needed_exams:
-            ls = Lesson.objects.filter(exam=e)
-            marks = []
-            for l in ls:
-                mark = Mark.objects.filter(lesson=l, student=st).first()
-                if mark:
-                    marks.append(str(mark.val))
-            marks = '/'.join(marks)
-            exam_mark = tExamMark(semester=e.semester, marks=marks)
+            lessons = Lesson.objects.filter(exam=e)
+            marks = _extract_exam_marks(lessons, st)
+            display = '/'.join(marks)
+            exam_mark = tExamMark(semester=e.semester, marks=display)
             result[s.short].append(exam_mark)
     return result
+
+
+def _get_group_exam_marks(students: [Student], squad: Squad) -> dict:
+    exams = Exam.objects.filter(squad=squad)
+    all_subjects = Subject.objects.filter(curriculum__squad=squad)
+    result = {}
+    for s in all_subjects:
+        result[s.short] = []
+        needed_exams = exams.filter(subject=s)
+        for e in needed_exams:
+            marks = _extract_exam_marks_group(e, students)
+            display = '/'.join(marks)
+            exam_mark = tExamMark(semester=e.semester, marks=display)
+            result[s.short].append(exam_mark)
+    return result
+
+
+def _extract_exam_marks(ls: [Lesson], st: Student):
+    marks = []
+    for l in ls:
+        mark = Mark.objects.filter(lesson=l, student=st).first()
+        if mark:
+            marks.append(str(mark.val))
+    return marks
+
+
+def _extract_exam_marks_group(ls: [Lesson], st: [Student]):
+    marks = []
+    for l in ls:
+        mark = Mark.objects.filter(lesson=l, student_id__in=st).order_by()
+        if mark:
+            marks.append(str(mark.val))
+    return marks
 
 
 def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
