@@ -9,6 +9,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from image_cropping import ImageRatioField
 
+
 # from journal.managers.marks import student_short_name
 
 
@@ -182,6 +183,16 @@ class Mark(models.Model):
         return f'{self.val} по {self.lesson.subject.short} ({self.student.short})'
 
 
+    @property
+    def to_display(self):
+        return
+
+
+    @property
+    def from_display(self):
+        pass
+
+
 class Penalty(models.Model):
     REPRIMAND = 'reprimand'
     PROMOTION = 'promotion'
@@ -241,7 +252,7 @@ class Student(models.Model):
     squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
     unit = models.IntegerField('Отделение', choices=UNIT_CHOICES, blank=True, null=True)
     journal_id = models.IntegerField('Номер в журнале', blank=True, null=True)
-    pic = models.ImageField(upload_to='students_pic/', null=True)
+    pic = models.ImageField(upload_to='students_pic/', blank=True, null=True)
 
     cropping = ImageRatioField('pic', '300x400')
 

@@ -6,28 +6,24 @@ from api.models import rMark
 from journal.models import Mark
 
 
-
 def add_mark(request):
     value2marks = {
-        '1':1, 
-        '2':2, 
-        '3':3, 
-        '4':4, 
-        '5':5, 
-        'п':-1, 
-        'у':-2, 
-        'н':-3, 
-        '':None
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        'п': -1,
+        'у': -2,
+        'н': -3,
     }
     m = Mark()
     d = json.loads(request.body)
     print(d)
     req = rMark(
-        value=value2marks[d["value"].lower()],
+        value=value2marks.get(d["value"].lower()),
         id=d["mark_id"],
         student_id=d["student_id"],
-        # subject_id=d["subject_id"],
-        # teacher_id=1,  # ToDo
         lesson_id=d["lesson_id"]
     )
 
@@ -55,5 +51,3 @@ def add_mark(request):
     }
     print(m)
     return HttpResponse(json.dumps(data))
-
-
