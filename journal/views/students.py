@@ -9,7 +9,7 @@ from journal.managers.marks import tAvg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from journal.views.common import get_average_mark
+from journal.views.common import avg_mark_student
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
 tOption = namedtuple_wrapper(
@@ -60,7 +60,7 @@ def student(request, student_id):
 
         avgs.append(tAvg(
             short=subj.short,
-            avg=get_average_mark(subj, student_id),
+            avg=avg_mark_student(subj, student_id),
             # exams=
         ))
         # todo оценки с учётом пропусков

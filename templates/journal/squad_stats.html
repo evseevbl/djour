@@ -1,45 +1,78 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-
-{#    <a href="/admin">Статистика взвода</a>#}
-{#    {% get_current_language as LANGUAGE_CODE %}#}
-{#    <!-- Current language: {{ LANGUAGE_CODE }} -->#}
     <div class="row">
-
         <div class="col-md-12">
-
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th> номер</th>
-                    <th> ФИО</th>
+                    <th colspan="2">
+
+                    </th>
+                    <th colspan="2" class="text-center">
+                        Текущие оценки
+                    </th>
+                </tr>
+                <tr>
+                    {#<th>номер</th>#}
+                    <th class="col-md-1">отделение</th>
+                    <th>ФИО</th>
                     {% for subj in subjects %}
-                        <th>{{ subj.short }}</th>
+                        <th class="text-center">{{ subj.short }}</th>
                     {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
-                {% for row in rows %}
+                {% for unit in unit_rows %}
+                    {% for row in unit.rows %}
+                        <tr>
+                            {#                            <td>#}
+                            {#                                {{ row.student.id }}#}
+                            {#                            </td>#}
+                            <td>
+                                {{ row.student.unit }}
+                            </td>
+                            <td>
+                                {{ row.student.short }}
+                            </td>
+                            {% for mark in row.avg_marks %}
+                                <td class="col-md-1 text-center" >
+                                    {% if mark %}
+                                        {{ mark|floatformat:2 }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
                     <tr>
-
-                        <td class="col-lg-1">
-                            {{ row.student.id }}
+                        <td colspan="2">
+                            {#                            <b>#}
+                            Итого по {{ unit.unit }} отделению:
+                            {#                            </b>#}
                         </td>
-                        <td class="col-lg-1">
-                            {{ row.student.short }}
-                        </td>
-                        {% for mark in row.avg_marks %}
-                            <td class="col-lg-1">
-                                {% if mark %}
-                                    {{ mark|floatformat:2}}
-                                {% else %}
-                                    -
-                                {% endif %}
+                        {% for total in unit.subtotal.avg_marks %}
+                            <td class="text-center">
+                                <b>
+                                    {{ total|floatformat:2 }}
+                                </b>
                             </td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td colspan="2">
+                        <b>
+                            Итого по взводу:
+                        </b>
+                    </td>
+                    {% for t in total.avg_marks %}
+                        <td class="text-center">
+                            {{ t|floatformat:2 }}
+                        </td>
+                    {% endfor %}
+                </tr>
                 </tbody>
             </table>
         </div>
