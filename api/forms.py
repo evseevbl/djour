@@ -40,3 +40,13 @@ class DutyForm(forms.Form):
         if mark < 1 or mark > 5:
             raise ValidationError('Invalid mark value', code='invalid')
         return mark
+
+
+class NewEventForm(forms.Form):
+    name = forms.CharField(label='Название', max_length=30)
+    date = forms.DateField(label='Дата')
+
+
+class SetEventForm(forms.Form):
+    student_id = forms.IntegerField(label="Студент")
+    event_id = forms.IntegerField(label='Событие')

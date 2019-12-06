@@ -16,3 +16,6 @@ pgtest
 /env/
 /venv/
 /myvenv/
+test.sh
+pgtest
+media/
