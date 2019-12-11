@@ -40,7 +40,7 @@
                 {% for f in forms %}
                     <tr>
                         <td>{{ f.squad }}</td>
-                        <td>{{ f.date }}</td>
+                        <td data-sort="{{ f.datestr }}">{{ f.date }}</td>
                         <td>{{ f.students.all | length }}</td>
                         <td>{{ f.absent }}</td>
                         <td><a class="fa fa-edit" href="{% url 'attendance_edit' attendance_id=f.id %}"></a></td>
@@ -110,7 +110,41 @@
             );
         });
     </script>
+
+    {{ block.super }}
+    <script>
+        $(document).ready(function () {
+            let select = {};
+            $('#forms').DataTable({
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        let column = this;
+                        if (!(column[0][0] === 0)) {
+                            return;
+                        }
+                        select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.header()))
+                            .on('change', function () {
+                                let val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                },
+                paging: false,
+                lengthChange: false,
+                searching: false,
+                ordering: true,
+            });
+        });
+
+    </script>
 {% endblock %}
-
-
-

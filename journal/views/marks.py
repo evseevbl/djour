@@ -18,7 +18,7 @@ def marks_squad(request, squad_code="1702", subject_id=1):
     header, cells = make_cells(x_keys, y_keys, marks)
     squad = Squad.objects.filter(code=squad_code).first()
 
-    att = Attendance.objects.filter(squad=squad)
+    att = Attendance.objects.filter(squad=squad).order_by('-date')
 
     exams = Exam.objects.filter(subject_id=subject_id, squad=squad)
     print(exams)
