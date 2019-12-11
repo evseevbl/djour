@@ -352,6 +352,8 @@ class PersonalInfo(models.Model):
     reg_address = models.CharField('Адрес регистрации', max_length=512, blank=True, null=False)
     fact_address = models.CharField('Адрес фактический', max_length=512, blank=True, null=False)
 
+    phone = models.CharField('Номер телефона', max_length=30, blank=True, null=True)
+
     birth_place = models.TextField('Место рождения', blank=True, null=False)
     birth_date = models.DateField('Дата рождения', blank=True, null=True)
 
@@ -360,6 +362,9 @@ class PersonalInfo(models.Model):
 
     start_date = models.DateField('Начало обучения', blank=True, null=True)
     end_date = models.DateField('Окончание обучения', blank=True, null=True)
+
+    order_admission = models.CharField('№ приказа о зачислении', max_length=100, blank=True, null=True)
+    order_deduction = models.CharField('№ приказа об отчислении', max_length=100, blank=True, null=True)
 
     commissariat = models.CharField('Военкомат', max_length=512, blank=True, null=False)
     medical_report = models.TextField('Врачебное заключение', blank=True, null=False)
@@ -372,10 +377,12 @@ class PersonalInfo(models.Model):
 
     conclusion = models.TextField('Категория годности', blank=True, null=True)
 
+    faculty = models.CharField('Факультет', max_length=100, blank=True, null=True)
+    program = models.CharField('Образовательная программа', max_length=100, blank=True, null=True)
+    group = models.CharField('Группа', max_length=20, blank=True, null=True)
 
     def __str__(self):
         return f'{self.student.short} [{self.id}]'
-
 
     class Meta:
         managed = True
