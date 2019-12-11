@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
 from image_cropping import ImageRatioField
 
 
