@@ -55,6 +55,46 @@
                                         {{ student.last_name }} {{ student.first_name }} {{ student.middle_name }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>
+                                            Номер телефона
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.phone|default_if_none:"-" }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>
+                                            Факультет
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.faculty|default_if_none:"-" }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>
+                                            Образовательная программа
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.program|default_if_none:"-" }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>
+                                            Группа
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        {{ info.group|default_if_none:"-" }}
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -212,18 +252,6 @@
                         <tr>
                             <td><strong>Окончание обучения</strong></td>
                             <td>{{ info.end_date|date:"Y-m-d" }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Факультет</strong></td>
-                            <td>{{ info.faculty|default_if_none:"-" }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Образовательная программа</strong></td>
-                            <td>{{ info.program|default_if_none:"-"  }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Группа</strong></td>
-                            <td>{{ info.group|default_if_none:"-"  }}</td>
                         </tr>
                     </table>
                     <table class="table table-striped">
