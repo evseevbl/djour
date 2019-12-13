@@ -36,11 +36,20 @@
                                     <u>Изменить профиль</u>
                                 </a>
                             </div>
-                            <div class="imgButton" style="margin-top:10px;">
-                                <a href="/admin/journal/personalinfo/{{ info.id }}/change/" style="font-size: 13px;">
-                                    <u>Изменить перс. данные</u>
-                                </a>
-                            </div>
+                            {% if info %}
+                                <div class="imgButton" style="margin-top:10px;">
+                                    <a href="/admin/journal/personalinfo/{{ info.id }}/change/" style="font-size: 13px;">
+                                        <u>Изменить данные</u>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="imgButton" style="margin-top:10px;">
+                                    <a href="/admin/journal/personalinfo/add/" style="font-size: 13px;">
+                                        <u>Добавить данные</u>
+                                    </a>
+                                </div>
+
+                            {% endif %}
                         </div>
                         <div class="col-md-8">
                             <div class="table-responsive">
