@@ -186,6 +186,7 @@ def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
     for a in atts:
         a: StudentAttendance = a
         stats[a.value] += 1
+    stats["total"] = stats["truant"] + stats["absent"] + stats["duty"]
     return stats
 
 
