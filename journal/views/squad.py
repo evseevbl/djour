@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from journal.managers.context import with_context
-from journal.models import Student, Squad, Subject
+from journal.models import Student, Squad, Subject, Exam, Lesson, Mark
 from django.contrib.auth.decorators import login_required
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 from journal.views.common import avg_mark_student, avg_marks_group
@@ -24,6 +24,30 @@ tUnitRow = namedtuple_wrapper(
     )
 )
 
+tSubjectMark = namedtuple_wrapper(
+    'tSubjectMark',
+    (
+        'semester',
+        'mark',
+    )
+)
+
+tSubjectAvgs = namedtuple_wrapper(
+    'tSubjectAvgs',
+    (
+        'subject',
+        'avgs',
+    )
+)
+
+tUnitAvgs = namedtuple_wrapper(
+    'tUnitAvgs',
+    (
+        'num',
+        'val',
+    )
+)
+
 
 @login_required()
 def squad_stats(request, squad_code='1701'):
@@ -38,8 +62,55 @@ def squad_stats(request, squad_code='1701'):
             'subjects': subjects,
             'unit_rows': _make_unit_rows(students, subjects),
             'total': _make_squad_total(students, subjects),
+            'units': _get_units_marks(students, subjects),
         })
     )
+
+
+def _get_units_marks(students, subjects):
+    result = []
+    for i in range(1, 4):
+        unit_students = students.filter(unit=i).all()
+        result.append(tUnitAvgs(num=i, val=_get_unit_marks(subjects, unit_students)))
+    return result
+
+
+def _extract_exam_marks(ls: Lesson, st: Student):
+    mark = Mark.objects.filter(lesson=ls, student=st).filter(val__in=[1,2,3,4,5]).first()
+    print(mark)
+    if mark is None:
+        return 0
+    return mark.val
+
+def _lessons_to_ids(lessons:[Lesson]):
+    return [l.id for l in lessons]
+
+
+def _get_unit_marks(subjects, students):
+    result = []
+    for subj in subjects:
+        all_marks = {}
+        for st in students:
+            exams = Exam.objects.filter(squad=st.squad)
+            needed_exams = exams.filter(subject=subj)
+            for e in needed_exams:
+                # lesson = Lesson.objects.filter(exam=e).order_by('-attendance__date').first()
+                lessons = Lesson.objects.filter(exam=e)
+                mark = Mark.objects.filter(lesson_id__in=_lessons_to_ids(lessons), val__gt=0, student=st).order_by('-lesson__attendance__date').first()
+                mark = mark.val
+                # ffmark = _extract_exam_marks(lesson, st)
+                if mark != 0:
+                    if e.semester in all_marks.keys():
+                        all_marks[e.semester][0] += mark
+                        all_marks[e.semester][1] += 1
+                    else:
+                        all_marks[e.semester] = [mark, 1]
+        avgs = [tSubjectMark(semester=item[0],
+                             mark=round(item[1][0]/item[1][1], 2))
+                for item in all_marks.items()]
+        result.append(tSubjectAvgs(subject=subj.short, avgs=avgs))
+    return result
+
 
 def _make_squad_total(students, subjects):
     return tStudentRow(
