@@ -45,7 +45,8 @@ def squad_stats(request, squad_code='1701'):
 
 def _make_squad_total(students, subjects):
     return tStudentRow(
-        avg_marks=[avg_marks_group(students, subj) for subj in subjects]
+        avg_marks=[avg_marks_group(students, subj) for subj in subjects],
+        attendance=get_attendance_stats(StudentAttendance.objects.filter(student_id__in=students_to_ids(students))),
     )
 
 def _make_unit_rows(students: QuerySet, subjects):

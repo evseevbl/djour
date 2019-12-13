@@ -50,7 +50,7 @@
                                 </td>
                             {% endfor %}
                             <td>
-                               {{ row.attendance.absent }}
+                                {{ row.attendance.absent }}
                             </td>
                             <td>
                                 {{ row.attendance.truant }}
@@ -76,6 +76,20 @@
                                 </b>
                             </td>
                         {% endfor %}
+                        {% with unit.subtotal.attendance as att %}
+                            <td>
+                                <strong>{{ att.absent }}</strong>
+                            </td>
+                            <td>
+                                <strong>{{ att.truant }}</strong>
+                            </td>
+                            <td>
+                                <strong>{{ att.duty }}</strong>
+                            </td>
+                            <td>
+                                <strong>{{ att.total }}</strong>
+                            </td>
+                        {% endwith %}
                     </tr>
                 {% endfor %}
                 <tr>
@@ -89,6 +103,20 @@
                             {{ t|floatformat:2 }}
                         </td>
                     {% endfor %}
+                    {% with total.attendance as att %}
+                        <td>
+                            <strong>{{ att.absent }}</strong>
+                        </td>
+                        <td>
+                            <strong>{{ att.truant }}</strong>
+                        </td>
+                        <td>
+                            <strong>{{ att.duty }}</strong>
+                        </td>
+                        <td>
+                            <strong>{{ att.total }}</strong>
+                        </td>
+                    {% endwith %}
                 </tr>
                 </tbody>
             </table>
