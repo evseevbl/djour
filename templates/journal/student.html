@@ -266,22 +266,27 @@
                                     <td><strong>Номер телефона</strong></td>
                                     <td>{{ info.phone|default_if_none:"-" }}</td>
                                 </tr>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
                                 <tr>
-                                    <td><strong>Номер приказа о зачислении</strong></td>
-                                    <td>{{ info.order_admission|default_if_none:"-" }}</td>
+                                    <th></th>
+                                    <th>Начало обучения</th>
+                                    <th>Окончание обучения</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
-                                    <td><strong>Номер приказа об отчислении</strong></td>
-                                    <td>{{ info.order_deduction|default_if_none:"-" }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Начало обучения</strong></td>
+                                    <td>Дата</td>
+                                    <td>{{ info.end_date|date:"Y-m-d" }}</td>
                                     <td>{{ info.start_date|date:"Y-m-d" }}</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Окончание обучения</strong></td>
-                                    <td>{{ info.end_date|date:"Y-m-d" }}</td>
+                                    <td>Приказ</td>
+                                    <td>{{ info.order_deduction|default_if_none:"-" }}</td>
+                                    <td>{{ info.order_admission|default_if_none:"-" }}</td>
                                 </tr>
+                                </tbody>
                             </table>
                             <table class="table table-striped">
                                 <tr>
