@@ -8,6 +8,18 @@
 
 .imgButton{
     text-align:center;
-    margin: 10;
+    margin: 10px;
 }
 
+td {
+    width: auto;
+}
+
+td.min-col {
+    width: 1%;
+    white-space: nowrap;
+}
+th.min-col {
+    width: 1%;
+    white-space: nowrap;
+}

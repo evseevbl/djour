@@ -9,17 +9,24 @@
                     <th colspan="2">
 
                     </th>
-                    <th colspan="2" class="text-center">
+                    <th colspan="{{ total.avg_marks|length }}" class="text-center">
                         Текущие оценки
+                    </th>
+                    <th colspan="4" class="text-center">
+                        Пропуски занятий
                     </th>
                 </tr>
                 <tr>
                     {#<th>номер</th>#}
-                    <th class="col-md-1">отделение</th>
+                    <th class="min-col">отделение</th>
                     <th>ФИО</th>
                     {% for subj in subjects %}
                         <th class="text-center">{{ subj.short }}</th>
                     {% endfor %}
+                    <th class="min-col">Ув.</th>
+                    <th class="min-col">Неув.</th>
+                    <th class="min-col">Наряд</th>
+                    <th class="min-col">Всего
                 </tr>
                 </thead>
                 <tbody>
@@ -34,7 +41,7 @@
                                 </a>
                             </td>
                             {% for mark in row.avg_marks %}
-                                <td class="col-md-1 text-center">
+                                <td class="min-col text-center">
                                     {% if mark %}
                                         {{ mark|floatformat:2 }}
                                     {% else %}
@@ -42,6 +49,18 @@
                                     {% endif %}
                                 </td>
                             {% endfor %}
+                            <td>
+                               {{ row.attendance.absent }}
+                            </td>
+                            <td>
+                                {{ row.attendance.truant }}
+                            </td>
+                            <td>
+                                {{ row.attendance.duty }}
+                            </td>
+                            <td>
+                                {{ row.attendance.total }}
+                            </td>
                         </tr>
                     {% endfor %}
                     <tr>

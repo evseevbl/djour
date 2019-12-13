@@ -1,4 +1,4 @@
-from journal.models import Mark
+from journal.models import Mark, StudentAttendance
 
 
 def avg_mark_student(subject, student_id, absent_zero=False):
@@ -33,3 +33,17 @@ def _avg_mark(marks: [Mark]):
     else:
         avg = None
     return avg
+
+
+def get_attendance_stats(atts: [StudentAttendance]) -> dict:
+    stats = {
+        "absent": 0,
+        "truant": 0,
+        "duty": 0,
+        "present": 0,
+    }
+    for a in atts:
+        a: StudentAttendance = a
+        stats[a.value] += 1
+    stats["total"] = stats["truant"] + stats["absent"] + stats["duty"]
+    return stats
