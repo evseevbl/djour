@@ -99,7 +99,10 @@ def _get_unit_marks(subjects, students):
                 # lesson = Lesson.objects.filter(exam=e).order_by('-attendance__date').first()
                 lessons = Lesson.objects.filter(exam=e)
                 mark = Mark.objects.filter(lesson_id__in=_lessons_to_ids(lessons), val__gt=0, student=st).order_by('-lesson__attendance__date').first()
-                mark = mark.val
+                if mark is None:
+                   mark = 0
+                else:
+                    mark = mark.val
                 # ffmark = _extract_exam_marks(lesson, st)
                 if mark != 0:
                     if e.semester in all_marks.keys():
