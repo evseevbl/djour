@@ -1,17 +1,19 @@
 from django.shortcuts import render
 
 from journal.managers.context import with_context
-from journal.models import Student, Squad, Subject, Exam, Lesson, Mark
+from journal.models import *
 from django.contrib.auth.decorators import login_required
 from maintenance.helpers.named_tuple import namedtuple_wrapper
-from journal.views.common import avg_mark_student, avg_marks_group
+from journal.views.common import avg_mark_student, avg_marks_group, get_attendance_stats, students_to_ids
 from django.db.models import QuerySet
+
 
 tStudentRow = namedtuple_wrapper(
     'tStudentRow',
     (
         'student',
         'avg_marks',
+        'attendance'
     )
 )
 
@@ -114,7 +116,8 @@ def _get_unit_marks(subjects, students):
 
 def _make_squad_total(students, subjects):
     return tStudentRow(
-        avg_marks=[avg_marks_group(students, subj) for subj in subjects]
+        avg_marks=[avg_marks_group(students, subj) for subj in subjects],
+        attendance=get_attendance_stats(StudentAttendance.objects.filter(student_id__in=students_to_ids(students))),
     )
 
 def _make_unit_rows(students: QuerySet, subjects):
@@ -123,7 +126,6 @@ def _make_unit_rows(students: QuerySet, subjects):
         unit_students = students.filter(unit=u)
         rows = _make_rows(unit_students, subjects)
         # total = _make_subtotal(unit_students, subjects)
-        total = list(range(7))
         ls.append(tUnitRow(
             rows=rows,
             unit=u,
@@ -135,7 +137,8 @@ def _make_unit_rows(students: QuerySet, subjects):
 def _make_subtotal(students, subjects):
     return tStudentRow(
         # student=student,
-        avg_marks=[avg_marks_group(students, subj) for subj in subjects]
+        avg_marks=[avg_marks_group(students, subj) for subj in subjects],
+        attendance=get_attendance_stats(StudentAttendance.objects.filter(student_id__in=students_to_ids(students))),
     )
 
 def _make_rows(students, subjects):
@@ -145,5 +148,6 @@ def _make_rows(students, subjects):
 def _make_row(student: Student, subjects: [Subject]) -> tStudentRow:
     return tStudentRow(
         student=student,
-        avg_marks=[avg_mark_student(subj, student.id) for subj in subjects]
+        avg_marks=[avg_mark_student(subj, student.id) for subj in subjects],
+        attendance=get_attendance_stats(StudentAttendance.objects.filter(student=student)),
     )

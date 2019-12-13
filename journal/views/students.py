@@ -8,7 +8,7 @@ from journal.managers.marks import tAvg
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from journal.views.common import avg_mark_student, students_to_ids
+from journal.views.common import avg_mark_student, get_attendance_stats
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
 tOption = namedtuple_wrapper(
@@ -99,7 +99,7 @@ def student(request, student_id):
         with_context({
             "student": st,
             "avg_marks": avgs,
-            "attendance_stats": _get_attendance_stats(atts),
+            "attendance_stats": get_attendance_stats(atts),
             "info": info,
             "penalties": penalties,
             "penalty_options": _get_options(Penalty.CHOICES),
@@ -174,19 +174,6 @@ def _extract_exam_marks_group(ls: [Lesson], st: [Student]):
         if mark:
             marks.append(str(mark.val))
     return marks
-
-
-def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
-    stats = {
-        "absent": 0,
-        "truant": 0,
-        "duty": 0,
-        "present": 0,
-    }
-    for a in atts:
-        a: StudentAttendance = a
-        stats[a.value] += 1
-    return stats
 
 
 def _get_avg_duty_marks(st_obj):
