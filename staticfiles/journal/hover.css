@@ -15,11 +15,11 @@ td {
     width: auto;
 }
 
-td.min-col {
+td.col-min {
     width: 1%;
     white-space: nowrap;
 }
-th.min-col {
+th.col-min {
     width: 1%;
     white-space: nowrap;
 }
