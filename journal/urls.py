@@ -9,5 +9,5 @@ urlpatterns = [
     path('marks/<str:squad_code>/<int:subject_id>', views.marks_squad, name='marks_squad'),
     path('attendance/', views.attendance, name='attendance'),
     path('attendance/<int:attendance_id>', views.edit_attendance, name='attendance_edit'),
-    # path("<int:user_id>", views.borrower_page, name="borrower_page")
+    path('squad/<str:squad_code>', views.squad_stats, name='squad_stats'),
 ]

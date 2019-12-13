@@ -3,13 +3,12 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from journal.managers.context import with_context
-from journal.models import Student, Mark, Subject, StudentAttendance, PersonalInfo, Penalty, Attendance, Exam, Duty, \
-    Lesson, Event
+from journal.models import *
 from journal.managers.marks import tAvg
-from django.db.models import Avg, Case, When
 
-from datetime import datetime as dt
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+from journal.views.common import avg_mark_student, get_attendance_stats
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
 tOption = namedtuple_wrapper(
@@ -36,6 +35,7 @@ tExamMark = namedtuple_wrapper(
     )
 )
 
+
 @ensure_csrf_cookie
 @login_required
 def students(request):
@@ -57,10 +57,9 @@ def student(request, student_id):
     all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
     avgs = []
     for subj in all_subjects:
-
         avgs.append(tAvg(
             short=subj.short,
-            avg=_get_avg_for_subject(subj, student_id),
+            avg=avg_mark_student(subj, student_id),
             # exams=
         ))
         # todo оценки с учётом пропусков
@@ -100,7 +99,7 @@ def student(request, student_id):
         with_context({
             "student": st,
             "avg_marks": avgs,
-            "attendance_stats": _get_attendance_stats(atts),
+            "attendance_stats": get_attendance_stats(atts),
             "info": info,
             "penalties": penalties,
             "penalty_options": _get_options(Penalty.CHOICES),
@@ -110,7 +109,7 @@ def student(request, student_id):
             "duty_stats": _get_avg_duty_marks(st),
             "duties": duties,
             "all_exams": _get_exam_marks(st),
-            "stud_events":  events,
+            "stud_events": events,
             "available_events": Event.objects.exclude(id__in=events).order_by('-date'),
             "all_events": Event.objects.all().order_by('-date')
         })
@@ -136,51 +135,45 @@ def _get_exam_marks(st: Student) -> dict:
         result[s.short] = []
         needed_exams = exams.filter(subject=s)
         for e in needed_exams:
-            ls = Lesson.objects.filter(exam=e)
-            marks = []
-            for l in ls:
-                mark = Mark.objects.filter(lesson=l, student=st).first()
-                if mark:
-                    marks.append(str(mark.val))
-            marks = '/'.join(marks)
-            exam_mark = tExamMark(semester=e.semester, marks=marks)
+            lessons = Lesson.objects.filter(exam=e)
+            marks = _extract_exam_marks(lessons, st)
+            display = '/'.join(marks)
+            exam_mark = tExamMark(semester=e.semester, marks=display)
             result[s.short].append(exam_mark)
     return result
 
 
-def _get_attendance_stats(atts: [StudentAttendance]) -> dict:
-    stats = {
-        "absent": 0,
-        "truant": 0,
-        "duty": 0,
-        "present": 0,
-    }
-    for a in atts:
-        a: StudentAttendance = a
-        stats[a.value] += 1
-    return stats
+def _get_group_exam_marks(students: [Student], squad: Squad) -> dict:
+    exams = Exam.objects.filter(squad=squad)
+    all_subjects = Subject.objects.filter(curriculum__squad=squad)
+    result = {}
+    for s in all_subjects:
+        result[s.short] = []
+        needed_exams = exams.filter(subject=s)
+        for e in needed_exams:
+            marks = _extract_exam_marks_group(e, students)
+            display = '/'.join(marks)
+            exam_mark = tExamMark(semester=e.semester, marks=display)
+            result[s.short].append(exam_mark)
+    return result
 
 
-def _get_avg_for_subject(subject, student_id, absent_zero=False):
-    print("avg for", subject.short)
-    if absent_zero:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject)
-    else:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject, val__gt=0)
-    avg, cnt = 0, 0
-    # todo разобраться с Avg и Case/When
-    for m in marks:
-        m: Mark = m
-        if m.val < 0:
-            m.val = 0
-        avg += m.val
-        cnt += 1
-    if cnt > 0:
-        avg /= cnt
-    else:
-        avg = None
-    print(f'avg student={student_id}, avg={avg}, subj={subject.short}, zeroed={absent_zero}')
-    return avg
+def _extract_exam_marks(ls: [Lesson], st: Student):
+    marks = []
+    for l in ls:
+        mark = Mark.objects.filter(lesson=l, student=st).first()
+        if mark:
+            marks.append(str(mark.val))
+    return marks
+
+
+def _extract_exam_marks_group(ls: [Lesson], st: [Student]):
+    marks = []
+    for l in ls:
+        mark = Mark.objects.filter(lesson=l, student_id__in=st).order_by()
+        if mark:
+            marks.append(str(mark.val))
+    return marks
 
 
 def _get_avg_duty_marks(st_obj):
