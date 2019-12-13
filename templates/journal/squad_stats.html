@@ -33,7 +33,8 @@
                                 {{ row.student.unit }}
                             </td>
                             <td>
-                                {{ row.student.short }}
+                                <a href="{% url 'student' student_id=row.student.id %}">                                 {{ row.student.short }}
+                                </a>
                             </td>
                             {% for mark in row.avg_marks %}
                                 <td class="col-md-1 text-center">
