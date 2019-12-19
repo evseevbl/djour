@@ -7,7 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect
 from image_cropping import ImageRatioField
 
 
@@ -266,7 +265,7 @@ class Student(models.Model):
     journal_id = models.IntegerField('Номер в журнале', blank=True, null=True)
     pic = models.ImageField(upload_to='students_pic/', blank=True, null=True, verbose_name='Изображение')
 
-    cropping = ImageRatioField('pic', '300x400')
+    cropping = ImageRatioField('pic', '200x300')
 
 
     def __str__(self):

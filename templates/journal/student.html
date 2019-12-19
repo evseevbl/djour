@@ -17,14 +17,14 @@
                     <div class="row">
                         <div class="col-md-4">
                             {% if student.pic %}
-                                <img src="{% cropped_thumbnail student 'cropping' scale=0.5 %}">
+                                <img src="{% cropped_thumbnail student 'cropping' scale=1 %}" class="img-responsive">
                                 <div class="imgButton" style="margin-top:10px;">
                                     <a href="/admin/journal/student/{{ student.id }}/change/">
                                         <button>Изменить фото</button>
                                     </a>
                                 </div>
                             {% else %}
-                                <img src="{% static 'none.png' %}" width="160" height="190">
+                                <img src="{% static 'none.png' %}" width="160" height="190" class="img-responsive">
                                 <div class="imgButton" style="margin-top:10px;">
                                     <a href="/admin/journal/student/{{ student.id }}/change/">
                                         <button>Добавить фото</button>
