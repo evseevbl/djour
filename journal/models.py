@@ -7,7 +7,9 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from image_cropping import ImageRatioField
+
 
 
 # from journal.managers.marks import student_short_name
@@ -44,6 +46,7 @@ class Attendance(models.Model):
         ]
 
 
+
 class StudentAttendance(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE)
     value = models.CharField(max_length=20, blank=True, null=True)
@@ -51,6 +54,7 @@ class StudentAttendance(models.Model):
 
     class Meta:
         managed = True
+
 
 
 class StudentAttendanceType(models.Model):
@@ -61,6 +65,7 @@ class StudentAttendanceType(models.Model):
     class Meta:
         managed = True
         db_table = 'attendance_types'
+
 
 
 class Duty(models.Model):
@@ -95,6 +100,7 @@ class Duty(models.Model):
         db_table = 'duties'
 
 
+
 #
 # class DutyType(models.Model):
 #     name = models.CharField(unique=True, max_length=100)
@@ -116,6 +122,7 @@ class EventParticipant(models.Model):
         verbose_name_plural = 'Участники мероприятия'
 
 
+
 class Event(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     date = models.DateField(verbose_name='Дата')
@@ -126,6 +133,7 @@ class Event(models.Model):
         db_table = 'events'
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
+
 
 
 class Exam(models.Model):
@@ -177,6 +185,7 @@ class Exam(models.Model):
         ]
 
 
+
 class Mark(models.Model):
     student = models.ForeignKey('journal.Student', models.CASCADE, blank=True, null=True)
     # teacher = models.ForeignKey('journal.Teacher', models.CASCADE, blank=True, null=True)
@@ -202,6 +211,7 @@ class Mark(models.Model):
     @property
     def from_display(self):
         pass
+
 
 
 class Penalty(models.Model):
@@ -240,6 +250,7 @@ class Penalty(models.Model):
         verbose_name_plural = 'Дисциплинарные практики'
 
 
+
 class Squad(models.Model):
     code = models.CharField(unique=True, max_length=4, blank=True, null=True, verbose_name='Номер')
 
@@ -253,6 +264,7 @@ class Squad(models.Model):
 
     def __str__(self):
         return f'{self.code}'
+
 
 
 class Student(models.Model):
@@ -290,6 +302,7 @@ class Student(models.Model):
         verbose_name_plural = 'Студенты'
 
 
+
 class Subject(models.Model):
     short = models.CharField('Сокращённое название', max_length=10, blank=True, null=True)
     name = models.CharField('Полное название', max_length=255, blank=True, null=True)
@@ -306,6 +319,7 @@ class Subject(models.Model):
         verbose_name_plural = 'Дисциплины'
 
 
+
 class Teacher(models.Model):
     last_name = models.CharField('Фамилия', max_length=50, blank=True, null=True)
     first_name = models.CharField('Имя', max_length=50, blank=True, null=True)
@@ -316,9 +330,11 @@ class Teacher(models.Model):
     def __str__(self):
         return f'({self.last_name}) {self.first_name} {self.middle_name} {self.rank} [{self.id}]'
 
+
     class Meta:
         managed = True
         db_table = 'teachers'
+
 
 
 class Curriculum(models.Model):
@@ -336,6 +352,7 @@ class Curriculum(models.Model):
 
         verbose_name = 'Расписание'
         verbose_name_plural = 'Расписание'
+
 
 
 class Lesson(models.Model):
@@ -360,6 +377,7 @@ class Lesson(models.Model):
         db_table = 'lessons'
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
+
 
 
 class PersonalInfo(models.Model):
@@ -402,11 +420,30 @@ class PersonalInfo(models.Model):
     program = models.CharField('Образовательная программа', max_length=100, blank=True, null=True)
     group = models.CharField('Группа', max_length=20, blank=True, null=True)
 
+
     def __str__(self):
         return f'{self.student.short} [{self.id}]'
+
 
     class Meta:
         managed = True
         db_table = 'student_info'
         verbose_name = 'Персональные данные'
         verbose_name_plural = 'Персональные данные'
+
+
+
+class UserExtension(models.Model):
+    user = models.OneToOneField(User, models.CASCADE, verbose_name="Имя пользователя")
+    squads = models.ManyToManyField('journal.Squad', blank=True, verbose_name="Может редактировать взвода")
+
+    date_limit = models.BooleanField(default=False, verbose_name="Ограничение на текущую дату")
+
+    def __str__(self):
+        return f'{self.user.username}'
+
+
+    class Meta:
+        managed = True
+        verbose_name = 'Разрешения пользователя'
+        verbose_name_plural = 'Разрешения пользователя'

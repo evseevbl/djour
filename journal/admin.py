@@ -1,11 +1,13 @@
 from django.contrib import admin
 from journal.models import *
 from image_cropping import ImageCroppingMixin
+from django.http import HttpResponseRedirect
+
 
 
 class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
-
     change_form_template = "../templates/journal/admin_edit.html"
+
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
@@ -13,9 +15,10 @@ class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-class PersonalInfoModelAdmin(admin.ModelAdmin):
 
+class PersonalInfoModelAdmin(admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
+
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
@@ -23,14 +26,16 @@ class PersonalInfoModelAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-class AttendanceModelAdmin(admin.ModelAdmin):
 
+class AttendanceModelAdmin(admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
+
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
             return HttpResponseRedirect("/journal/attendance/{}".format(obj.id))
         return super().response_change(request, obj)
+
 
 
 # Register your models here.
@@ -45,3 +50,4 @@ admin.site.register(Attendance, AttendanceModelAdmin)
 admin.site.register(Lesson)
 admin.site.register(Event)
 admin.site.register(EventParticipant)
+admin.site.register(UserExtension)
