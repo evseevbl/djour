@@ -23,9 +23,11 @@ def add_mark(request):
     d = json.loads(request.body)
     lesson = Lesson.objects.get(id=d["lesson_id"])
 
-
     user = request.user
-    ext = UserExtension.objects.get(user=user)
+    try:
+        ext = UserExtension.objects.get(user=user)
+    except UserExtension.DoesNotExist:
+        ext = None
     if ext and lesson:
         if not ext.squads.filter(userextension__squads__code=lesson.attendance.squad.code).exists():
             return HttpResponse(json.dumps({
@@ -36,7 +38,6 @@ def add_mark(request):
             return HttpResponse(json.dumps({
                 "error": "Этот пользователь может изменять оценки только на текущую дату",
             }))
-
 
     req = rMark(
         value=value2marks.get(d["value"].lower()),
