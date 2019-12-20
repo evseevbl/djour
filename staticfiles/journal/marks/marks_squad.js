@@ -6,7 +6,7 @@ $(document).ready(function () {
             searching: false,
             ordering: false,
             scrollX: true,
-            fixedColumns:   {
+            fixedColumns: {
                 leftColumns: 1,
             }
         })
@@ -28,6 +28,13 @@ $(document).ready(function () {
             console.log("made mark", m);
             axios.post('/api/marks/add', m).then((response) => {
                 let data = response.data;
+                // console.log('fff',data.error);
+
+                if (data.error !== undefined) {
+                    alert(data.error);
+                    location.reload();
+                    return;
+                }
 
                 if (val.mark_id === '') {
                     console.log("mark created, id=", data.id);

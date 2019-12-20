@@ -1,9 +1,10 @@
 import json
 
 from django.http import HttpResponse
-
+from datetime import date
 from api.models import rMark
-from journal.models import Mark
+from journal.models import Mark, UserExtension, Lesson
+
 
 
 def add_mark(request):
@@ -17,14 +18,30 @@ def add_mark(request):
         'у': -2,
         'н': -3,
     }
+
     m = Mark()
     d = json.loads(request.body)
-    print(d)
+    lesson = Lesson.objects.get(id=d["lesson_id"])
+
+
+    user = request.user
+    ext = UserExtension.objects.get(user=user)
+    if ext and lesson:
+        if not ext.squads.filter(userextension__squads__code=lesson.attendance.squad.code).exists():
+            return HttpResponse(json.dumps({
+                "error": "Этот пользователь не может изменять и создавать оценки для данного взвода",
+            }))
+
+        if lesson.attendance.date != date.today():
+            return HttpResponse(json.dumps({
+                "error": "Этот пользователь может изменять оценки только на текущую дату",
+            }))
+
+
     req = rMark(
         value=value2marks.get(d["value"].lower()),
         id=d["mark_id"],
         student_id=d["student_id"],
-        lesson_id=d["lesson_id"]
     )
 
     if req.id:
@@ -39,10 +56,8 @@ def add_mark(request):
         print("new mark")
         m = Mark(
             student_id=req.student_id,
-            # subject_id=req.subject_id,
-            # teacher_id=req.teacher_id,
             val=req.value,
-            lesson_id=req.lesson_id
+            lesson=lesson,
         )
         m.save()
 
