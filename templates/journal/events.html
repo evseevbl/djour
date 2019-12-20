@@ -28,17 +28,33 @@
                             <tr>
                                 <th>Название</th>
                                 <th>Дата</th>
+                                <th>Участники</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            {% for event in forms %}
+                            {% for wrap in forms %}
                                 <tr>
                                     <td>
-                                        {{ event.name }} &nbsp;
+                                        {{ wrap.event.name }} &nbsp;
                                     </td>
                                     <td>
-                                        {{ event.date }} &nbsp;
+                                        {{ wrap.event.date }} &nbsp;
+                                    </td>
+                                    <td>
+                                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample-{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <div class="collapse" id="collapseExample-{{ forloop.counter }}">
+                                        <div class="card card-body">
+                                           <p></p>
+                                           <p>
+                                            {% for p in wrap.participants %}
+                                                <b> {{ p.student.squad.code }} {{ p.student.short }} </b> <br>
+                                            {% endfor %}
+                                           </p>
+                                        </div>
+                                    </div>
                                     </td>
                                 </tr>
                                 {#            {{ student.id }}#}
@@ -86,6 +102,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 {% block javascript %}
