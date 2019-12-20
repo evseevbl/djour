@@ -16,7 +16,8 @@ $(document).ready(function () {
 
     $(".mycell")
         .inputFilter(function (value) {
-            return ["1", "2", "3", "4", "5", "Н", "н", "у", "У", "п", "П", ""].includes(value);
+            // return ["1", "2", "3", "4", "5", "Н", "н", "у", "У", "п", "П", ""].includes(value);
+            return ["1", "2", "3", "4", "5", ""].includes(value);
         })
         .change(function () {
             let val = val_from_cell_name(this.name);
