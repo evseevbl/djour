@@ -1,19 +1,47 @@
 from django.shortcuts import render
-from journal.models import Attendance
+from journal.models import Attendance, UserExtension
+from maintenance.helpers.named_tuple import namedtuple_wrapper
 from journal import constants
 from journal.managers.context import with_context
+from datetime import date
+
+tNewAttendance = namedtuple_wrapper(
+    'tNewAttendance',
+    (
+        'date',
+        'squad',
+    )
+)
+
 
 
 def attendance(request):
-    f = Attendance.objects.all()
+    restrictions = None
+    try:
+        ext = UserExtension.objects.get(user=request.user)
+    except UserExtension.DoesNotExist:
+        ext = None
+    if ext:
+        allowed_squads = ext.squads.all()
+        f = Attendance.objects.filter(squad__in=allowed_squads)
+        restrictions = [
+            tNewAttendance(
+                date=date.today(),
+                squad=squad,
+            ) for squad in allowed_squads]
+    else:
+        # all forms, no restrictions
+        f = Attendance.objects.all()
 
     return render(
         request,
         "journal/attendance.html",
         with_context({
             "forms": f,
+            "restrictions": restrictions
         })
     )
+
 
 
 def edit_attendance(request, attendance_id):
