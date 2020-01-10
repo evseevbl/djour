@@ -2,14 +2,15 @@ from django.shortcuts import render
 from journal.models import Attendance, UserExtension
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 from journal import constants
-from journal.managers.context import with_context
+from journal.managers.context import with_context, get_user_extension
 from datetime import date
 
-tNewAttendance = namedtuple_wrapper(
-    'tNewAttendance',
+tAttendanceRestriction = namedtuple_wrapper(
+    'tAttendanceRestriction',
     (
         'date',
-        'squad',
+        'squads',
+        'can_edit',
     )
 )
 
@@ -24,11 +25,11 @@ def attendance(request):
     if ext:
         allowed_squads = ext.squads.all()
         f = Attendance.objects.filter(squad__in=allowed_squads)
-        restrictions = [
-            tNewAttendance(
-                date=date.today(),
-                squad=squad,
-            ) for squad in allowed_squads]
+        restrictions = tAttendanceRestriction(
+            date=date.today(),
+            squads=allowed_squads,
+            can_edit=False,
+        )
     else:
         # all forms, no restrictions
         f = Attendance.objects.all()
@@ -43,8 +44,19 @@ def attendance(request):
     )
 
 
-
 def edit_attendance(request, attendance_id):
+    ext = get_user_extension(request.user)
+    if ext:
+        if not ext.can_edit_attendance:
+            return render(
+                request,
+
+                "journal/attendance_edit.html",
+                with_context({
+                   "error": "Этот пользователь не может изменять строевые записки"
+                })
+            )
+
     att: Attendance = Attendance.objects.filter(id=attendance_id)[0]
     types = constants.ATT_TYPES
 

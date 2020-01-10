@@ -13,7 +13,7 @@ def add_attendance(request):
     if request.method == 'POST':
         form = NewAttendanceForm(request.POST)
         squad_code = form.data["squad_code"]
-        date = form.data["date"]
+        date = form.data.get("date")
         # todo constants
         present = constants.ATTENDANCE_TYPE_PRESENT
 
