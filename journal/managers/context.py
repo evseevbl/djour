@@ -59,27 +59,3 @@ def get_user_extension(user):
         ext = None
     return ext
 
-
-
-# def check_permission(permission, response_object=None, raise_exception=False):
-#     def decorator(view):
-#         def wrapper(*args, **kwargs):
-#             class_instance = args[0]
-#
-#             if not _check_permission(class_instance.user, permission):
-#                 return None
-#
-#             return view(*args, **kwargs)
-#
-#
-#         return wrapper
-#
-#
-#     return decorator
-#
-#
-#
-#
-# def _check_permission(user, permission, obj=None):
-#     ext = get_user_extension(user)
-#
