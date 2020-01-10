@@ -27,23 +27,23 @@ def add_lesson(request):
             lesson.exam = Exam.objects.get(id=ex)
         lesson.save()
 
-        att = lesson.attendance
-        for s in lesson.attendance.students.all():
-            s: StudentAttendance = s
-            if s.value == "truant":
-                val = -1
-            elif s.value == "absent":
-                val = -2
-            elif s.value == "duty":
-                val = -3
-            else:
-                continue
-            m = Mark(
-                student=s.student,
-                val=val,
-                lesson=lesson,
-            )
-            m.save()
+        # att = lesson.attendance
+        # for s in lesson.attendance.students.all():
+        #     s: StudentAttendance = s
+        #     if s.value == "truant":
+        #         val = -1
+        #     elif s.value == "absent":
+        #         val = -2
+        #     elif s.value == "duty":
+        #         val = -3
+        #     else:
+        #         continue
+        #     m = Mark(
+        #         student=s.student,
+        #         val=val,
+        #         lesson=lesson,
+        #     )
+        #     m.save()
 
         print(request.build_absolute_uri())  # Keeps query parameters
 

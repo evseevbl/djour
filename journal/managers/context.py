@@ -1,4 +1,5 @@
-from journal.models import Squad, Subject
+from journal.models import Squad, Subject, UserExtension
+from django.shortcuts import render
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
 tSquadSubject = namedtuple_wrapper(
@@ -8,6 +9,13 @@ tSquadSubject = namedtuple_wrapper(
         "code",
         "subjects",
     ]
+)
+
+ERROR_403 = (
+    """<h3 class="header-wo-margin" align="center">Недостаточно прав!</h3>"""
+    """<p class="text-muted header-comment" align="center">"""
+    "{}"
+    "</p>"
 )
 
 
@@ -25,6 +33,7 @@ def get_squads_with_subjects():
     return ans
 
 
+
 tMarkValues = namedtuple_wrapper(
     "tMarkValues",
     [
@@ -40,3 +49,13 @@ def with_context(d: dict):
     squads = get_squads_with_subjects()
     d["squad_list"] = squads
     return d
+
+
+
+def get_user_extension(user):
+    try:
+        ext = UserExtension.objects.get(user=user)
+    except UserExtension.DoesNotExist:
+        ext = None
+    return ext
+

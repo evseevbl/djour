@@ -3,7 +3,8 @@ import datetime as dt
 from django.http import HttpResponseRedirect
 
 from api.forms import NewAttendanceForm, SetAttendanceStatusForm
-from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance
+from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance, Mark
+from journal.constants import *
 from journal import constants
 
 
@@ -12,7 +13,7 @@ def add_attendance(request):
     if request.method == 'POST':
         form = NewAttendanceForm(request.POST)
         squad_code = form.data["squad_code"]
-        date = form.data["date"]
+        date = form.data.get("date")
         # todo constants
         present = constants.ATTENDANCE_TYPE_PRESENT
 
@@ -44,11 +45,19 @@ def set_attendance(request):
         student_id = data["student_id"]
         att_id = data["attendance_id"]
         # todo validate
-        att_type_value = data["attendance_type"]
+        new_value = data["attendance_type"]
 
-        att = Attendance.objects.filter(id=att_id).first()
+        att = Attendance.objects.get(id=att_id)
 
-        student_att: StudentAttendance = StudentAttendance.objects.filter(student_id=student_id, attendance=att).first()
-        student_att.value = att_type_value
+        student_att: StudentAttendance = StudentAttendance.objects.get(student_id=student_id, attendance=att)
+
+        prev_value = student_att.value
+
+        student_att.value = new_value
         student_att.save()
+        if new_value in (ATTENDANCE_TYPE_TRUANT.value, ATTENDANCE_TYPE_ABSENT.value, ATTENDANCE_TYPE_DUTY.value):
+            # remove all marks for this attendance
+            for m in Mark.objects.filter(student_id=student_id, lesson__attendance=att):
+                m.delete()
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

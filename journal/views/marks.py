@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from journal.managers.context import with_context
 from journal.managers.marks import students_to_keys, tKey, tMark, make_cells
-from journal.models import Subject, Mark, Lesson, Student, Attendance, Squad, Exam
+from journal.models import Subject, Mark, Lesson, Student, Attendance, Squad, Exam, StudentAttendance
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -14,9 +14,12 @@ def marks_squad(request, squad_code="1702", subject_id=1):
     subj = Subject.objects.filter(id=subject_id).first()
     y_keys = students_to_keys(Student.objects.filter(squad__code=squad_code))
     x_keys = lessons_to_keys(Lesson.objects.filter(attendance__squad__code=squad_code, subject_id=subject_id))
-    marks = marks_to_keys(Mark.objects.filter(student__squad__code=squad_code, lesson__subject_id=subject_id))
-    header, cells = make_cells(x_keys, y_keys, marks)
+
     squad = Squad.objects.filter(code=squad_code).first()
+    all_marks = list(Mark.objects.filter(student__squad__code=squad_code, lesson__subject_id=subject_id, val__gt=0))
+    all_marks.extend(get_fake_marks(squad, subj))
+    marks = marks_to_keys(all_marks)
+    header, cells = make_cells(x_keys, y_keys, marks)
 
     att = Attendance.objects.filter(squad=squad).order_by('-date')
 
@@ -64,3 +67,25 @@ def lessons_to_keys(lessons: [Lesson]) -> [tKey]:
             comment=l.name,
         ) for l in lessons
     ]
+
+
+
+def get_fake_marks(squad, subject) -> [Mark]:
+    marks = []
+    lessons = Lesson.objects.filter(attendance__squad=squad, subject=subject)
+    for lesson in lessons:
+        for s in lesson.attendance.students.all():
+            if s.value == "truant":
+                val = -1
+            elif s.value == "absent":
+                val = -2
+            elif s.value == "duty":
+                val = -3
+            else:
+                continue
+            marks.append(Mark(
+                student=s.student,
+                val=val,
+                lesson=lesson,
+            ))
+    return marks

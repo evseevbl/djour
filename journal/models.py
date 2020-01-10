@@ -438,6 +438,7 @@ class UserExtension(models.Model):
     squads = models.ManyToManyField('journal.Squad', blank=True, verbose_name="Может редактировать взвода")
 
     date_limit = models.BooleanField(default=False, verbose_name="Ограничение на текущую дату")
+    can_edit_attendance = models.BooleanField(default=False, verbose_name="Может изменять строевые записки")
 
     def __str__(self):
         return f'{self.user.username}'
