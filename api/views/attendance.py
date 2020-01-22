@@ -1,12 +1,12 @@
 import datetime as dt
 
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
-from journal.managers.context import with_context
 from api.forms import NewAttendanceForm, SetAttendanceStatusForm
 from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance, Mark
+from journal.managers.context import with_context
 from journal.constants import *
 from journal import constants
 
