@@ -20,6 +20,8 @@ tKey = namedtuple_wrapper(
         "sort",
         "val",
         "comment",
+        "exam_id",
+        "exam_name"
     ]
 )
 tAvg = namedtuple_wrapper(

@@ -65,6 +65,8 @@ def lessons_to_keys(lessons: [Lesson]) -> [tKey]:
             sort=l.attendance.date,
             val=l.id,
             comment=l.name,
+            exam_id=l.exam.id if l.exam is not None else None,
+            exam_name=l.exam.russian_name if l.exam is not None else None
         ) for l in lessons
     ]
 
