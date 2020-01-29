@@ -336,25 +336,6 @@ class Teacher(models.Model):
         db_table = 'teachers'
 
 
-
-class Curriculum(models.Model):
-    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
-    subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True, verbose_name='Предмет')
-
-
-    def __str__(self):
-        return f'({self.squad.code}) {self.subject.short} [{self.id}]'
-
-
-    class Meta:
-        managed = True
-        db_table = 'curriculum'
-
-        verbose_name = 'Расписание'
-        verbose_name_plural = 'Расписание'
-
-
-
 class Lesson(models.Model):
     # squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, models.CASCADE, blank=True, null=True, verbose_name='Предмет')
@@ -448,3 +429,17 @@ class UserExtension(models.Model):
         managed = True
         verbose_name = 'Разрешения пользователя'
         verbose_name_plural = 'Разрешения пользователя'
+
+
+class TimeTable(models.Model):
+    squad = models.ForeignKey(Squad, models.CASCADE, blank=True, null=True, verbose_name='Взвод')
+    subjects = models.ManyToManyField(Subject, blank=True, verbose_name='Предметы')
+
+    def __str__(self):
+        return f'Взвод {self.squad}'
+
+    class Meta:
+        managed = True
+        db_table = 'timetable'
+        verbose_name = 'Расписание'
+        verbose_name_plural = 'Расписание'

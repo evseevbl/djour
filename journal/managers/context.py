@@ -22,8 +22,8 @@ ERROR_403 = (
 def get_squads_with_subjects():
     ans = []
     for s in Squad.objects.order_by('code'):
-        q = Subject.objects.filter(curriculum__squad__code=s.code).prefetch_related(
-            'curriculum_set__squad'
+        q = Subject.objects.filter(timetable__squad__code=s.code).prefetch_related(
+            'timetable_set__squad'
         )
         ans.append(tSquadSubject(
             code=s.code,

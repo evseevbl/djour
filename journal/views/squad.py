@@ -55,7 +55,7 @@ tUnitAvgs = namedtuple_wrapper(
 def squad_stats(request, squad_code='1701'):
     squad = Squad.objects.get(code=squad_code)
     students = Student.objects.filter(squad=squad).order_by('unit', 'last_name')
-    subjects = Subject.objects.filter(curriculum__squad=squad)
+    subjects = Subject.objects.filter(timetable__squad__code=squad_code)
 
     return render(
         request,
