@@ -1,9 +1,12 @@
 import datetime as dt
 
+from django.db import IntegrityError
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from api.forms import NewAttendanceForm, SetAttendanceStatusForm
 from journal.models import Squad, Lesson, Attendance, Student, StudentAttendance, Mark
+from journal.managers.context import with_context
 from journal.constants import *
 from journal import constants
 
@@ -14,15 +17,24 @@ def add_attendance(request):
         form = NewAttendanceForm(request.POST)
         squad_code = form.data["squad_code"]
         date = form.data.get("date")
+        date_str = dt.datetime.strptime(date, '%d-%m-%Y')
         # todo constants
         present = constants.ATTENDANCE_TYPE_PRESENT
-
+        
         squad = Squad.objects.filter(code=squad_code)[0]
         att = Attendance(
-            date=dt.datetime.strptime(date, '%d-%m-%Y'),
+            date=date_str,
             squad=squad,
         )
-        att.save()
+        try:
+            att.save()
+        except IntegrityError:
+            return render(
+                request,
+                "journal/attendance.html",
+                with_context({
+                    "error": f"Для взвода {squad_code} уже существует строевая записка на {date_str}"
+                }))
 
         students = Student.objects.filter(squad_id=squad.id)
         for student in students:
