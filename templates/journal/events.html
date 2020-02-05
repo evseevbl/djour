@@ -28,7 +28,7 @@
                             <tr>
                                 <th>Название</th>
                                 <th>Дата</th>
-                                <th>Участники</th>
+                                <th style="min-width: 180px">Участники</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -41,11 +41,11 @@
                                     <td>
                                         {{ wrap.event.date }} &nbsp;
                                     </td>
-                                    <td>
+                                    <td style="text-align: center">
                                     <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample-{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                    <div class="collapse" id="collapseExample-{{ forloop.counter }}">
+                                    <div style="text-align: left" class="collapse" id="collapseExample-{{ forloop.counter }}">
                                         <div class="card card-body">
                                            <p></p>
                                            <p>
