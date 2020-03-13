@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 
 class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
+    search_fields = ('last_name', 'first_name', 'middle_name', 'squad__code')
 
 
     def response_change(self, request, obj):
@@ -18,6 +19,7 @@ class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
 
 class PersonalInfoModelAdmin(admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
+    search_fields = ('student__last_name', 'student__first_name', 'student__middle_name', 'student__squad__code')
 
 
     def response_change(self, request, obj):

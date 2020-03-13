@@ -422,7 +422,7 @@ class PersonalInfo(models.Model):
 
 
     def __str__(self):
-        return f'{self.student.short} [{self.id}]'
+        return f'({self.student.squad.code}) {self.student.last_name} {self.student.first_name} {self.student.middle_name} [{self.id}]'
 
 
     class Meta:
