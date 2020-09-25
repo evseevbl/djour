@@ -44,7 +44,7 @@ class AttendanceModelAdmin(admin.ModelAdmin):
 admin.site.register(Subject)
 admin.site.register(Student, MyModelAdmin)
 admin.site.register(Squad)
-admin.site.register(Curriculum)
+admin.site.register(TimeTable)
 admin.site.register(PersonalInfo, PersonalInfoModelAdmin)
 admin.site.register(Penalty)
 admin.site.register(Exam)

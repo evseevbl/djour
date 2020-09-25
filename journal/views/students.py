@@ -54,7 +54,7 @@ def students(request):
 @login_required
 def student(request, student_id):
     st: Student = Student.objects.filter(id=student_id).first()
-    all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
+    all_subjects = Subject.objects.filter(timetable__squad__code=st.squad)
     avgs = []
     for subj in all_subjects:
         avgs.append(tAvg(
@@ -129,7 +129,7 @@ def _get_options(model_choices):
 
 def _get_exam_marks(st: Student) -> dict:
     exams = Exam.objects.filter(squad=st.squad)
-    all_subjects = Subject.objects.filter(curriculum__squad=st.squad)
+    all_subjects = Subject.objects.filter(timetable__squad__code=st.squad)
     result = {}
     for s in all_subjects:
         result[s.short] = []
@@ -145,7 +145,7 @@ def _get_exam_marks(st: Student) -> dict:
 
 def _get_group_exam_marks(students: [Student], squad: Squad) -> dict:
     exams = Exam.objects.filter(squad=squad)
-    all_subjects = Subject.objects.filter(curriculum__squad=squad)
+    all_subjects = Subject.objects.filter(timetable__squad__code=squad)
     result = {}
     for s in all_subjects:
         result[s.short] = []
