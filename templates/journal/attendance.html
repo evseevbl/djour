@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% include 'journal/sidebar.html' %}
+
 {% block content %}
     <h2>
         Строевая записка
@@ -77,7 +79,7 @@
                         {{ form }}
                         <div class="md-form mb-5">
                             <label for="id_date">Дата</label>
-                            {% if restrictions %}
+                            {% if restrictions.date_restricted %}
                                 <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control" value="{{ restrictions.date | date:"d-m-Y" }}" readonly>
                             {% else %}
                                 <input placeholder="Выберите дату" name="date" type="text" id="id_date" class="form-control datepicker">
@@ -99,8 +101,15 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        {#                    TODO make proper form     #}
+                    {% if restrictions %}
+                        {% if restrictions.can_edit %}
+                            <button class="btn btn-default" type="submit" id="addAttendanceSubmit">ОК</button>
+                        {% else %}
+                            <button class="btn btn-default" type="submit" id="addAttendanceSubmit" disabled>ОК</button>
+                        {% endif %}
+                    {% else %}
                         <button class="btn btn-default" type="submit" id="addAttendanceSubmit">ОК</button>
+                    {% endif %}
                         <button class="btn btn-default" data-dismiss="modal">Отмена</button>
                     </div>
                 </form>
@@ -123,7 +132,7 @@
         });
     </script>
 
-    {{ block.super }}
+{#    {{ block.super }}#}
     <script>
         $(document).ready(function () {
             let select = {};
