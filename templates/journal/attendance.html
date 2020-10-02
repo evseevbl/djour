@@ -42,7 +42,7 @@
                 {% for f in forms %}
                     <tr>
                         <td>{{ f.squad }}</td>
-                        <td data-sort="{{ f.datestr }}">{{ f.date }}</td>
+                        <td data-sort="{{ f.datestr }}">{{ f.date |date:"d.m.Y"}}</td>
                         <td>{{ f.students.all | length }}</td>
                         <td>{{ f.absent }}</td>
                         <td><a class="fa fa-edit" href="{% url 'attendance_edit' attendance_id=f.id %}"></a></td>
