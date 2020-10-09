@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -63,7 +63,7 @@ def student(request, student_id):
     for subj in all_subjects:
         avgs.append(tAvg(
             short=subj.short,
-            avg=avg_mark_student(subj, student_id),
+            avg=avg_mark_student(subj, student_id, date.today() - timedelta(weeks=300), date.today()),
             # exams=
         ))
         # todo оценки с учётом пропусков
