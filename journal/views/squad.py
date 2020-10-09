@@ -116,18 +116,14 @@ def _get_unit_marks(subjects, students, from_date: date, to_date: date):
                 lessons = Lesson.objects.filter(exam=e)
                 mark = Mark.objects.filter(lesson_id__in=_lessons_to_ids(lessons), val__gt=0, student=st).order_by(
                     '-lesson__attendance__date').first()
-                if mark is None:
-                    mark = 0
-                else:
-                    mark = mark.val
                 # ffmark = _extract_exam_marks(lesson, st)
-                if mark != 0:
+                if mark is not None:
                     if e.semester in all_marks:
                         all_marks[e.semester].append(mark)
                     else:
                         all_marks[e.semester] = [mark]
         avgs = [
-            tSubjectMark(semester=subj_name, mark=round(sum(marks) / len(marks), 2))
+            tSubjectMark(semester=subj_name, mark=round(sum([mark.val for mark in marks]) / len(marks), 2))
             for subj_name, marks in all_marks.items()
         ]
         for_subj = [
