@@ -30,7 +30,7 @@
                             <tbody>
 
                             {% for student in students %}
-                                <tr>
+                                <tr {% if student.deducted %} style="color: darkred" title="Закончил обучение"  {% endif %}>
                                     <td>
                                         {{ student.squad.code }} &nbsp;
                                     </td>

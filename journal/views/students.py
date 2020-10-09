@@ -1,13 +1,11 @@
+from datetime import date
 from django.shortcuts import render
-
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from journal.managers.context import with_context
 from journal.models import *
 from journal.managers.marks import tAvg
-
-from django.views.decorators.csrf import ensure_csrf_cookie
-
 from journal.views.common import avg_mark_student, get_attendance_stats
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
@@ -40,6 +38,12 @@ tExamMark = namedtuple_wrapper(
 @login_required
 def students(request):
     ls: [Student] = Student.objects.all()
+    for student in ls:
+        student_info = PersonalInfo.objects.filter(student=student)
+        if student_info:
+            student.deducted = student_info[0].end_date is not None
+        else:
+            student.deducted = False
     return render(
         request,
         "journal/students.html",
