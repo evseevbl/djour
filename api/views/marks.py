@@ -34,7 +34,7 @@ def add_mark(request):
                 "error": "Этот пользователь не может изменять и создавать оценки для данного взвода",
             }))
 
-        if lesson.attendance.date != date.today():
+        if ext.date_limit and lesson.attendance.date != date.today():
             return HttpResponse(json.dumps({
                 "error": "Этот пользователь может изменять оценки только на текущую дату",
             }))
