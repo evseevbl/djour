@@ -8,11 +8,11 @@
             <span style="float: left;">
             &nbsp;&nbsp;Итоги взвода {{ squad_code }} за период с &nbsp;
             </span>
-            <input placeholder="{{ from_date|date:"d.m.Y" }}" style="width: 100px; float: left;" name="from" type="text" id="id_date" class="form-control datepicker">
+            <input placeholder="{{ from_date|date:"d-m-Y" }}" style="width: 100px; float: left;" name="from" type="text" id="id_date" class="form-control datepicker">
             <span style="float: left;">
             &nbsp;по&nbsp;
             </span>
-            <input placeholder="{{ to_date|date:"d.m.Y" }}" style="width: 100px; float: left;" name="to" type="text" id="id_date" class="form-control datepicker">
+            <input placeholder="{{ to_date|date:"d-m-Y" }}" style="width: 100px; float: left;" name="to" type="text" id="id_date" class="form-control datepicker">
             <br>
             <div class="modal-footer d-flex justify-content-center" style="text-align: left;">
                 <button class="btn btn-default" type="submit" id="addPenaltySubmit">Искать</button>
