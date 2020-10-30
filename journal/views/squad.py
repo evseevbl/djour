@@ -56,15 +56,25 @@ tUnitAvgs = namedtuple_wrapper(
 
 @login_required()
 def squad_stats(request, squad_code='1701'):
-    if 'to' in request.GET:
-        to_date = datetime.strptime(request.GET.get('to'), '%d-%m-%Y')
-    else:
-        to_date = date.today()
-    if 'from' in request.GET:
-        from_date = datetime.strptime(request.GET.get('from'), '%d-%m-%Y')
-    else:
-        from_date = to_date - timedelta(days=30)
-    print(from_date, to_date)
+    try:
+        if 'to' in request.GET:
+            to_date = datetime.strptime(request.GET.get('to'), '%d-%m-%Y')
+        else:
+            to_date = date.today()
+        if 'from' in request.GET:
+            from_date = datetime.strptime(request.GET.get('from'), '%d-%m-%Y')
+        else:
+            from_date = to_date - timedelta(days=30)
+    except:
+        context = {
+            "error": "Неправильный формат даты",
+            'squad_code': squad_code
+        }
+        return render(
+            request,
+            "journal/squad_stats.html",
+            with_context(context)
+        )
     squad = Squad.objects.get(code=squad_code)
     students = Student.objects.filter(squad=squad).order_by('unit', 'last_name')
     subjects = Subject.objects.filter(timetable__squad__code=squad_code)
