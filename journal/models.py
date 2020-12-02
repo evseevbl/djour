@@ -345,7 +345,7 @@ class Lesson(models.Model):
 
 
     def clean(self):
-        if self.subject != self.exam.subject:
+        if self.exam is not None and self.subject != self.exam.subject:
             raise ValidationError('Дисциплины экзамена и занятия должны совпадать')
 
 
