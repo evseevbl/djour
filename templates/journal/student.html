@@ -163,13 +163,13 @@
                                 <tbody>
                                 <tr>
                                     <td>Дата</td>
-                                    <td>{{ info.end_date|date:"Y-m-d" }}</td>
                                     <td>{{ info.start_date|date:"Y-m-d" }}</td>
+                                    <td>{{ info.end_date|date:"Y-m-d" }}</td>
                                 </tr>
                                 <tr>
                                     <td>Приказ</td>
-                                    <td>{{ info.order_deduction|default_if_none:"-" }}</td>
                                     <td>{{ info.order_admission|default_if_none:"-" }}</td>
+                                    <td>{{ info.order_deduction|default_if_none:"-" }}</td>
                                 </tr>
                                 </tbody>
                             </table>

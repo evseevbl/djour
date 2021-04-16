@@ -6,20 +6,28 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0008_auto_20191011_0931'),
+        ("journal", "0008_auto_20191011_0931"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='curriculum',
-            options={'managed': True, 'verbose_name': 'Расписание', 'verbose_name_plural': 'Расписание'},
+            name="curriculum",
+            options={
+                "managed": True,
+                "verbose_name": "Расписание",
+                "verbose_name_plural": "Расписание",
+            },
         ),
         migrations.AlterModelOptions(
-            name='squad',
-            options={'managed': True, 'verbose_name': 'Взвод', 'verbose_name_plural': 'Взвода'},
+            name="squad",
+            options={
+                "managed": True,
+                "verbose_name": "Взвод",
+                "verbose_name_plural": "Взвода",
+            },
         ),
         migrations.AlterModelTable(
-            name='studentattendancetype',
-            table='attendance_types',
+            name="studentattendancetype",
+            table="attendance_types",
         ),
     ]

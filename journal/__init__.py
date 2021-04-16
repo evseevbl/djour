@@ -1,1 +1,1 @@
-default_app_config = 'journal.apps.JournalConfig'
+default_app_config = "journal.apps.JournalConfig"

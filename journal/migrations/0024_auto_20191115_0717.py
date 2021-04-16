@@ -6,20 +6,32 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0023_examattempt_name'),
+        ("journal", "0023_examattempt_name"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='exam',
-            options={'managed': True, 'verbose_name': 'Форма контроля', 'verbose_name_plural': 'Формы контроля'},
+            name="exam",
+            options={
+                "managed": True,
+                "verbose_name": "Форма контроля",
+                "verbose_name_plural": "Формы контроля",
+            },
         ),
         migrations.AlterModelOptions(
-            name='examattempt',
-            options={'managed': True, 'verbose_name': 'Попытка сдачи экзамена', 'verbose_name_plural': 'Попытки сдачи экзамена'},
+            name="examattempt",
+            options={
+                "managed": True,
+                "verbose_name": "Попытка сдачи экзамена",
+                "verbose_name_plural": "Попытки сдачи экзамена",
+            },
         ),
         migrations.AlterModelOptions(
-            name='exammark',
-            options={'managed': True, 'verbose_name': 'Оценка за форму контроля', 'verbose_name_plural': 'Оценки за форму контроля'},
+            name="exammark",
+            options={
+                "managed": True,
+                "verbose_name": "Оценка за форму контроля",
+                "verbose_name_plural": "Оценки за форму контроля",
+            },
         ),
     ]

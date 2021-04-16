@@ -7,21 +7,32 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0020_auto_20191108_1244'),
+        ("journal", "0020_auto_20191108_1244"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='penalty',
-            options={'managed': True, 'verbose_name': 'Дисциплинарная практика', 'verbose_name_plural': 'Дисциплинарные практики'},
+            name="penalty",
+            options={
+                "managed": True,
+                "verbose_name": "Дисциплинарная практика",
+                "verbose_name_plural": "Дисциплинарные практики",
+            },
         ),
         migrations.AddField(
-            model_name='penalty',
-            name='attendance',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Attendance'),
+            model_name="penalty",
+            name="attendance",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Attendance",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='attendance',
-            constraint=models.UniqueConstraint(fields=('date', 'squad'), name='date/squad pair'),
+            model_name="attendance",
+            constraint=models.UniqueConstraint(
+                fields=("date", "squad"), name="date/squad pair"
+            ),
         ),
     ]

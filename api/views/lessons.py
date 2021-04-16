@@ -8,7 +8,7 @@ from journal.models import Squad, Lesson, StudentAttendance, Mark, Exam
 
 def add_lesson(request):
     print(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         # create a form instance and populate it with data from the request:
         form = LessonForm(request.POST)
         data = form.data
@@ -19,10 +19,10 @@ def add_lesson(request):
             name=data["name"],
             subject_id=data["subject_id"],
             # squad=squad,
-            attendance_id=data["attendance_id"]
+            attendance_id=data["attendance_id"],
         )
         ex = data.get("exam_id")
-        print('exam=', ex)
+        print("exam=", ex)
         if ex:
             lesson.exam = Exam.objects.get(id=ex)
         lesson.save()
@@ -49,4 +49,4 @@ def add_lesson(request):
 
         print(request.get_full_path())  # Keeps query parameters
     # return HttpResponseRedirect("")
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))

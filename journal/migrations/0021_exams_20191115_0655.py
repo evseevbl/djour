@@ -7,48 +7,97 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0020_auto_20191108_1244'),
+        ("journal", "0020_auto_20191108_1244"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ExamAttempt',
+            name="ExamAttempt",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('attendance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Attendance')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "attendance",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="journal.Attendance",
+                    ),
+                ),
             ],
             options={
-                'managed': True,
+                "managed": True,
             },
         ),
         migrations.CreateModel(
-            name='ExamMark',
+            name="ExamMark",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('val', models.IntegerField(verbose_name='Оценка')),
-                ('attempt', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.ExamAttempt', verbose_name='Экзамен/пересдача')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student', verbose_name='Студент')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("val", models.IntegerField(verbose_name="Оценка")),
+                (
+                    "attempt",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="journal.ExamAttempt",
+                        verbose_name="Экзамен/пересдача",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="journal.Student",
+                        verbose_name="Студент",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'exam_marks',
-                'managed': True,
+                "db_table": "exam_marks",
+                "managed": True,
             },
         ),
         migrations.AlterModelOptions(
-            name='penalty',
-            options={'managed': True, 'verbose_name': 'Дисциплинарная практика', 'verbose_name_plural': 'Дисциплинарные практики'},
+            name="penalty",
+            options={
+                "managed": True,
+                "verbose_name": "Дисциплинарная практика",
+                "verbose_name_plural": "Дисциплинарные практики",
+            },
         ),
         migrations.AddField(
-            model_name='exam',
-            name='squad',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad', verbose_name='Взвод'),
+            model_name="exam",
+            name="squad",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+                verbose_name="Взвод",
+            ),
         ),
         migrations.DeleteModel(
-            name='FinalMark',
+            name="FinalMark",
         ),
         migrations.AddField(
-            model_name='examattempt',
-            name='exam',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Exam', verbose_name='Экзамен'),
+            model_name="examattempt",
+            name="exam",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Exam",
+                verbose_name="Экзамен",
+            ),
         ),
     ]

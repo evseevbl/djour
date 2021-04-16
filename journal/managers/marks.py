@@ -10,28 +10,12 @@ tMark = namedtuple_wrapper(
         "x_key",
         "y_key",
         "val",
-    ]
+    ],
 )
 tKey = namedtuple_wrapper(
-    "tKey",
-    [
-        "id",
-        "display",
-        "sort",
-        "val",
-        "comment",
-        "exam_id",
-        "exam_name"
-    ]
+    "tKey", ["id", "display", "sort", "val", "comment", "exam_id", "exam_name"]
 )
-tAvg = namedtuple_wrapper(
-    'tAvg',
-    [
-        "short",
-        "avg",
-        "exams"
-    ]
-)
+tAvg = namedtuple_wrapper("tAvg", ["short", "avg", "exams"])
 
 
 def by_subject(marks_list: [Mark]) -> [tMark]:
@@ -48,7 +32,6 @@ def by_subject(marks_list: [Mark]) -> [tMark]:
     return ls
 
 
-
 def make_cells(x_keys: [tKey], y_keys: [tKey], marks: [tMark]):
     # сортируем для отображения
     x_keys.sort(key=lambda k: k.sort)
@@ -63,7 +46,7 @@ def make_cells(x_keys: [tKey], y_keys: [tKey], marks: [tMark]):
         yd[y_keys[i].id] = i
 
     # empty rows
-    cells = [['' + ''] * len(x_keys) for _ in range(len(y_keys))]
+    cells = [["" + ""] * len(x_keys) for _ in range(len(y_keys))]
     for m in marks:
         x = xd[m.x_key]
         y = yd[m.y_key]
@@ -76,7 +59,6 @@ def make_cells(x_keys: [tKey], y_keys: [tKey], marks: [tMark]):
     return x_keys, cells
 
 
-
 def date_to_key(d):
     ff = dt.combine(d, dt.min.time())
     return tKey(
@@ -84,7 +66,6 @@ def date_to_key(d):
         display=ff,
         sort=ff,
     )
-
 
 
 def student_to_key(s: Student) -> tKey:
@@ -96,13 +77,8 @@ def student_to_key(s: Student) -> tKey:
     )
 
 
-
 def students_to_keys(ls: [Student]) -> [tKey]:
     return sorted(map(student_to_key, ls), key=lambda x: x.sort)
 
 
-
 # def student_short_name(s: Student) -> str:
-
-
-

@@ -5,35 +5,63 @@ from journal.models import Mark, StudentAttendance
 
 def avg_mark_student(subject, student_id, from_date, to_date, absent_zero=False):
     if absent_zero:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject,
-                                    lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        marks = Mark.objects.filter(
+            student_id=student_id,
+            lesson__subject=subject,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     else:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject, val__gt=0,
-                                    lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        marks = Mark.objects.filter(
+            student_id=student_id,
+            lesson__subject=subject,
+            val__gt=0,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     return _avg_mark(marks)
 
 
 def avg_marks_group(students, subj, from_date: date, to_date: date):
     return _avg_mark(
-        Mark.objects.filter(lesson__subject=subj, student_id__in=students_to_ids(students), val__gt=0,
-                            lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        Mark.objects.filter(
+            lesson__subject=subj,
+            student_id__in=students_to_ids(students),
+            val__gt=0,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     )
 
 
 def for_subj_marks_group(students, subj, from_date: date, to_date: date):
     return _count_mark_group(
-        Mark.objects.filter(lesson__subject=subj, student_id__in=students_to_ids(students), val__gt=0,
-                            lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        Mark.objects.filter(
+            lesson__subject=subj,
+            student_id__in=students_to_ids(students),
+            val__gt=0,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     )
 
 
 def for_subj_mark_student(subject, student_id, from_date, to_date, absent_zero=False):
     if absent_zero:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject,
-                                    lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        marks = Mark.objects.filter(
+            student_id=student_id,
+            lesson__subject=subject,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     else:
-        marks = Mark.objects.filter(student_id=student_id, lesson__subject=subject, val__gt=0,
-                                    lesson__attendance__date__gte=from_date, lesson__attendance__date__lte=to_date)
+        marks = Mark.objects.filter(
+            student_id=student_id,
+            lesson__subject=subject,
+            val__gt=0,
+            lesson__attendance__date__gte=from_date,
+            lesson__attendance__date__lte=to_date,
+        )
     return _count_mark_student(marks)
 
 
@@ -67,7 +95,9 @@ def _count_mark_student(marks: [Mark]):
         histogram[mark] /= total
     if histogram[5] >= 0.5 and (histogram[4] + histogram[5] == 1):
         return 5
-    elif (histogram[4] + histogram[5] >= 0.5) and (histogram[3] + histogram[4] + histogram[5] == 1):
+    elif (histogram[4] + histogram[5] >= 0.5) and (
+        histogram[3] + histogram[4] + histogram[5] == 1
+    ):
         return 4
     elif counter[2] <= 1:
         return 3
@@ -85,7 +115,9 @@ def _count_mark_group(marks: [Mark]):
         histogram[mark] /= total
     if histogram[5] >= 0.45 and (histogram[3] + histogram[4] + histogram[5] >= 0.9):
         return 5
-    elif (histogram[4] + histogram[5] >= 0.4) and (histogram[3] + histogram[4] + histogram[5] >= 0.8):
+    elif (histogram[4] + histogram[5] >= 0.4) and (
+        histogram[3] + histogram[4] + histogram[5] >= 0.8
+    ):
         return 4
     elif histogram[3] + histogram[4] + histogram[5] >= 0.7:
         return 3

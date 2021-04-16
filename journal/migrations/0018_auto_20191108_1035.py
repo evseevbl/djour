@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0017_auto_20191108_1003'),
+        ("journal", "0017_auto_20191108_1003"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='studentattendancetype',
-            options={'managed': True},
+            name="studentattendancetype",
+            options={"managed": True},
         ),
     ]

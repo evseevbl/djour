@@ -6,25 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0027_remove_lesson_squad'),
+        ("journal", "0027_remove_lesson_squad"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='exam',
-            name='date',
+            model_name="exam",
+            name="date",
         ),
         migrations.RemoveField(
-            model_name='exam',
-            name='name',
+            model_name="exam",
+            name="name",
         ),
         migrations.RemoveField(
-            model_name='exam',
-            name='squad',
+            model_name="exam",
+            name="squad",
         ),
         migrations.AddField(
-            model_name='exam',
-            name='cemester',
-            field=models.IntegerField(choices=[(3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8)], default=0, verbose_name='Семестр'),
+            model_name="exam",
+            name="cemester",
+            field=models.IntegerField(
+                choices=[(3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8)],
+                default=0,
+                verbose_name="Семестр",
+            ),
         ),
     ]

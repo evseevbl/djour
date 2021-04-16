@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class JournalConfig(AppConfig):
-    name = 'journal'
+    name = "journal"
     verbose_name = "Журнал"
