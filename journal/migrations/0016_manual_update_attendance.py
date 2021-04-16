@@ -3,20 +3,16 @@
 from django.db import migrations
 
 
-
 def update_attendance(apps, schema_editor):
-    student_attendance = apps.get_model('journal', 'StudentAttendance')
+    student_attendance = apps.get_model("journal", "StudentAttendance")
     for att in student_attendance.objects.all():
         att.new_type = att.type.value
         att.save()
 
 
-
 class Migration(migrations.Migration):
     dependencies = [
-        ('journal', '0015_auto_20191108_0932'),
+        ("journal", "0015_auto_20191108_0932"),
     ]
 
-    operations = [
-        migrations.RunPython(update_attendance)
-    ]
+    operations = [migrations.RunPython(update_attendance)]

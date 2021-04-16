@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0014_auto_20191108_0807'),
+        ("journal", "0014_auto_20191108_0807"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='studentattendancetype',
-            options={'managed': False},
+            name="studentattendancetype",
+            options={"managed": False},
         ),
         migrations.AddField(
-            model_name='studentattendance',
-            name='new_type',
+            model_name="studentattendance",
+            name="new_type",
             field=models.CharField(blank=True, max_length=20, null=True),
         ),
     ]

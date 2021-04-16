@@ -8,23 +8,31 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0043_userextension_date_limit'),
+        ("journal", "0043_userextension_date_limit"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userextension',
-            name='date_limit',
-            field=models.BooleanField(default=False, verbose_name='Ограничение на текущую дату'),
+            model_name="userextension",
+            name="date_limit",
+            field=models.BooleanField(
+                default=False, verbose_name="Ограничение на текущую дату"
+            ),
         ),
         migrations.AlterField(
-            model_name='userextension',
-            name='squads',
-            field=models.ManyToManyField(blank=True, to='journal.Squad', verbose_name='Ограничения на взвода'),
+            model_name="userextension",
+            name="squads",
+            field=models.ManyToManyField(
+                blank=True, to="journal.Squad", verbose_name="Ограничения на взвода"
+            ),
         ),
         migrations.AlterField(
-            model_name='userextension',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Имя пользователя'),
+            model_name="userextension",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Имя пользователя",
+            ),
         ),
     ]

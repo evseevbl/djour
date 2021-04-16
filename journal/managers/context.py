@@ -8,7 +8,7 @@ tSquadSubject = namedtuple_wrapper(
         "id",
         "code",
         "subjects",
-    ]
+    ],
 )
 
 ERROR_403 = (
@@ -21,17 +21,18 @@ ERROR_403 = (
 
 def get_squads_with_subjects():
     ans = []
-    for s in Squad.objects.order_by('code'):
+    for s in Squad.objects.order_by("code"):
         q = Subject.objects.filter(timetable__squad__code=s.code).prefetch_related(
-            'timetable_set__squad'
+            "timetable_set__squad"
         )
-        ans.append(tSquadSubject(
-            code=s.code,
-            id=s.id,
-            subjects=q,
-        ))
+        ans.append(
+            tSquadSubject(
+                code=s.code,
+                id=s.id,
+                subjects=q,
+            )
+        )
     return ans
-
 
 
 tMarkValues = namedtuple_wrapper(
@@ -40,9 +41,8 @@ tMarkValues = namedtuple_wrapper(
         "id",
         "code",
         "subjects",
-    ]
+    ],
 )
-
 
 
 def with_context(d: dict):
@@ -51,11 +51,9 @@ def with_context(d: dict):
     return d
 
 
-
 def get_user_extension(user):
     try:
         ext = UserExtension.objects.get(user=user)
     except UserExtension.DoesNotExist:
         ext = None
     return ext
-

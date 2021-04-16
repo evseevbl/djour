@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0042_auto_20191220_0805'),
+        ("journal", "0042_auto_20191220_0805"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userextension',
-            name='date_limit',
+            model_name="userextension",
+            name="date_limit",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -6,17 +6,17 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0016_manual_update_attendance'),
+        ("journal", "0016_manual_update_attendance"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='studentattendance',
-            old_name='new_type',
-            new_name='value',
+            model_name="studentattendance",
+            old_name="new_type",
+            new_name="value",
         ),
         migrations.RemoveField(
-            model_name='studentattendance',
-            name='type',
+            model_name="studentattendance",
+            name="type",
         ),
     ]

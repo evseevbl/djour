@@ -10,26 +10,53 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('journal', '0040_auto_20191213_0858'),
+        ("journal", "0040_auto_20191213_0858"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='cropping',
-            field=image_cropping.fields.ImageRatioField('pic', '200x300', adapt_rotation=False, allow_fullsize=False, free_crop=False, help_text=None, hide_image_field=False, size_warning=False, verbose_name='cropping'),
+            model_name="student",
+            name="cropping",
+            field=image_cropping.fields.ImageRatioField(
+                "pic",
+                "200x300",
+                adapt_rotation=False,
+                allow_fullsize=False,
+                free_crop=False,
+                help_text=None,
+                hide_image_field=False,
+                size_warning=False,
+                verbose_name="cropping",
+            ),
         ),
         migrations.CreateModel(
-            name='UserExtension',
+            name="UserExtension",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('squads', models.ManyToManyField(blank=True, null=True, to='journal.Squad')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "squads",
+                    models.ManyToManyField(blank=True, null=True, to="journal.Squad"),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Разрешения пользователя',
-                'verbose_name_plural': 'Разрешения пользователя',
-                'managed': True,
+                "verbose_name": "Разрешения пользователя",
+                "verbose_name_plural": "Разрешения пользователя",
+                "managed": True,
             },
         ),
     ]

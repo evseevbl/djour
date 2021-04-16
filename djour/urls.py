@@ -22,8 +22,8 @@ from journal import urls
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("journal/", include("journal.urls")),
     path("", journal_index_redirect),
-    path('api/', include("api.urls")),
+    path("api/", include("api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -7,133 +7,238 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0009_auto_20191011_1106'),
+        ("journal", "0009_auto_20191011_1106"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='attendance',
-            name='squad',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad'),
+            model_name="attendance",
+            name="squad",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+            ),
         ),
         migrations.AlterField(
-            model_name='curriculum',
-            name='squad',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad'),
+            model_name="curriculum",
+            name="squad",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+            ),
         ),
         migrations.AlterField(
-            model_name='curriculum',
-            name='subject',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Subject'),
+            model_name="curriculum",
+            name="subject",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Subject",
+            ),
         ),
         migrations.AlterField(
-            model_name='duty',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="duty",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='duty',
-            name='type',
-            field=models.ForeignKey(db_column='type', on_delete=django.db.models.deletion.CASCADE, to='journal.DutyType'),
+            model_name="duty",
+            name="type",
+            field=models.ForeignKey(
+                db_column="type",
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.DutyType",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventparticipant',
-            name='event',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Event'),
+            model_name="eventparticipant",
+            name="event",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Event",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventparticipant',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="eventparticipant",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='exam',
-            name='subject',
-            field=models.ForeignKey(db_column='subject', on_delete=django.db.models.deletion.CASCADE, to='journal.Subject'),
+            model_name="exam",
+            name="subject",
+            field=models.ForeignKey(
+                db_column="subject",
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Subject",
+            ),
         ),
         migrations.AlterField(
-            model_name='final',
-            name='squad',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad'),
+            model_name="final",
+            name="squad",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+            ),
         ),
         migrations.AlterField(
-            model_name='final',
-            name='subject',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Subject'),
+            model_name="final",
+            name="subject",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Subject",
+            ),
         ),
         migrations.AlterField(
-            model_name='finalmark',
-            name='final',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Final'),
+            model_name="finalmark",
+            name="final",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Final",
+            ),
         ),
         migrations.AlterField(
-            model_name='finalmark',
-            name='student',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="finalmark",
+            name="student",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Student",
+            ),
         ),
         migrations.AlterField(
-            model_name='lesson',
-            name='attendance',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Attendance'),
+            model_name="lesson",
+            name="attendance",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Attendance",
+            ),
         ),
         migrations.AlterField(
-            model_name='lesson',
-            name='squad',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad'),
+            model_name="lesson",
+            name="squad",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+            ),
         ),
         migrations.AlterField(
-            model_name='lesson',
-            name='subject',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Subject'),
+            model_name="lesson",
+            name="subject",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Subject",
+            ),
         ),
         migrations.AlterField(
-            model_name='mark',
-            name='lesson',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Lesson'),
+            model_name="mark",
+            name="lesson",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Lesson",
+            ),
         ),
         migrations.AlterField(
-            model_name='mark',
-            name='student',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="mark",
+            name="student",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Student",
+            ),
         ),
         migrations.AlterField(
-            model_name='mark',
-            name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Teacher'),
+            model_name="mark",
+            name="teacher",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Teacher",
+            ),
         ),
         migrations.AlterField(
-            model_name='penalty',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="penalty",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='penalty',
-            name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Teacher'),
+            model_name="penalty",
+            name="teacher",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Teacher",
+            ),
         ),
         migrations.AlterField(
-            model_name='penalty',
-            name='type',
-            field=models.ForeignKey(db_column='type', on_delete=django.db.models.deletion.CASCADE, to='journal.PenaltyType'),
+            model_name="penalty",
+            name="type",
+            field=models.ForeignKey(
+                db_column="type",
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.PenaltyType",
+            ),
         ),
         migrations.AlterField(
-            model_name='personalinfo',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="personalinfo",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='squad',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad'),
+            model_name="student",
+            name="squad",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.Squad",
+            ),
         ),
         migrations.AlterField(
-            model_name='studentattendance',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="studentattendance",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='studentattendance',
-            name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.StudentAttendanceType'),
+            model_name="studentattendance",
+            name="type",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="journal.StudentAttendanceType",
+            ),
         ),
     ]

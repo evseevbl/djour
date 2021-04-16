@@ -9,29 +9,11 @@ from journal.managers.marks import tAvg
 from journal.views.common import avg_mark_student, get_attendance_stats
 from maintenance.helpers.named_tuple import namedtuple_wrapper
 
-tOption = namedtuple_wrapper(
-    'tOption',
-    (
-        'code',
-        'label'
-    )
-)
+tOption = namedtuple_wrapper("tOption", ("code", "label"))
 
-tCount = namedtuple_wrapper(
-    'tCount',
-    (
-        'label',
-        'count'
-    )
-)
+tCount = namedtuple_wrapper("tCount", ("label", "count"))
 
-tExamMark = namedtuple_wrapper(
-    'tExamMark',
-    (
-        'semester',
-        'marks'
-    )
-)
+tExamMark = namedtuple_wrapper("tExamMark", ("semester", "marks"))
 
 
 @ensure_csrf_cookie
@@ -47,10 +29,12 @@ def students(request):
     return render(
         request,
         "journal/students.html",
-        with_context({
-            # "user_id": user_id,
-            "students": ls,
-        })
+        with_context(
+            {
+                # "user_id": user_id,
+                "students": ls,
+            }
+        ),
     )
 
 
@@ -61,11 +45,15 @@ def student(request, student_id):
     all_subjects = Subject.objects.filter(timetable__squad__code=st.squad)
     avgs = []
     for subj in all_subjects:
-        avgs.append(tAvg(
-            short=subj.short,
-            avg=avg_mark_student(subj, student_id, date.today() - timedelta(weeks=300), date.today()),
-            # exams=
-        ))
+        avgs.append(
+            tAvg(
+                short=subj.short,
+                avg=avg_mark_student(
+                    subj, student_id, date.today() - timedelta(weeks=300), date.today()
+                ),
+                # exams=
+            )
+        )
         # todo оценки с учётом пропусков
         # avgs.append(tAvg(
         #     short=subj.short + ' (с пропусками)',
@@ -81,10 +69,13 @@ def student(request, student_id):
     penalties = Penalty.objects.filter(student=st)
 
     penalty_choices = {
-        Penalty.REPRIMAND: 'Взысканий',
-        Penalty.PROMOTION: 'Поощрений',
+        Penalty.REPRIMAND: "Взысканий",
+        Penalty.PROMOTION: "Поощрений",
     }
-    penalties_got_map = {penalty_choices[Penalty.PROMOTION]: 0, penalty_choices[Penalty.REPRIMAND]: 0}
+    penalties_got_map = {
+        penalty_choices[Penalty.PROMOTION]: 0,
+        penalty_choices[Penalty.REPRIMAND]: 0,
+    }
 
     for penalty in penalties:
         penalties_got_map[penalty_choices[penalty.type]] += 1
@@ -95,28 +86,32 @@ def student(request, student_id):
 
     duties = Duty.objects.filter(student=st)
 
-    events = Event.objects.filter(eventparticipant__student=st).order_by('-date')
+    events = Event.objects.filter(eventparticipant__student=st).order_by("-date")
 
     return render(
         request,
         "journal/student.html",
-        with_context({
-            "student": st,
-            "avg_marks": avgs,
-            "attendance_stats": get_attendance_stats(atts),
-            "info": info,
-            "penalties": penalties,
-            "penalty_options": _get_options(Penalty.CHOICES),
-            "penalty_stats": penalty_stats,
-            "all_attendances": all_attendances,
-            "duty_options": _get_options(Duty.CHOICES),
-            "duty_stats": _get_avg_duty_marks(st),
-            "duties": duties,
-            "all_exams": _get_exam_marks(st),
-            "stud_events": events,
-            "available_events": Event.objects.exclude(id__in=events).order_by('-date'),
-            "all_events": Event.objects.all().order_by('-date')
-        })
+        with_context(
+            {
+                "student": st,
+                "avg_marks": avgs,
+                "attendance_stats": get_attendance_stats(atts),
+                "info": info,
+                "penalties": penalties,
+                "penalty_options": _get_options(Penalty.CHOICES),
+                "penalty_stats": penalty_stats,
+                "all_attendances": all_attendances,
+                "duty_options": _get_options(Duty.CHOICES),
+                "duty_stats": _get_avg_duty_marks(st),
+                "duties": duties,
+                "all_exams": _get_exam_marks(st),
+                "stud_events": events,
+                "available_events": Event.objects.exclude(id__in=events).order_by(
+                    "-date"
+                ),
+                "all_events": Event.objects.all().order_by("-date"),
+            }
+        ),
     )
 
 
@@ -141,7 +136,7 @@ def _get_exam_marks(st: Student) -> dict:
         for e in needed_exams:
             lessons = Lesson.objects.filter(exam=e)
             marks = _extract_exam_marks(lessons, st)
-            display = '/'.join(marks)
+            display = "/".join(marks)
             exam_mark = tExamMark(semester=e.semester, marks=display)
             result[s.short].append(exam_mark)
     return result
@@ -156,7 +151,7 @@ def _get_group_exam_marks(students: [Student], squad: Squad) -> dict:
         needed_exams = exams.filter(subject=s)
         for e in needed_exams:
             marks = _extract_exam_marks_group(e, students)
-            display = '/'.join(marks)
+            display = "/".join(marks)
             exam_mark = tExamMark(semester=e.semester, marks=display)
             result[s.short].append(exam_mark)
     return result
@@ -182,8 +177,8 @@ def _extract_exam_marks_group(ls: [Lesson], st: [Student]):
 
 def _get_avg_duty_marks(st_obj):
     duties_choices = {
-        Duty.DETENTION: 'Наряд по кафедре',
-        Duty.DUTY: 'Дежурство по взводу',
+        Duty.DETENTION: "Наряд по кафедре",
+        Duty.DUTY: "Дежурство по взводу",
     }
     avgs = {duties_choices[Duty.DETENTION]: 0, duties_choices[Duty.DUTY]: 0}
 
@@ -192,7 +187,7 @@ def _get_avg_duty_marks(st_obj):
     for type, label in duties_choices.items():
         duties_by_type = duties.filter(type=type)
         if not duties_by_type:
-            avgs[label] = '-'
+            avgs[label] = "-"
         else:
             for duty in duties_by_type:
                 avgs[label] += duty.mark

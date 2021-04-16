@@ -6,17 +6,16 @@ from api.models import rMark
 from journal.models import Mark, UserExtension, Lesson
 
 
-
 def add_mark(request):
     value2marks = {
-        '1': 1,
-        '2': 2,
-        '3': 3,
-        '4': 4,
-        '5': 5,
-        'п': -1,
-        'у': -2,
-        'н': -3,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "п": -1,
+        "у": -2,
+        "н": -3,
     }
 
     m = Mark()
@@ -29,15 +28,25 @@ def add_mark(request):
     except UserExtension.DoesNotExist:
         ext = None
     if ext and lesson:
-        if not ext.squads.filter(userextension__squads__code=lesson.attendance.squad.code).exists():
-            return HttpResponse(json.dumps({
-                "error": "Этот пользователь не может изменять и создавать оценки для данного взвода",
-            }))
+        if not ext.squads.filter(
+            userextension__squads__code=lesson.attendance.squad.code
+        ).exists():
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "error": "Этот пользователь не может изменять и создавать оценки для данного взвода",
+                    }
+                )
+            )
 
         if ext.date_limit and lesson.attendance.date != date.today():
-            return HttpResponse(json.dumps({
-                "error": "Этот пользователь может изменять оценки только на текущую дату",
-            }))
+            return HttpResponse(
+                json.dumps(
+                    {
+                        "error": "Этот пользователь может изменять оценки только на текущую дату",
+                    }
+                )
+            )
 
     req = rMark(
         value=value2marks.get(d["value"].lower()),
@@ -48,7 +57,7 @@ def add_mark(request):
     if req.id:
         print("mark exists")
         m: Mark = Mark.objects.filter(id=req.id)[0]
-        if req.value != '':
+        if req.value != "":
             m.val = req.value
             m.save()
         else:
