@@ -160,7 +160,7 @@ def _get_unit_marks(subjects, students, from_date: date, to_date: date):
 def _make_squad_total(students, subjects, from_date: date, to_date: date):
     avg_marks = []
     for subj in subjects:
-        avg_marks.append(for_subj_marks_group(students, subj, from_date, to_date))
+        # avg_marks.append(for_subj_marks_group(students, subj, from_date, to_date))
         avg_marks.append(avg_marks_group(students, subj, from_date, to_date))
     return tStudentRow(
         avg_marks=avg_marks,
@@ -209,7 +209,7 @@ def _make_unit_rows(students: QuerySet, subjects, from_date: date, to_date: date
 def _make_subtotal(students, subjects, from_date: date, to_date: date):
     avg_marks = []
     for subj in subjects:
-        avg_marks.append(for_subj_marks_group(students, subj, from_date, to_date))
+        # avg_marks.append(for_subj_marks_group(students, subj, from_date, to_date))
         avg_marks.append(avg_marks_group(students, subj, from_date, to_date))
     return tStudentRow(
         # student=student,
@@ -249,7 +249,7 @@ def _make_row(
 ) -> tStudentRow:
     avg_marks = []
     for subj in subjects:
-        avg_marks.append(for_subj_mark_student(subj, student.id, from_date, to_date))
+        # avg_marks.append(for_subj_mark_student(subj, student.id, from_date, to_date))
         avg_marks.append(avg_mark_student(subj, student.id, from_date, to_date))
     return tStudentRow(
         student=student,
