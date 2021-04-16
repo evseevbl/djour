@@ -4,11 +4,9 @@ from image_cropping import ImageCroppingMixin
 from django.http import HttpResponseRedirect
 
 
-
 class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
-    search_fields = ('last_name', 'first_name', 'middle_name', 'squad__code')
-
+    search_fields = ("last_name", "first_name", "middle_name", "squad__code")
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
@@ -16,11 +14,14 @@ class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-
 class PersonalInfoModelAdmin(admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
-    search_fields = ('student__last_name', 'student__first_name', 'student__middle_name', 'student__squad__code')
-
+    search_fields = (
+        "student__last_name",
+        "student__first_name",
+        "student__middle_name",
+        "student__squad__code",
+    )
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
@@ -28,16 +29,13 @@ class PersonalInfoModelAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
 
-
 class AttendanceModelAdmin(admin.ModelAdmin):
     change_form_template = "../templates/journal/admin_edit.html"
-
 
     def response_change(self, request, obj):
         if "_back" in request.POST:
             return HttpResponseRedirect("/journal/attendance/{}".format(obj.id))
         return super().response_change(request, obj)
-
 
 
 # Register your models here.

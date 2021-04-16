@@ -7,34 +7,52 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0004_personalinfo'),
+        ("journal", "0004_personalinfo"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='attendance',
-            name='student',
+            model_name="attendance",
+            name="student",
         ),
         migrations.RemoveField(
-            model_name='attendance',
-            name='type',
+            model_name="attendance",
+            name="type",
         ),
         migrations.AddField(
-            model_name='attendance',
-            name='squad',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='journal.Squad'),
+            model_name="attendance",
+            name="squad",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="journal.Squad",
+            ),
         ),
         migrations.CreateModel(
-            name='StudentAttendance',
+            name="StudentAttendance",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.IntegerField(null=True)),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='journal.Student')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("value", models.IntegerField(null=True)),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="journal.Student",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='attendance',
-            name='students',
-            field=models.ManyToManyField(to='journal.StudentAttendance'),
+            model_name="attendance",
+            name="students",
+            field=models.ManyToManyField(to="journal.StudentAttendance"),
         ),
     ]

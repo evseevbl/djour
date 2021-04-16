@@ -6,18 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0029_exam_squad'),
+        ("journal", "0029_exam_squad"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='exam',
-            old_name='cemester',
-            new_name='semester',
+            model_name="exam",
+            old_name="cemester",
+            new_name="semester",
         ),
         migrations.AddField(
-            model_name='exam',
-            name='name',
-            field=models.CharField(choices=[('exam', 'Экзамен'), ('test', 'Зачёт')], default='', max_length=100, verbose_name='Форма контроля'),
+            model_name="exam",
+            name="name",
+            field=models.CharField(
+                choices=[("exam", "Экзамен"), ("test", "Зачёт")],
+                default="",
+                max_length=100,
+                verbose_name="Форма контроля",
+            ),
         ),
     ]

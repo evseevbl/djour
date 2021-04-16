@@ -7,13 +7,15 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0012_auto_20191102_1845'),
+        ("journal", "0012_auto_20191102_1845"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='personalinfo',
-            name='student',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="personalinfo",
+            name="student",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
     ]

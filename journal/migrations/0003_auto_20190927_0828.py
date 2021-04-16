@@ -6,20 +6,28 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0002_remove_squad_name'),
+        ("journal", "0002_remove_squad_name"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='student',
-            options={'managed': True, 'verbose_name': 'Студент', 'verbose_name_plural': 'Студенты'},
+            name="student",
+            options={
+                "managed": True,
+                "verbose_name": "Студент",
+                "verbose_name_plural": "Студенты",
+            },
         ),
         migrations.AlterModelOptions(
-            name='subject',
-            options={'managed': True, 'verbose_name': 'Дисциплина', 'verbose_name_plural': 'Дисциплины'},
+            name="subject",
+            options={
+                "managed": True,
+                "verbose_name": "Дисциплина",
+                "verbose_name_plural": "Дисциплины",
+            },
         ),
         migrations.RemoveField(
-            model_name='mark',
-            name='subject',
+            model_name="mark",
+            name="subject",
         ),
     ]

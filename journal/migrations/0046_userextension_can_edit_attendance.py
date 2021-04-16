@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0045_auto_20191220_0840'),
+        ("journal", "0045_auto_20191220_0840"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userextension',
-            name='can_edit_attendance',
-            field=models.BooleanField(default=False, verbose_name='Может изменять строевые записки'),
+            model_name="userextension",
+            name="can_edit_attendance",
+            field=models.BooleanField(
+                default=False, verbose_name="Может изменять строевые записки"
+            ),
         ),
     ]

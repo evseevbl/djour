@@ -7,25 +7,32 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0018_auto_20191108_1035'),
+        ("journal", "0018_auto_20191108_1035"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='penalty',
-            name='teacher',
+            model_name="penalty",
+            name="teacher",
         ),
         migrations.AlterField(
-            model_name='penalty',
-            name='student',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='journal.Student'),
+            model_name="penalty",
+            name="student",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="journal.Student"
+            ),
         ),
         migrations.AlterField(
-            model_name='penalty',
-            name='type',
-            field=models.CharField(choices=[('penalty', 'взыскание'), ('promotion', 'поощрение')], default='penalty', max_length=20, verbose_name='Вид'),
+            model_name="penalty",
+            name="type",
+            field=models.CharField(
+                choices=[("penalty", "взыскание"), ("promotion", "поощрение")],
+                default="penalty",
+                max_length=20,
+                verbose_name="Вид",
+            ),
         ),
         migrations.DeleteModel(
-            name='PenaltyType',
+            name="PenaltyType",
         ),
     ]

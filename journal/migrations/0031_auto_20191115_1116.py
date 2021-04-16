@@ -6,12 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0030_auto_20191115_1113'),
+        ("journal", "0030_auto_20191115_1113"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='exam',
-            constraint=models.UniqueConstraint(fields=('semester', 'subject', 'squad'), name='max_one_per_semester'),
+            model_name="exam",
+            constraint=models.UniqueConstraint(
+                fields=("semester", "subject", "squad"), name="max_one_per_semester"
+            ),
         ),
     ]

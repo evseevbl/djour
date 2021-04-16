@@ -6,13 +6,13 @@ from journal.managers.context import with_context, get_user_extension
 from datetime import date
 
 tAttendanceRestriction = namedtuple_wrapper(
-    'tAttendanceRestriction',
+    "tAttendanceRestriction",
     (
-        'date_restricted',
-        'date',
-        'squads',
-        'can_edit',
-    )
+        "date_restricted",
+        "date",
+        "squads",
+        "can_edit",
+    ),
 )
 
 
@@ -38,10 +38,7 @@ def attendance(request):
     return render(
         request,
         "journal/attendance.html",
-        with_context({
-            "forms": f,
-            "restrictions": restrictions
-        })
+        with_context({"forms": f, "restrictions": restrictions}),
     )
 
 
@@ -51,9 +48,7 @@ def edit_attendance(request, attendance_id):
     ext = get_user_extension(request.user)
     if ext:
         if not ext.can_edit_attendance:
-            context = {
-                "error": "Этот пользователь не может изменять строевые записки"
-            }
+            context = {"error": "Этот пользователь не может изменять строевые записки"}
         elif ext.date_limit and att.date != date.today():
             context = {
                 "error": "Этот пользователь не может изменять строевые записки за даты, отличающейся от текущей"
@@ -62,16 +57,16 @@ def edit_attendance(request, attendance_id):
     types = constants.ATT_TYPES
     if not context:
         context = {
-            "students": att.students.all().order_by('student__last_name').prefetch_related('student'),
-            "statuses": att.students.all().order_by('student__last_name').prefetch_related('student'),
+            "students": att.students.all()
+            .order_by("student__last_name")
+            .prefetch_related("student"),
+            "statuses": att.students.all()
+            .order_by("student__last_name")
+            .prefetch_related("student"),
             "attendance_types": types,
             "attendance_id": attendance_id,
             "squad_code": att.squad.code,
             "date": att.date,
         }
 
-    return render(
-                request,
-                "journal/attendance_edit.html",
-                with_context(context)
-            )
+    return render(request, "journal/attendance_edit.html", with_context(context))

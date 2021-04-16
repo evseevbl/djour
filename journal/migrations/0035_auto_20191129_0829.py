@@ -6,18 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0034_auto_20191122_0800'),
+        ("journal", "0034_auto_20191122_0800"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='journal_id',
-            field=models.IntegerField(blank=True, null=True, verbose_name='Номер в журнале'),
+            model_name="student",
+            name="journal_id",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="Номер в журнале"
+            ),
         ),
         migrations.AddField(
-            model_name='student',
-            name='unit',
-            field=models.IntegerField(blank=True, choices=[(1, 1), (2, 2), (3, 3)], null=True, verbose_name='Отделение'),
+            model_name="student",
+            name="unit",
+            field=models.IntegerField(
+                blank=True,
+                choices=[(1, 1), (2, 2), (3, 3)],
+                null=True,
+                verbose_name="Отделение",
+            ),
         ),
     ]

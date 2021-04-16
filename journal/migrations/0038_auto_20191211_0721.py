@@ -7,43 +7,74 @@ import image_cropping.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0037_auto_20191129_1025'),
+        ("journal", "0037_auto_20191129_1025"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='personalinfo',
-            name='faculty',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Факультет'),
+            model_name="personalinfo",
+            name="faculty",
+            field=models.CharField(
+                blank=True, max_length=100, null=True, verbose_name="Факультет"
+            ),
         ),
         migrations.AddField(
-            model_name='personalinfo',
-            name='group',
-            field=models.CharField(blank=True, max_length=20, null=True, verbose_name='Группа'),
+            model_name="personalinfo",
+            name="group",
+            field=models.CharField(
+                blank=True, max_length=20, null=True, verbose_name="Группа"
+            ),
         ),
         migrations.AddField(
-            model_name='personalinfo',
-            name='order_admission',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='№ приказа о зачислении'),
+            model_name="personalinfo",
+            name="order_admission",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                verbose_name="№ приказа о зачислении",
+            ),
         ),
         migrations.AddField(
-            model_name='personalinfo',
-            name='order_deduction',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='№ приказа об отчислении'),
+            model_name="personalinfo",
+            name="order_deduction",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                verbose_name="№ приказа об отчислении",
+            ),
         ),
         migrations.AddField(
-            model_name='personalinfo',
-            name='phone',
-            field=models.CharField(blank=True, max_length=30, null=True, verbose_name='Номер телефона'),
+            model_name="personalinfo",
+            name="phone",
+            field=models.CharField(
+                blank=True, max_length=30, null=True, verbose_name="Номер телефона"
+            ),
         ),
         migrations.AddField(
-            model_name='personalinfo',
-            name='program',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Образовательная программа'),
+            model_name="personalinfo",
+            name="program",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                verbose_name="Образовательная программа",
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='cropping',
-            field=image_cropping.fields.ImageRatioField('pic', '300x400', adapt_rotation=False, allow_fullsize=False, free_crop=False, help_text=None, hide_image_field=False, size_warning=False, verbose_name='cropping'),
+            model_name="student",
+            name="cropping",
+            field=image_cropping.fields.ImageRatioField(
+                "pic",
+                "300x400",
+                adapt_rotation=False,
+                allow_fullsize=False,
+                free_crop=False,
+                help_text=None,
+                hide_image_field=False,
+                size_warning=False,
+                verbose_name="cropping",
+            ),
         ),
     ]

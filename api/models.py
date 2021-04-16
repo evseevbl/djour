@@ -9,7 +9,7 @@ rMark = namedtuple_wrapper(
         "subject_id",
         "teacher_id",
         "lesson_id",
-    ]
+    ],
 )
 
 rLesson = namedtuple_wrapper(
@@ -19,6 +19,5 @@ rLesson = namedtuple_wrapper(
         "date",
         "subject_id",
         "squad_id",
-    ]
+    ],
 )
-

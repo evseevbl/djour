@@ -7,11 +7,12 @@ from _collections import defaultdict
 
 
 def curriculum_to_timetable(apps, schema_editor):
-    TimeTable = apps.get_model('journal', 'TimeTable')
+    TimeTable = apps.get_model("journal", "TimeTable")
 
     from django.db import connection
+
     cursor = connection.cursor()
-    cursor.execute('''SELECT squad_id, subject_id FROM curriculum''')
+    cursor.execute("""SELECT squad_id, subject_id FROM curriculum""")
     curriculums = cursor.fetchall()
 
     grouped_by_squad = defaultdict(list)
@@ -19,7 +20,7 @@ def curriculum_to_timetable(apps, schema_editor):
         grouped_by_squad[curr[0]].append(curr[1])
 
     for squad, subjects in grouped_by_squad.items():
-        print(squad, ':', subjects)
+        print(squad, ":", subjects)
 
         tt_obj = TimeTable.objects.create(squad_id=squad)
         tt_obj.subjects.add(*subjects)
@@ -28,28 +29,48 @@ def curriculum_to_timetable(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0046_userextension_can_edit_attendance'),
+        ("journal", "0046_userextension_can_edit_attendance"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TimeTable',
+            name="TimeTable",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('squad', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='journal.Squad', verbose_name='Взвод')),
-                ('subjects', models.ManyToManyField(blank=True, to='journal.Subject', verbose_name='Предметы')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "squad",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="journal.Squad",
+                        verbose_name="Взвод",
+                    ),
+                ),
+                (
+                    "subjects",
+                    models.ManyToManyField(
+                        blank=True, to="journal.Subject", verbose_name="Предметы"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Расписание',
-                'verbose_name_plural': 'Расписание',
-                'db_table': 'timetable',
-                'managed': True,
+                "verbose_name": "Расписание",
+                "verbose_name_plural": "Расписание",
+                "db_table": "timetable",
+                "managed": True,
             },
         ),
-
         migrations.RunPython(curriculum_to_timetable),
-
         migrations.DeleteModel(
-            name='Curriculum',
+            name="Curriculum",
         ),
     ]

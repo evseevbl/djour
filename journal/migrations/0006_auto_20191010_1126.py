@@ -7,31 +7,43 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0005_auto_20190927_0952'),
+        ("journal", "0005_auto_20190927_0952"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='StudentAttendanceType',
+            name="StudentAttendanceType",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("value", models.CharField(blank=True, max_length=100, null=True)),
             ],
             options={
-                'managed': True,
+                "managed": True,
             },
         ),
         migrations.AlterModelOptions(
-            name='studentattendance',
-            options={'managed': True},
+            name="studentattendance",
+            options={"managed": True},
         ),
         migrations.RemoveField(
-            model_name='studentattendance',
-            name='value',
+            model_name="studentattendance",
+            name="value",
         ),
         migrations.AddField(
-            model_name='studentattendance',
-            name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='journal.StudentAttendanceType'),
+            model_name="studentattendance",
+            name="type",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="journal.StudentAttendanceType",
+            ),
         ),
     ]
